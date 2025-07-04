@@ -30,6 +30,7 @@ function SubscriptionsPage() {
         padding: '10px'
       }}
     >
+      {/* Todo: need header for bulk options like delete multiple playlists */}
       {playlists.map(playlist => (
         <Link className='playlist-card'
           key={playlist.id}

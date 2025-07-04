@@ -47,6 +47,19 @@ function SettingsPage() {
       <h2>App Settings</h2>
 
       <label>
+        YTSubs.app API key:
+        <br />
+        <input
+          type="text"
+          // value={webhookUrl} //Todo: implement
+          // onChange={e => setWebhookUrl(e.target.value)} //Todo: implement
+          style={{ width: '100%', maxWidth: '600px', padding: '8px', marginTop: '6px' }}
+        />
+      </label>
+
+      <br />
+      {/* Todo: change label+input usage so we can put proper margins between these items */}
+      <label>
         Discord Webhook URL:
         <br />
         <input
@@ -59,6 +72,7 @@ function SettingsPage() {
 
       <br />
       <button onClick={handleSave} style={{ marginTop: '10px' }}>
+        {/* Todo: move Save button to icon in header */}
         Save
       </button>
 

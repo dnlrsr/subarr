@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, NavLink, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, NavLink, useLocation, Link } from 'react-router-dom';
 import SubscriptionsPage from './pages/SubscriptionsPage';
 import AddPlaylistPage from './pages/AddPlaylistPage';
 import SettingsPage from './pages/SettingsPage';
@@ -17,11 +17,15 @@ function AppLayout() {
   return (
     <div className="app-layout">
       <header className="app-header">
-        <img src="/logo192.png" alt="App Icon" className="header-icon" />
+        <Link to='/'>
+          <img src="/logo192.png" alt="App Icon" className="header-icon" />
+        </Link>
         <button className="sidebar-toggle" onClick={toggleSidebar}>
           ☰
         </button>
-        <h1>YouTubarr</h1>
+        <Link to='/' style={{textDecoration: 'none'}}>
+          <h1>YouTubarr</h1>
+        </Link>
       </header>
       <div className="app-container">
         <nav className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
