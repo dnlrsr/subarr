@@ -32,6 +32,7 @@ However, this works perfectly fine for mine (and maybe other people's) needs.
 - Integrate [ytsubs.app](https://ytsubs.app) to import user's YouTube subscriptions and keep them in sync
 - Add to Raindrop
 - Download videos? (I would love to add this - this project did claim to be like Sonarr after all - however this would require adding an additional library, managing video quality, subtitles, sponsorblock, etc)
+  - _For now, we could just have a setting box for "yt-dl or yt-dlp location" and "yt-dl or yt-dlp arguments" so we don't have to manage all the settings_
 
 ### Plans for future maintenance
 
