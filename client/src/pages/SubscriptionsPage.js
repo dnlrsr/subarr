@@ -51,6 +51,8 @@ function SubscriptionsPage() {
             >
               {playlist.title}
             </h3>
+            {/* Todo: Sonarr has an "Options" button to choose what details are shown*/}
+            {/* Todo: maybe show "From {author name} {author uri}"?*/}
             {/* Todo: show 'source' (eg Manually added or YouTube Subscription) */}
             {/* Todo: show 'check interval'*/}
             <p

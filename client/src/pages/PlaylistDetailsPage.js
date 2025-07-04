@@ -36,10 +36,10 @@ function PlaylistDetailsPage() {
       });
   
       if (!res.ok) throw new Error('Failed to save');
-      alert('Settings saved!');
+      alert('Settings saved!'); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
     } catch (err) {
       console.error(err);
-      alert('Error saving settings');
+      alert('Error saving settings'); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
     }
   };  
 
@@ -52,12 +52,12 @@ function PlaylistDetailsPage() {
         method: 'DELETE',
       });
   
-      if (!res.ok) throw new Error('Failed to delete');
+      if (!res.ok) throw new Error('Failed to delete'); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
       alert('Playlist removed');
       navigate('/');
     } catch (err) {
       console.error(err);
-      alert('Error deleting playlist');
+      alert('Error deleting playlist'); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
     }
   };  
 
@@ -101,6 +101,8 @@ function PlaylistDetailsPage() {
 
       <div style={{padding: 30}}>
         <h2>{playlist.title}</h2>
+        {/* Todo: maybe show playlist id */}
+        {/* Todo: maybe show "From {author name} {author uri}"?*/}
         <div style={{ marginBottom: '20px' }}>
           <label>
             Check Interval (minutes):{' '}
@@ -110,6 +112,7 @@ function PlaylistDetailsPage() {
               onChange={e => setInterval(e.target.value)}
               style={{ width: '60px' }}
             />
+            {/* Todo: don't allow a number lower than 5 minutes */}
           </label>
           <br />
           <label>

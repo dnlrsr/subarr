@@ -21,10 +21,10 @@ function AddPlaylistPage() {
     });
 
     if (res.ok) {
-      alert('Playlist added!');
+      alert('Playlist added!'); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
       setPlaylistId('');
     } else {
-      alert('Error adding playlist');
+      alert('Error adding playlist'); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
     }
   };
 
