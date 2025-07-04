@@ -30,27 +30,13 @@ function SubscriptionsPage() {
       }}
     >
       {playlists.map(playlist => (
-        <div
+        <div className='playlist-card'
           key={playlist.id}
-          style={{
-            width: '240px',
-            backgroundColor: 'var(--card-bg)',
-            borderRadius: '6px',
-            overflow: 'hidden',
-            boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
-            cursor: 'pointer',
-            transition: 'transform 0.2s',
-          }}
           onClick={() => window.location.href = `/playlist/${playlist.id}`}
         >
           <img
             src={playlist.thumbnail}
             alt={playlist.title}
-            style={{
-              width: '100%',
-              height: '135px', // 240 * 9 / 16 = 135
-              objectFit: 'cover',
-            }}
           />
           <div style={{ padding: '10px' }}>
             <h3
