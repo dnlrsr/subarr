@@ -48,6 +48,10 @@ app.post('/api/playlists', async (req, res) => {
     const info = stmt.run(playlistId, title, 60, '', null, thumbnail);
     const newPlaylistId = info.lastInsertRowid;
 
+    // Fetch newly added playlist to pass into schedulePolling
+    const newPlaylist = db.prepare('SELECT * FROM playlists WHERE id = ?').get(newPlaylistId);
+    schedulePolling(newPlaylist);
+
     // Insert video entries
     const insertVideo = db.prepare(`
       INSERT INTO videos (playlist_id, video_id, title, published_at, notified, thumbnail)
