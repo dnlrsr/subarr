@@ -15,6 +15,7 @@ _What are the limitations of the RSS feed approach?_
 YouTube already provides RSS feeds for playlists (eg https://www.youtube.com/feeds/videos.xml?playlist_id=PLopY4n17t8RDoFQPcjBKWDEblGH1sOH2h). However, they can be severly limited:
 
 - Feeds seem to be limited to only the last 15 items
+  - _However, YouTubarr will list more items as they are found because the internal database will be updated_
 - _[Needs testing]_ I am not sure in what order items are returned (ie if you just have a random playlist - are videos returned ordered by upload date? added date? Is it consistent for both PL and UU playlists?)
 - _[Needs testing]_ RSS feeds may be somewhat slow to update
 
@@ -31,8 +32,10 @@ However, this works perfectly fine for mine (and maybe other people's) needs.
 
 - Integrate [ytsubs.app](https://ytsubs.app) to import user's YouTube subscriptions and keep them in sync
 - Add to Raindrop
+- Native "url base" support like sonarr (for reverse proxies or cloudflare tunnels)
 - Download videos? (I would love to add this - this project did claim to be like Sonarr after all - however this would require adding an additional library, managing video quality, subtitles, sponsorblock, etc)
   - _For now, we could just have a setting box for "yt-dl or yt-dlp location" and "yt-dl or yt-dlp arguments" so we don't have to manage all the settings_
+- _Index more than 15 items initially? (this would require significant up-front processing power like TubeSync does - so...unlikely)_
 
 ### Plans for future maintenance
 
