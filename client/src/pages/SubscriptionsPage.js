@@ -1,0 +1,84 @@
+import { useEffect, useState } from 'react';
+
+function SubscriptionsPage() {
+  const [playlists, setPlaylists] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/playlists')
+      .then(res => res.json())
+      .then(data => {
+        const fallbackThumbnail = 'https://i.ytimg.com/vi/5qap5aO4i9A/hqdefault.jpg';
+  
+        setPlaylists(data.map(p => ({
+          ...p,
+          thumbnail: p.thumbnail || fallbackThumbnail,
+          lastChecked: p.last_checked || 'Unknown',
+        })));
+      })
+      .catch(err => {
+        console.error('Failed to load playlists:', err);
+      });
+  }, []);  
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: '20px',
+        padding: '10px'
+      }}
+    >
+      {playlists.map(playlist => (
+        <div
+          key={playlist.id}
+          style={{
+            width: '240px',
+            backgroundColor: 'var(--card-bg)',
+            borderRadius: '6px',
+            overflow: 'hidden',
+            boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+            cursor: 'pointer',
+            transition: 'transform 0.2s',
+          }}
+          onClick={() => window.location.href = `/playlist/${playlist.id}`}
+        >
+          <img
+            src={playlist.thumbnail}
+            alt={playlist.title}
+            style={{
+              width: '100%',
+              height: '135px', // 240 * 9 / 16 = 135
+              objectFit: 'cover',
+            }}
+          />
+          <div style={{ padding: '10px' }}>
+            <h3
+              style={{
+                fontSize: '1em',
+                margin: '0 0 5px 0',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {playlist.title}
+            </h3>
+            <p
+              style={{
+                fontSize: '0.75em',
+                color: '#aaa',
+                margin: 0,
+              }}
+            >
+              Last checked: <br />
+              {new Date(playlist.lastChecked).toLocaleDateString()}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default SubscriptionsPage;

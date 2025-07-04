@@ -1,0 +1,51 @@
+# Root-level .gitignore
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Node.js dependencies
+**/node_modules/
+
+# Logs
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+**/pnpm-debug.log*
+
+# dotenv env files (add back if you're committing .env explicitly)
+**/.env
+**/.env.*
+
+# SQLite DB files
+**/*.sqlite
+**/*.sqlite3
+**/*.db
+**/*.db-journal
+
+# Build artifacts
+/client/build/
+/client/dist/
+/client/.next/
+/client/.turbo/
+
+# React testing
+/client/coverage/
+**/jest-test-results.json
+
+# VS Code and IDE settings
+.vscode/
+.idea/
+*.sw?
+
+# MacOS Finder settings
+*.DS_Store
+
+# Optional: OS crash reports
+*.orig
+
+# Optional: local dev TLS certs or private config
+**/*.pem
+**/*.crt
+**/*.key
+**/secrets.json
