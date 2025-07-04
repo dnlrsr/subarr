@@ -31,10 +31,11 @@ However, this works perfectly fine for mine (and maybe other people's) needs.
 ### Future features
 
 - Integrate [ytsubs.app](https://ytsubs.app) to import user's YouTube subscriptions and keep them in sync
-- Add to Raindrop
+- Add to Raindrop (and possibly other sources - maybe even combine Raindrop/Discord/etc into a generic "Notification Webhook" object and "Raindrop/Discord/etc" are just templates that will pre-populate values for you)
 - Native "url base" support like sonarr (for reverse proxies or cloudflare tunnels)
+- Backup & Restore functionality (_should_ be pretty easy by just giving a copy of the sqlite db?)
 - Download videos? (I would love to add this - this project did claim to be like Sonarr after all - however this would require adding an additional library, managing video quality, subtitles, sponsorblock, etc)
-  - _For now, we could just have a setting box for "yt-dl or yt-dlp location" and "yt-dl or yt-dlp arguments" so we don't have to manage all the settings_
+  - _For now, we could just have a setting box for "yt-dl or yt-dlp location" and "yt-dl or yt-dlp arguments" so we don't have to manage all the settings (looks like yt-dlp even has [SponsorBlock arguments](https://github.com/yt-dlp/yt-dlp#sponsorblock-options))_
 - _Index more than 15 items initially? (this would require significant up-front processing power like TubeSync does - so...unlikely)_
 
 ### Plans for future maintenance
