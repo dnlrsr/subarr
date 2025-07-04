@@ -128,7 +128,6 @@ body {
 .main-content {
   flex: 1;
   overflow-y: auto;
-  padding: 1rem;
   background-color: #202020;
 }
 
@@ -149,10 +148,6 @@ body {
 }
 
 @media (max-width: 768px) {
-  .main-content {
-    padding: 0px;
-  }
-
   .playlist-card {
     width: 170px;
   }
