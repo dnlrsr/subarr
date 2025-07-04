@@ -41,6 +41,7 @@ function AppLayout() {
                 Add Playlist
               </NavLink>
             </li>
+            {/* Todo: an "Activity" page could be useful to show playlist items recently found */}
             <li>
               <NavLink to="/settings" className={({ isActive }) => isActive ? 'active-link' : ''} onClick={() => setSidebarOpen(false)}>
                 Settings

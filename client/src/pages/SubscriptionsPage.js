@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 function SubscriptionsPage() {
   const [playlists, setPlaylists] = useState([]);
@@ -30,9 +31,9 @@ function SubscriptionsPage() {
       }}
     >
       {playlists.map(playlist => (
-        <div className='playlist-card'
+        <Link className='playlist-card'
           key={playlist.id}
-          onClick={() => window.location.href = `/playlist/${playlist.id}`}
+          to={`/playlist/${playlist.id}`}
         >
           <img
             src={playlist.thumbnail}
@@ -64,7 +65,7 @@ function SubscriptionsPage() {
             </p>
             {/* Todo: show 'next check' (a countdown like '1h 5m'). Important to note that it would be nice if some of these properties updated dynamically when the server does its dynamic check*/}
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   );

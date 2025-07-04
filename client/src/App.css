@@ -60,8 +60,8 @@ body {
 }
 
 .app-header .header-icon {
-  width: 32px;
-  height: 32px;
+  width: 48px;
+  height: 48px;
   margin-right: 0.75rem;
 }
 
@@ -132,6 +132,8 @@ body {
 }
 
 .playlist-card {
+  text-decoration: none;
+  color: inherit;
   width: 240px;
   background-color: var(--card-bg);
   border-radius: 6px;
