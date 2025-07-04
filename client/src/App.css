@@ -116,6 +116,13 @@ body {
   padding: 0.75rem 1rem;
 }
 
+.sidebar a.active-link {
+  background-color: #1f1f1f;
+  border-left: 4px solid #dc370f;
+  color: #dc370f;
+  padding-left: calc(1rem - 4px);
+}
+
 .sidebar a:hover {
   background-color: #333;
 }

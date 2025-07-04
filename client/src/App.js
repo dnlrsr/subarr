@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
 import SubscriptionsPage from './pages/SubscriptionsPage';
 import AddPlaylistPage from './pages/AddPlaylistPage';
 import SettingsPage from './pages/SettingsPage';
@@ -26,9 +26,21 @@ function App() {
         <div className="app-container">
           <nav className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
             <ul>
-              <li><Link to="/" onClick={() => setSidebarOpen(false)}>Subscriptions</Link></li>
-              <li><Link to="/add" onClick={() => setSidebarOpen(false)}>Add Playlist</Link></li>
-              <li><Link to="/settings" onClick={() => setSidebarOpen(false)}>Settings</Link></li>
+              <li>
+                <NavLink to="/" end className={({ isActive }) => isActive ? 'active-link' : ''} onClick={() => setSidebarOpen(false)}>
+                  Subscriptions
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/add" className={({ isActive }) => isActive ? 'active-link' : ''} onClick={() => setSidebarOpen(false)}>
+                  Add Playlist
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/settings" className={({ isActive }) => isActive ? 'active-link' : ''} onClick={() => setSidebarOpen(false)}>
+                  Settings
+                </NavLink>
+              </li>
             </ul>
           </nav>
           <main className="main-content">
