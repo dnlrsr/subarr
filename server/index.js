@@ -116,14 +116,33 @@ app.get('/api/settings', (req, res) => {
 });
 
 app.put('/api/settings', (req, res) => {
-  const { key, value } = req.body;
-  db.prepare(`
+  const settings = req.body; // Expecting an array of { key, value }
+
+  if (!Array.isArray(settings)) {
+    return res.status(400).json({ error: 'Request body must be an array' });
+  }
+
+  const stmt = db.prepare(`
     INSERT INTO settings (key, value)
     VALUES (?, ?)
     ON CONFLICT(key) DO UPDATE SET value = excluded.value
-  `).run(key, value);
-  res.json({ success: true });
+  `);
+
+  const insertMany = db.transaction((settingsArray) => {
+    for (const { key, value } of settingsArray) {
+      stmt.run(key, value);
+    }
+  });
+
+  try {
+    insertMany(settings);
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Failed to update settings:', err);
+    res.status(500).json({ error: 'Failed to update settings' });
+  }
 });
+
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

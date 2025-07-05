@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 function SettingsPage() {
+  const [ytsubsApiKey, setYtsubsApiKey] = useState('');
   const [webhookUrl, setWebhookUrl] = useState('');
   const [message, setMessage] = useState('');
 
@@ -8,15 +9,13 @@ function SettingsPage() {
     fetch('/api/settings')
       .then(res => res.json())
       .then(data => {
-        if (data.webhook_url) {
-          setWebhookUrl(data.webhook_url);
-        }
+        setYtsubsApiKey(data.ytsubs_apikey ?? '');
+        setWebhookUrl(data.webhook_url ?? '');
       })
       .catch(err => {
         console.error('Failed to fetch settings', err);
       });
   }, []);
-  
 
   const handleSave = async () => {
     if (!webhookUrl.startsWith('https://discord.com/api/webhooks/')) {
@@ -28,59 +27,68 @@ function SettingsPage() {
       const res = await fetch('/api/settings', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+        body: JSON.stringify([{
           key: 'webhook_url',
           value: webhookUrl,
-        }),
+        },
+        {
+          key: 'ytsubs_apikey',
+          value: ytsubsApiKey,
+        }]),
       });
   
       if (!res.ok) throw new Error('Failed to save settings');
-      setMessage('Webhook URL saved!');
+      setMessage('Saved settings'); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
     } catch (err) {
       console.error(err);
-      setMessage('Error saving webhook URL');
+      setMessage('Error saving settings'); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
     }
   };  
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h2>App Settings</h2>
+    <div>
+      <div style={{ display: 'flex', alignItems: 'center', padding: '0px 20px', backgroundColor: '#262626', height: 60 }}>
+        <div style={{ display: 'flex', gap: '10px', marginRight: '20px' }}>
+          {/* Todo: highlight button icon on color (maybe not red though?) */}
+          <button
+            onClick={handleSave}
+            title="Save Settings"
+            style={{
+              background: 'none',
+              border: 'none',
+              color: 'white',
+              fontSize: '1.5rem',
+              cursor: 'pointer'
+            }}
+          >
+            <i className="bi bi-floppy-fill"></i>
+            <div style={{fontSize: 'small'}}>Save</div>
+          </button>
+        </div>
+      </div>
+      <div style={{padding: 30}}>
+        <div className='setting'>
+          <div style={{minWidth: 175}}>YTSubs.app API key</div>
+          <input type="text"
+            value={ytsubsApiKey}
+            onChange={e => setYtsubsApiKey(e.target.value)}
+          />
+        </div>
+        <div className='setting'>
+          <div style={{minWidth: 175}}>Discord Webhook URL</div>
+          <input type="text"
+            value={webhookUrl}
+            onChange={e => setWebhookUrl(e.target.value)}
+          />
+        </div>
 
-      <label>
-        YTSubs.app API key:
         <br />
-        <input
-          type="text"
-          // value={webhookUrl} //Todo: implement
-          // onChange={e => setWebhookUrl(e.target.value)} //Todo: implement
-          style={{ width: '100%', maxWidth: '600px', padding: '8px', marginTop: '6px' }}
-        />
-      </label>
-
-      <br />
-      {/* Todo: change label+input usage so we can put proper margins between these items */}
-      <label>
-        Discord Webhook URL:
-        <br />
-        <input
-          type="text"
-          value={webhookUrl}
-          onChange={e => setWebhookUrl(e.target.value)}
-          style={{ width: '100%', maxWidth: '600px', padding: '8px', marginTop: '6px' }}
-        />
-      </label>
-
-      <br />
-      <button onClick={handleSave} style={{ marginTop: '10px' }}>
-        {/* Todo: move Save button to icon in header */}
-        Save
-      </button>
-
-      {message && (
-        <p style={{ marginTop: '10px', color: message.includes('Invalid') ? 'red' : 'lightgreen' }}>
-          {message}
-        </p>
-      )}
+        {message && (
+          <p style={{ marginTop: '10px', color: message.includes('Invalid') ? 'red' : 'lightgreen' }}>
+            {message}
+          </p>
+        )}
+      </div>
     </div>
   );
 }

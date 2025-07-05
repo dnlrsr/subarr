@@ -56,15 +56,12 @@ function SubscriptionsPage() {
             {/* Todo: maybe show "From {author name} {author uri}"?*/}
             {/* Todo: show 'source' (eg Manually added or YouTube Subscription) */}
             {/* Todo: show 'check interval'*/}
-            <p
-              style={{
+            <p style={{
                 fontSize: '0.75em',
                 color: '#aaa',
                 margin: 0,
-              }}
-              >
-              Last checked: <br />
-              {new Date(playlist.lastChecked).toLocaleDateString()}
+              }}>
+              Last checked: {new Date(playlist.lastChecked).toLocaleDateString()}
             </p>
             {/* Todo: show 'next check' (a countdown like '1h 5m'). Important to note that it would be nice if some of these properties updated dynamically when the server does its polling check*/}
           </div>
