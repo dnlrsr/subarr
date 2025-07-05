@@ -66,7 +66,7 @@ function SubscriptionsPage() {
               Last checked: <br />
               {new Date(playlist.lastChecked).toLocaleDateString()}
             </p>
-            {/* Todo: show 'next check' (a countdown like '1h 5m'). Important to note that it would be nice if some of these properties updated dynamically when the server does its dynamic check*/}
+            {/* Todo: show 'next check' (a countdown like '1h 5m'). Important to note that it would be nice if some of these properties updated dynamically when the server does its polling check*/}
           </div>
         </Link>
       ))}

@@ -125,9 +125,15 @@ function PlaylistDetailsPage() {
             />
             {/* Todo: give a button to test the regex */}
           </label>
+          {/* Todo: allow overriding the feed url with a different url (eg rss-bridge) which can allow getting more than 15 items.
+          HOWEVER, this might require custom parsing to get details like thumbnail (and I tested a rss-bridge URL for a playlist
+          of 114 items - some rss-bridge instances timed out and some capped the return at 99 items).
+          Looks like more can be provided via https://www.scriptbarrel.com/xml.cgi?channel_id=UCshoKvlZGZ20rVgazZp5vnQ&name=%40captainsparklez
+          (both channel_id & name are required, I think)*/}
         </div>
 
         <h3>Recent Uploads</h3>
+        {/* Todo: it would be nice if the list of recent uploads was updated dynamically when the server does its polling check */}
         {/* Todo: I would like this section to fill the rest of the page (right now it's limited to 400px) */}
         {/* Todo: maybe we should show which videos won't match the regex (if a regex is specified?) */}
         <div

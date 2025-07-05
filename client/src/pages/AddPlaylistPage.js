@@ -6,6 +6,8 @@ function AddPlaylistPage() {
 
   const isValidPlaylistId = id => /^(PL|UU|LL|FL)[\w-]{10,}$/.test(id);
 
+  //Todo: we might want to see if we can download the HTML for a channel page - like https://www.youtube.com/@babishculinaryuniverse - and parse out the UU playlist id
+
   const handleSubmit = async e => {
     e.preventDefault();
     if (!isValidPlaylistId(playlistId)) {

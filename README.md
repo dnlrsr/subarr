@@ -16,8 +16,8 @@ YouTube already provides RSS feeds for playlists (eg https://www.youtube.com/fee
 
 - Feeds seem to be limited to only the last 15 items
   - _However, YouTubarr will list more items as they are found because the internal database will be updated_
-- _[Needs testing]_ I am not sure in what order items are returned (ie if you just have a random playlist - are videos returned ordered by upload date? added date? Is it consistent for both PL and UU playlists?)
-- _[Needs testing]_ RSS feeds may be somewhat slow to update
+- _[Needs testing]_ RSS feed items are always in "playlist order", meaning a new video added to the bottom might not cause an update to the RSS feed
+- _[Needs testing]_ RSS feeds may be somewhat slow to update (updates are approximately every 5-15 minutes)
 
 However, this works perfectly fine for mine (and maybe other people's) needs.
 
