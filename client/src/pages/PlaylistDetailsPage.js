@@ -64,49 +64,29 @@ function PlaylistDetailsPage() {
   if (!playlist) return <p>Loading...</p>;
 
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <div style={{ display: 'flex', alignItems: 'center', padding: '0px 20px', gap: 10, marginRight: 20, backgroundColor: '#262626', height: 60 }}>
         {/* Todo: highlight button icon on color (maybe not red though?) */}
-        <button
-          onClick={handleSave}
-          title="Save Settings"
-          style={{
-            background: 'none',
-            border: 'none',
-            color: 'white',
-            fontSize: '1.5rem',
-            cursor: 'pointer'
-          }}
-        >
+        <button onClick={handleSave} title="Save Settings" style={{ background: 'none', border: 'none', color: 'white', fontSize: '1.5rem', cursor: 'pointer' }}>
           <i className="bi bi-floppy-fill"></i>
-          <div style={{fontSize: 'small'}}>Save</div>
+          <div style={{ fontSize: 'small' }}>Save</div>
         </button>
-        <button
-          onClick={handleDelete}
-          title="Delete Playlist"
-          style={{
-            background: 'none',
-            border: 'none',
-            color: 'white',
-            fontSize: '1.5rem',
-            cursor: 'pointer'
-          }}
-        >
+        <button onClick={handleDelete} title="Delete Playlist" style={{ background: 'none', border: 'none', color: 'white', fontSize: '1.5rem', cursor: 'pointer' }}>
           <i className="bi bi-trash-fill"></i>
-          <div style={{fontSize: 'small'}}>Delete</div>
+          <div style={{ fontSize: 'small' }}>Delete</div>
         </button>
       </div>
-
-      <div style={{padding: 30}}>
-        <h2>{playlist.title}</h2>
-        {/* Todo: maybe show playlist id */}
-        {/* Todo: maybe show "From {author name} {author uri}"?*/}
-        <div style={{ marginBottom: '20px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', flex: 1, padding: 30, minHeight: 0 }}>
+        <div style={{ flexShrink: 0 }}>
+          <h2 style={{marginTop: 0}}>{playlist.title}</h2>
+          {/* Todo: maybe show playlist id */}
+          {/* Todo: maybe show "From {author name} {author uri}"?*/}
           <label>
             Check Interval (minutes):{' '}
             <input
               type="number"
               value={interval}
+              min={5}
               onChange={e => setInterval(e.target.value)}
               style={{ width: '60px' }}
             />
@@ -129,54 +109,51 @@ function PlaylistDetailsPage() {
           Looks like more can be provided via https://www.scriptbarrel.com/xml.cgi?channel_id=UCshoKvlZGZ20rVgazZp5vnQ&name=%40captainsparklez
           (both channel_id & name are required, I think)*/}
         </div>
-
-        <h3>Recent Uploads</h3>
+        <h3 style={{ marginTop: 20, flexShrink: 0 }}>Recent Uploads</h3>
         {/* Todo: it would be nice if the list of recent uploads was updated dynamically when the server does its polling check */}
-        {/* Todo: I would like this section to fill the rest of the page (right now it's limited to 400px) */}
         {/* Todo: maybe we should show which videos won't match the regex (if a regex is specified?) */}
-        <div
-          style={{
-            maxHeight: '400px',        // This sets the visible window
-            overflowY: 'auto',         // Enables vertical scrolling
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '10px',
-            paddingRight: '5px',
-          }}
-        >
-          {videos.map(video => (
-            <div
-              key={video.id}
-              style={{
-                display: 'flex',
-                height: '92.5px',       // <-- consistent height
-                minHeight: '92.5px',
-                backgroundColor: 'var(--card-bg)',
-                borderRadius: '6px',
-                overflow: 'hidden',
-                boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
-              }}
-            >
-              <a
-                href={`https://www.youtube.com/watch?v=${video.video_id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ flexShrink: 0 }}
+        <div style={{ flex: 1, overflow: 'auto' }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '10px',
+              paddingRight: '5px',
+            }}
+          >
+            {videos.map(video => (
+              <div
+                key={video.id}
+                style={{
+                  display: 'flex',
+                  height: '92.5px',
+                  backgroundColor: 'var(--card-bg)',
+                  borderRadius: '6px',
+                  overflow: 'hidden',
+                  boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+                }}
               >
-                <img
-                  src={video.thumbnail || 'https://via.placeholder.com/160x90?text=No+Thumbnail'}
-                  alt={video.title}
-                  style={{ width: '160px', height: '90px', objectFit: 'cover' }}
-                />
-              </a>
-              <div style={{ padding: '10px', flexGrow: 1 }}>
-                <div style={{ fontSize: '1em', fontWeight: 'bold' }}>{video.title}</div>
-                <div style={{ fontSize: '0.75em', color: '#aaa', marginTop: '4px' }}>
-                  {new Date(video.published_at).toLocaleString()}
+                <a
+                  href={`https://www.youtube.com/watch?v=${video.video_id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ flexShrink: 0 }}
+                >
+                  <img
+                    src={video.thumbnail || 'https://via.placeholder.com/160x90?text=No+Thumbnail'}
+                    alt={video.title}
+                    style={{ width: '160px', height: '90px', objectFit: 'cover' }}
+                  />
+                </a>
+                <div style={{ padding: '10px', flexGrow: 1 }}>
+                  <div style={{ fontSize: '1em', fontWeight: 'bold' }}>{video.title}</div>
+                  <div style={{ fontSize: '0.75em', color: '#aaa', marginTop: '4px' }}>
+                    {new Date(video.published_at).toLocaleString()}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>
