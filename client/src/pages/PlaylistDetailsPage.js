@@ -65,38 +65,36 @@ function PlaylistDetailsPage() {
 
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', padding: '0px 20px', backgroundColor: '#262626', height: 60 }}>
-        <div style={{ display: 'flex', gap: '10px', marginRight: '20px' }}>
-          {/* Todo: highlight button icon on color (maybe not red though?) */}
-          <button
-            onClick={handleSave}
-            title="Save Settings"
-            style={{
-              background: 'none',
-              border: 'none',
-              color: 'white',
-              fontSize: '1.5rem',
-              cursor: 'pointer'
-            }}
-          >
-            <i className="bi bi-floppy-fill"></i>
-            <div style={{fontSize: 'small'}}>Save</div>
-          </button>
-          <button
-            onClick={handleDelete}
-            title="Delete Playlist"
-            style={{
-              background: 'none',
-              border: 'none',
-              color: 'white',
-              fontSize: '1.5rem',
-              cursor: 'pointer'
-            }}
-          >
-            <i className="bi bi-trash-fill"></i>
-            <div style={{fontSize: 'small'}}>Delete</div>
-          </button>
-        </div>
+      <div style={{ display: 'flex', alignItems: 'center', padding: '0px 20px', gap: 10, marginRight: 20, backgroundColor: '#262626', height: 60 }}>
+        {/* Todo: highlight button icon on color (maybe not red though?) */}
+        <button
+          onClick={handleSave}
+          title="Save Settings"
+          style={{
+            background: 'none',
+            border: 'none',
+            color: 'white',
+            fontSize: '1.5rem',
+            cursor: 'pointer'
+          }}
+        >
+          <i className="bi bi-floppy-fill"></i>
+          <div style={{fontSize: 'small'}}>Save</div>
+        </button>
+        <button
+          onClick={handleDelete}
+          title="Delete Playlist"
+          style={{
+            background: 'none',
+            border: 'none',
+            color: 'white',
+            fontSize: '1.5rem',
+            cursor: 'pointer'
+          }}
+        >
+          <i className="bi bi-trash-fill"></i>
+          <div style={{fontSize: 'small'}}>Delete</div>
+        </button>
       </div>
 
       <div style={{padding: 30}}>
