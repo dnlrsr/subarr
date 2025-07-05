@@ -116,8 +116,8 @@ body {
 
 .sidebar a.active-link {
   background-color: #1f1f1f;
-  border-left: 4px solid #dc370f;
-  color: #dc370f;
+  border-left: 4px solid var(--accent-color);
+  color: var(--accent-color);
   padding-left: calc(1rem - 4px);
 }
 

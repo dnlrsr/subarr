@@ -54,7 +54,7 @@ function PlaylistDetailsPage() {
   
       if (!res.ok) throw new Error('Failed to delete'); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
       alert('Playlist removed');
-      navigate('/');
+      navigate('/'); //Navigate back to homepage
     } catch (err) {
       console.error(err);
       alert('Error deleting playlist'); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
