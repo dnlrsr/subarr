@@ -50,6 +50,7 @@ async function pollPlaylist(playlist) {
 
   try {
     const feed = await parser.parseURL(feedUrl);
+    // Todo: update the playlist title in the db if it has changed on YouTube
     const newVideos = [];
 
     for (const item of feed.items) {
@@ -79,6 +80,8 @@ async function pollPlaylist(playlist) {
 
     if (getWebhookUrl() && newVideos.length > 0) {
       for (const video of newVideos) {
+        console.log(`New video found: ${video.title}`);
+
         await fetch(getWebhookUrl(), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
