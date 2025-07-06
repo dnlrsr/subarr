@@ -27,7 +27,7 @@ function SettingsPage() {
       const res = await fetch('/api/settings', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify([{
+        body: JSON.stringify([{ //Todo: since 'GET api/settings' returns a single object with pairs like 'webhook_url: value', we should save it in the same way
           key: 'webhook_url',
           value: webhookUrl,
         },

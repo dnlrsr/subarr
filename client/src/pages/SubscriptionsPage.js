@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Thumbnail from '../components/Thumbnail';
 
 function SubscriptionsPage() {
   const [playlists, setPlaylists] = useState([]);
@@ -36,10 +37,7 @@ function SubscriptionsPage() {
           key={playlist.id}
           to={`/playlist/${playlist.id}`}
         >
-          <img
-            src={playlist.thumbnail}
-            alt={playlist.title}
-          />
+          <Thumbnail src={playlist.thumbnail} alt={playlist.title} />
           <div style={{ padding: '10px' }}>
             <h3
               style={{
