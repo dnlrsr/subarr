@@ -79,7 +79,7 @@ function SettingsPage() {
             onChange={e => setWebhookUrl(e.target.value)}
           />
         </div>
-
+        {/* Todo: add a setting for "prefer long-form content" or something like that (when we do "UC" -> "UU", we'll actually use "UULF") */}
         <br />
         {message && (
           <p style={{ marginTop: '10px', color: message.includes('Invalid') ? 'red' : 'lightgreen' }}>

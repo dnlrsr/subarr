@@ -31,8 +31,9 @@ function SubscriptionsPage() {
         padding: '10px'
       }}
     >
+      {/* Todo: add search */}
       {/* Todo: need header for bulk options like delete multiple playlists */}
-      {playlists.map(playlist => (
+      {playlists.sort((a, b) => a.title.localeCompare(b.title)).map(playlist => (
         <Link className='playlist-card'
           key={playlist.id}
           to={`/playlist/${playlist.id}`}

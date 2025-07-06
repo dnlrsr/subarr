@@ -80,6 +80,7 @@ function PlaylistDetailsPage() {
         <div style={{ flexShrink: 0 }}>
           <h2 style={{marginTop: 0}}>{playlist.title}</h2>
           {/* Todo: maybe show playlist id */}
+          {/* Todo: show thumbnail again with details like sonarr's series details page */}
           {/* Todo: maybe show "From {author name} {author uri}"?*/}
           <label>
             Check Interval (minutes):{' '}
