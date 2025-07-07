@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-function Thumbnail({ src, alt, fallback = 'https://via.placeholder.com/160x90?text=No+Thumbnail', maxRetries = 5 }) {
+function Thumbnail({ src, alt, fallback = 'https://placehold.co/160x90?text=Thumbnail+loading...', maxRetries = 5 }) {
   const [currentSrc, setCurrentSrc] = useState(src);
   const [error, setError] = useState(false);
   const [attempt, setAttempt] = useState(0);
