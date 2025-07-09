@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-function Thumbnail({ src, alt, fallback = 'https://placehold.co/160x90?text=Thumbnail+loading...', maxRetries = 5 }) {
+function Thumbnail({ src, alt, fallback = 'https://placehold.co/160x90?text=Thumbnail+loading...', width, height, maxRetries = 5 }) {
   const [currentSrc, setCurrentSrc] = useState(src);
   const [error, setError] = useState(false);
   const [attempt, setAttempt] = useState(0);
@@ -29,8 +29,8 @@ function Thumbnail({ src, alt, fallback = 'https://placehold.co/160x90?text=Thum
     <img
       src={error && attempt >= maxRetries ? fallback : currentSrc}
       alt={alt}
-      width={160}
-      height={90}
+      width={width ?? 160}
+      height={height ?? 90}
       loading="lazy"
       onError={handleError}
       style={{ objectFit: 'cover' }}

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import Thumbnail from '../components/Thumbnail';
 
 function PlaylistDetailsPage() {
   const { id } = useParams();
@@ -76,13 +77,12 @@ function PlaylistDetailsPage() {
           <div style={{ fontSize: 'small' }}>Delete</div>
         </button>
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', flex: 1, padding: 30, minHeight: 0 }}>
-        <div style={{ flexShrink: 0 }}>
-          <h2 style={{marginTop: 0}}>{playlist.title}</h2>
-          {/* Todo: maybe show playlist id */}
-          {/* Todo: show thumbnail again with details like sonarr's series details page */}
-          {/* Todo: maybe show "From {author name} {author uri}"?*/}
-          <label>
+      <div style={{height: 425, width: '100%', backgroundColor: 'black'}}>
+        <div style={{height: 'calc(100% - 60px)', padding: 30, display: 'flex'}}>
+          <Thumbnail height='350' width='350' src={playlist.thumbnail}/>{/* Todo: don't show thumbnail on mobile (this is how sonarr works) */}
+          <div style={{display: 'flex', flexDirection: 'column', marginLeft: 40}}>
+            <div style={{fontSize: 'xxx-large'}}>{playlist.title}</div>
+            <label>{/* Todo: change label-input selections to be styled & controlled like settings page */}
             Check Interval (minutes):{' '}
             <input
               type="number"
@@ -104,13 +104,17 @@ function PlaylistDetailsPage() {
             />
             {/* Todo: give a button to test the regex */}
           </label>
+          {/* Todo: maybe show playlist id */}
+          {/* Todo: maybe show "From {author name} {author uri}"?*/}
           {/* Todo: allow overriding the feed url with a different url (eg rss-bridge) which can allow getting more than 15 items.
           HOWEVER, this might require custom parsing to get details like thumbnail (and I tested a rss-bridge URL for a playlist
           of 114 items - some rss-bridge instances timed out and some capped the return at 99 items).
           Looks like more can be provided via https://www.scriptbarrel.com/xml.cgi?channel_id=UCshoKvlZGZ20rVgazZp5vnQ&name=%40captainsparklez
           (both channel_id & name are required, I think)*/}
+          </div>
         </div>
-        <h3 style={{ marginTop: 20, flexShrink: 0 }}>Recent Uploads</h3>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', flex: 1, padding: 30 /* Todo: reduce margins on mobile */, minHeight: 0 }}>
         {/* Todo: it would be nice if the list of recent uploads was updated dynamically when the server does its polling check */}
         {/* Todo: maybe we should show which videos won't match the regex (if a regex is specified?) */}
         <div style={{ flex: 1, overflow: 'auto' }}>
