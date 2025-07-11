@@ -27,7 +27,7 @@ function Thumbnail({ src, alt, fallback = 'https://placehold.co/160x90?text=Thum
 
   return (
     <img
-      src={error && attempt >= maxRetries ? fallback : currentSrc}
+      src={error && attempt >= maxRetries ? fallback : currentSrc} // Todo: I'd like this to show the fallback immediately, then only update when the true src has been loaded successfully
       alt={alt}
       width={width ?? 160}
       height={height ?? 90}
