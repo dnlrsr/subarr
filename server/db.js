@@ -5,21 +5,23 @@ const db = new Database('youtubarr.db');
 db.exec(`
 CREATE TABLE IF NOT EXISTS playlists (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  playlist_id TEXT NOT NULL,
+  playlist_id TEXT NOT NULL UNIQUE,
+  author_name TEXT,
+  author_uri TEXT,
   title TEXT,
   check_interval_minutes INTEGER DEFAULT 60,
   regex_filter TEXT,
   last_checked TEXT,
-  thumbnail TEXT
+  thumbnail TEXT,
+  source TEXT DEFAULT 'manual'
 );
 
 CREATE TABLE IF NOT EXISTS videos (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   playlist_id INTEGER,
-  video_id TEXT,
+  video_id TEXT NOT NULL UNIQUE,
   title TEXT,
   published_at TEXT,
-  notified INTEGER DEFAULT 0,
   thumbnail TEXT
 );
 

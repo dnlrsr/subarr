@@ -1,25 +1,24 @@
 const express = require('express');
 const cors = require('cors');
 const db = require('./db');
-const Parser = require('rss-parser');
+const { parseVideosFromFeed } = require('./rssParser');
+const { schedulePolling, updateYtSubsPlaylists } = require('./polling');
 
-const parser = new Parser({
-  customFields: {
-    feed: ['yt:channelId', 'yt:playlistId'],
-    item: ['media:group', ['media:thumbnail', 'thumbnail', { keepArray: false }]],
-  }
-});
-
-const { schedulePolling } = require('./polling');
 const playlists = db.prepare('SELECT * FROM playlists').all();
 for (const playlist of playlists) {
   schedulePolling(playlist);
 }
 
+// Schedule YTSubs.app polling
+setInterval(() => {
+  updateYtSubsPlaylists();
+}, 60 * 60 * 1000); // YTSubs.app data only updates every 12 hours, but it might be changed to be less
+updateYtSubsPlaylists(); // also run on startup
+
 const app = express();
 app.use(cors());
 app.use(express.json());
-const PORT = 3001;
+const PORT = 3001; //Todo: update port in the future (this is probably a pretty common port). Maybe use a settings.json defined port?
 
 app.get('/api/playlists', (req, res) => {
   const rows = db.prepare('SELECT * FROM playlists').all();
@@ -32,48 +31,23 @@ app.post('/api/playlists', async (req, res) => {
     return res.status(400).json({ error: 'Invalid playlist ID' });
   }
 
-  const feedUrl = `https://www.youtube.com/feeds/videos.xml?playlist_id=${playlistId}`;
-
   try {
-    const feed = await parser.parseURL(feedUrl);
-    const title = feed.title || `Playlist ${playlistId.slice(0, 6)}`;
-    const author = feed.author || 'Unknown';
-    const thumbnail = feed.items?.[0]?.['media:group']?.['media:thumbnail']?.[0]?.$?.url || null;
-
-    const stmt = db.prepare(`
-      INSERT INTO playlists (playlist_id, title, check_interval_minutes, regex_filter, last_checked, thumbnail)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `);
-
-    const info = stmt.run(playlistId, title, 60, '', null, thumbnail);
-    const newPlaylistId = info.lastInsertRowid;
-
-    // Fetch newly added playlist to pass into schedulePolling
-    const newPlaylist = db.prepare('SELECT * FROM playlists WHERE id = ?').get(newPlaylistId);
-    schedulePolling(newPlaylist);
-
-    // Insert video entries
-    const insertVideo = db.prepare(`
-      INSERT INTO videos (playlist_id, video_id, title, published_at, notified, thumbnail)
-      VALUES (?, ?, ?, ?, 0, ?)
-    `);
-
-    const insertMany = db.transaction((videos) => {
-      for (const item of videos) {
-        const videoId = item.id?.split(':')?.[2] || null;
-        const title = item.title || 'Untitled';
-        const publishedAt = item.pubDate || null;
-        const thumbnail = item?.['media:group']?.['media:thumbnail']?.[0]?.$?.url || null;
-
-        if (videoId) {
-          insertVideo.run(newPlaylistId, videoId, title, publishedAt, thumbnail);
-        }
-      }
+    let playlistDbId = null;
+    await parseVideosFromFeed(playlistId, playlist => {
+      const stmt = db.prepare(`
+        INSERT INTO playlists (playlist_id, author_name, author_uri, title, check_interval_minutes, regex_filter, last_checked, thumbnail, source)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'manual')
+      `);
+  
+      const info = stmt.run(playlistId, playlist.author_name, playlist.author_uri, playlist.title, 60, '', null, playlist.thumbnail);
+      playlistDbId = info.lastInsertRowid;
+  
+      // Fetch newly added playlist to pass into schedulePolling
+      const newPlaylist = db.prepare('SELECT * FROM playlists WHERE playlist_id = ?').get(playlistId);
+      schedulePolling(newPlaylist);
     });
 
-    insertMany(feed.items || []);
-
-    res.status(201).json({ id: newPlaylistId });
+    res.status(201).json({ id: playlistDbId });
   } catch (err) {
     console.error('Failed to fetch RSS feed', err);
     res.status(500).json({ error: 'Failed to fetch playlist metadata' });
@@ -84,7 +58,7 @@ app.get('/api/playlists/:id', (req, res) => {
   const playlist = db.prepare('SELECT * FROM playlists WHERE id = ?').get(req.params.id);
   if (!playlist) return res.status(404).json({ error: 'Not found' });
 
-  const videos = db.prepare('SELECT * FROM videos WHERE playlist_id = ? ORDER BY published_at DESC').all(req.params.id);
+  const videos = db.prepare('SELECT * FROM videos WHERE playlist_id = ? ORDER BY published_at DESC').all(playlist.playlist_id);
   res.json({ playlist, videos });
 });
 
@@ -104,8 +78,11 @@ app.put('/api/playlists/:id/settings', (req, res) => {
 });
 
 app.delete('/api/playlists/:id', (req, res) => {
-  db.prepare('DELETE FROM videos WHERE playlist_id = ?').run(req.params.id);
+  const playlist = db.prepare('SELECT * FROM playlists WHERE id = ?').get(req.params.id);
+  if (!playlist) return res.status(404).json({ error: 'Not found' });
+
   db.prepare('DELETE FROM playlists WHERE id = ?').run(req.params.id);
+  db.prepare('DELETE FROM videos WHERE playlist_id = ?').run(playlist.playlist_id);
   res.json({ success: true });
 });
 

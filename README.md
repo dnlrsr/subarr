@@ -16,6 +16,7 @@ YouTube already provides RSS feeds for playlists (eg https://www.youtube.com/fee
 
 - Feeds seem to be limited to only the last 15 items
   - _However, YouTubarr will list more items as they are found because the internal database will be updated_
+  - Since the feed is limited to only the last 15 items, if (for some reason) YouTubarr is down for an extended period of time (or a large amount of videos are published to the playlist in a short period of time), YouTubarr may miss some videos entirely.
 - _[Needs testing]_ RSS feed items are always in "playlist order", meaning a new video added to the bottom might not cause an update to the RSS feed
   - This means that, currently, RSS feeds _will not work_ for YouTube playlists greater than 15 items where items are added to the bottom (issue logged with YouTube: https://issuetracker.google.com/issues/429563457)
 - _[Needs testing]_ RSS feeds may be somewhat slow to update (updates are approximately every 5-15 minutes)
@@ -29,10 +30,10 @@ However, this works perfectly fine for mine (and maybe other people's) needs.
 - Add playlists
 - Limit playlist items by regular expression
 - Receive notifications about new items via Discord webhook _(mostly just for testing right now)_
+- [ytsubs.app](https://github.com/derekantrican/ytsubs) integration to import user's YouTube subscriptions and keep them in sync
 
 ### Future features
 
-- Integrate [ytsubs.app](https://ytsubs.app) to import user's YouTube subscriptions and keep them in sync
 - Add to Raindrop (and possibly other sources - maybe even combine Raindrop/Discord/etc into a generic "Notification Webhook" object and "Raindrop/Discord/etc" are just templates that will pre-populate values for you)
 - Native "url base" support like sonarr (for reverse proxies or cloudflare tunnels)
 - Backup & Restore functionality (_should_ be pretty easy by just giving a copy of the sqlite db?)
