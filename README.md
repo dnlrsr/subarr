@@ -1,5 +1,8 @@
 # YouTubarr
 
+<img width="1220" height="774" alt="image" src="https://github.com/user-attachments/assets/dd9b42d8-08e9-4d9a-a175-acf7219d059a" />
+
+
 ### Background
 
 This is an attempt to create a Sonarr-like application for YouTube videos.
