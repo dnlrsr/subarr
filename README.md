@@ -20,8 +20,10 @@ YouTube already provides RSS feeds for playlists (eg https://www.youtube.com/fee
 - Feeds seem to be limited to only the last 15 items
   - _However, YouTubarr will list more items as they are found because the internal database will be updated_
   - Since the feed is limited to only the last 15 items, if (for some reason) YouTubarr is down for an extended period of time (or a large amount of videos are published to the playlist in a short period of time), YouTubarr may miss some videos entirely.
-- _[Needs testing]_ RSS feed items are always in "playlist order", meaning a new video added to the bottom might not cause an update to the RSS feed
-  - This means that, currently, RSS feeds _will not work_ for YouTube playlists greater than 15 items where items are added to the bottom (issue logged with YouTube: https://issuetracker.google.com/issues/429563457)
+- YouTube RSS feed items are always in "playlist order", meaning a new video added outside of the first 15 items will not be seen as an update to the RSS feed
+  - This means that, currently, RSS feeds _**will not work**_ in the following situations: (issue logged with YouTube: https://issuetracker.google.com/issues/429563457)
+    - YouTube playlists greater than 15 items where items are added outside the "top 15" (regular playlists can be in _any order_ - as determined by the playlist owner - which means that "newly added items" aren't necessarily at the top. Some creators' playlists are ordered oldest -> newest)
+    - \>=15 items added to a playlist quickly (eg if a playlist has 1 item, then when it updates 15 minutes later it has 20 items, 4 of those items will be missed because only the top 15 will be in the RSS feed)
 - RSS feeds may be somewhat slow to update (updates are approximately every 15 minutes). _15 minutes is pretty fast, but other methods (like the direct YouTube API - or perhaps even TubeSync's yt-dl method) could check for new videos even faster_
 - _[May not be a big deal]_ RSS feeds will not include "Members Only" items
 
