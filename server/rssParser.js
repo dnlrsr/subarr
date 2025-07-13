@@ -49,6 +49,7 @@ async function parseVideosFromFeed(playlistId, playlistInfoCallback, videoInfoCa
       await videoInfoCallback({ //Todo: needs to be async
         title: videoTitle,
         video_id: videoId,
+        link: item.link, // Currently only used for videoInfoCallback (not stored in DB). If we want to exclude shorts from the UI as well, then we'll have to exclude these videos earlier in this method
         thumbnail: videoThumbnail,
         published_at: publishedAt,
         playlist_title: playlistTitle,

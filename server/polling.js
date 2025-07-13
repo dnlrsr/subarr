@@ -31,7 +31,10 @@ function schedulePolling(playlist) {
 }
 
 async function updateYtSubsPlaylists() {
-  const ytsubs_apikey = getSettings().ytsubs_apikey;
+  const settings = getSettings();
+  const ytsubs_apikey = settings.ytsubs_apikey;
+  const exclude_shorts = (settings.exclude_shorts ?? 'false') === 'true'; // SQLite can't store bool
+
   if (!ytsubs_apikey)
     return;
 
@@ -40,7 +43,7 @@ async function updateYtSubsPlaylists() {
     const data = await res.json();
 
     const fetchedSubs = data.subscriptions.map(sub => ({
-      playlist_id: sub.snippet.resourceId.channelId.replace(/^UC/, 'UU'),
+      playlist_id: sub.snippet.resourceId.channelId.replace(/^UC/, exclude_shorts ? 'UULF' : 'UU'), // Reference: other possible prefixes: https://stackoverflow.com/a/77816885
       title: sub.snippet.title,
       check_interval_minutes: 15, // Even though this is hard-coded, it needs to be defined here for the schedulePolling job
       author_name: sub.snippet.title,
@@ -108,15 +111,24 @@ async function pollPlaylist(playlist, alertForNewVideos = true) {
   if (now - lastChecked < intervalMs)
     return;
 
-  console.log(`[Poll] Checking: ${playlist.title}`);
+  console.log(`[Poll] Checking: ${playlist.title} (${playlist.playlist_id})`);
 
   try {
+    const settings = getSettings();
+    const exclude_shorts = (settings.exclude_shorts ?? 'false') === 'true'; // SQLite can't store bool
+
     await parseVideosFromFeed(playlist.playlist_id, null, async (video, alreadyExists) => {
       if (alreadyExists || !alertForNewVideos)
         return;
 
       // Optional regex filter
       if (playlist.regex_filter && !new RegExp(playlist.regex_filter, 'i').test(video.title)) {
+        return;
+      }
+
+      // Skip shorts if that setting is turned on (we change UU -> UULF where we can, but doing
+      // it here will allow us to catch it in PL type playlists too).
+      if (exclude_shorts && video.link.includes('/shorts/')) {
         return;
       }
 

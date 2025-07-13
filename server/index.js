@@ -31,6 +31,12 @@ app.post('/api/playlists', async (req, res) => {
     return res.status(400).json({ error: 'Invalid playlist ID' });
   }
 
+  const settings = Object.fromEntries(db.prepare('SELECT key, value FROM settings').all().map(row => [row.key, row.value]));
+  const exclude_shorts = (settings.exclude_shorts ?? 'false') === 'true'; // SQLite can't store bool
+  if (exclude_shorts) {
+    playlistId = playlistId.replace(/^^UU(?!LF)/, 'UULF'); // Reference: other possible prefixes: https://stackoverflow.com/a/77816885
+  }
+
   try {
     let playlistDbId = null;
     await parseVideosFromFeed(playlistId, playlist => {

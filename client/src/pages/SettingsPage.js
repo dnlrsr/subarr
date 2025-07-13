@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 function SettingsPage() {
   const [ytsubsApiKey, setYtsubsApiKey] = useState('');
   const [webhookUrl, setWebhookUrl] = useState('');
+  const [excludeShorts, setExcludeShorts] = useState(false);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
@@ -11,6 +12,7 @@ function SettingsPage() {
       .then(data => {
         setYtsubsApiKey(data.ytsubs_apikey ?? '');
         setWebhookUrl(data.webhook_url ?? '');
+        setExcludeShorts((data.exclude_shorts ?? 'false') === 'true'); // SQLite can't store bool
       })
       .catch(err => {
         console.error('Failed to fetch settings', err);
@@ -34,10 +36,16 @@ function SettingsPage() {
         {
           key: 'ytsubs_apikey',
           value: ytsubsApiKey,
+        },
+        {
+          key: 'exclude_shorts',
+          value: String(excludeShorts), // SQLite can't store bool
         }]),
       });
   
-      if (!res.ok) throw new Error('Failed to save settings');
+      if (!res.ok)
+        throw new Error('Failed to save settings');
+      
       setMessage('Saved settings'); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
     } catch (err) {
       console.error(err);
@@ -79,10 +87,18 @@ function SettingsPage() {
             onChange={e => setWebhookUrl(e.target.value)}
           />
         </div>
-        {/* Todo: add a setting for "prefer long-form content" or something like that (when we do "UC" -> "UU", we'll actually use "UULF") */}
+        <div className='setting'>
+          {/* Todo: maybe instead of just "exclude shorts", we could let users choose from one of these prefixes: https://stackoverflow.com/a/77816885*/}
+          <div style={{minWidth: 175}}>Exclude shorts</div>
+          <label className='container'>
+            <div style={{fontSize: 'small', textAlign: 'center'}}>Whether to exclude shorts videos from playlists</div>
+            <input type='checkbox' checked={excludeShorts} onChange={e => setExcludeShorts(e.target.checked)}/>
+            <span className="checkmark"></span>
+          </label>
+        </div>
         <br />
         {message && (
-          <p style={{ marginTop: '10px', color: message.includes('Invalid') ? 'red' : 'lightgreen' }}>
+          <p style={{ marginTop: '10px', color: message.includes('Invalid') || message.includes('Error') ? 'red' : 'lightgreen' }}>
             {message}
           </p>
         )}
