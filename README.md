@@ -22,8 +22,8 @@ YouTube already provides RSS feeds for playlists (eg https://www.youtube.com/fee
   - Since the feed is limited to only the last 15 items, if (for some reason) YouTubarr is down for an extended period of time (or a large amount of videos are published to the playlist in a short period of time), YouTubarr may miss some videos entirely.
 - _[Needs testing]_ RSS feed items are always in "playlist order", meaning a new video added to the bottom might not cause an update to the RSS feed
   - This means that, currently, RSS feeds _will not work_ for YouTube playlists greater than 15 items where items are added to the bottom (issue logged with YouTube: https://issuetracker.google.com/issues/429563457)
-- _[Needs testing]_ RSS feeds may be somewhat slow to update (updates are approximately every 5-15 minutes)
-- _[Not a big deal]_ RSS feeds will not include "Members Only" items
+- RSS feeds may be somewhat slow to update (updates are approximately every 15 minutes). _15 minutes is pretty fast, but other methods (like the direct YouTube API - or perhaps even TubeSync's yt-dl method) could check for new videos even faster_
+- _[May not be a big deal]_ RSS feeds will not include "Members Only" items
 
 However, this works perfectly fine for mine (and maybe other people's) needs.
 
