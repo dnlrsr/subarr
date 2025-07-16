@@ -51,7 +51,7 @@ function ActivityPage() {
             {activities.map(activity =>
               <tr key={activity.id}>
                 <td><i className={`bi bi-${activity.icon}`} style={{color: activity.icon === 'camera-video-fill' ? 'var(--accent-color)' : 'inherit'}}/></td>
-                <td className="fixed"><Link to='/playlist/2807' /* Todo: need an internal link */>{activity.playlist_title}</Link></td>{/* Todo: I think we need to trim the title in case it's too long */}
+                <td className="fixed"><Link to={`/playlist/${activity.playlist_db_id}`}>{activity.playlist_title}</Link></td>{/* Todo: I think we need to trim the title in case it's too long */}
                 <td className="fixed"><a href={activity.link} target='_blank' rel="noreferrer">{activity.title}</a></td>{/* Todo: I think we need to trim the title in case it's too long */}
                 <td className="expand fixed">{activity.message}</td>
                 <td className="fixed">{formatDistance(new Date(activity.datetime), new Date(), { addSuffix: true })}</td>

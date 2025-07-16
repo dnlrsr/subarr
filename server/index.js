@@ -115,7 +115,7 @@ app.get('/api/activity/:page', (req, res) => {
 
   // Paged result with playlist title
   const activities = db.prepare(`
-    SELECT a.id, a.datetime, a.playlist_id, a.title, a.url, a.message, a.icon, p.title AS playlist_title
+    SELECT a.id, a.datetime, a.playlist_id, a.title, a.url, a.message, a.icon, p.id AS playlist_db_id, p.title AS playlist_title
     FROM activity a
     LEFT JOIN playlists p ON a.playlist_id = p.playlist_id
     ORDER BY a.id DESC
@@ -128,7 +128,6 @@ app.get('/api/activity/:page', (req, res) => {
     activities
   });
 });
-
 
 app.get('/api/settings', (req, res) => {
   const rows = db.prepare('SELECT key, value FROM settings').all();
