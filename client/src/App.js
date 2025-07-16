@@ -5,6 +5,7 @@ import AddPlaylistPage from './pages/AddPlaylistPage';
 import SettingsPage from './pages/SettingsPage';
 import PlaylistDetailsPage from './pages/PlaylistDetailsPage';
 import './App.css';
+import ActivityPage from './pages/ActivityPage';
 
 function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -37,17 +38,25 @@ function AppLayout() {
                     : ''
                 }
                 onClick={() => setSidebarOpen(false)}>
-                Subscriptions
+                <i className="bi bi-play-fill" style={{fontSize: 'large'}}></i>
+                Playlists
               </NavLink>
             </li>
             <li>
               <NavLink to="/add" className={({ isActive }) => isActive ? 'active-link' : ''} onClick={() => setSidebarOpen(false)}>
+                <i className="bi bi-plus-square" style={{fontSize: 'medium', marginRight: 5}}></i>
                 Add Playlist
               </NavLink>
             </li>
-            {/* Todo: an "Activity" page could be useful to show playlist items recently found */}
+            <li>
+              <NavLink to="/activity" className={({ isActive }) => isActive ? 'active-link' : ''} onClick={() => setSidebarOpen(false)}>
+                <i className="bi bi-clock" style={{fontSize: 'medium', marginRight: 5}}></i>
+                Activity
+              </NavLink>
+            </li>
             <li>
               <NavLink to="/settings" className={({ isActive }) => isActive ? 'active-link' : ''} onClick={() => setSidebarOpen(false)}>
+                <i className="bi bi-gear-fill" style={{fontSize: 'medium', marginRight: 5}}></i>
                 Settings
               </NavLink>
             </li>
@@ -57,6 +66,7 @@ function AppLayout() {
           <Routes>
             <Route path="/" element={<SubscriptionsPage />} />
             <Route path="/add" element={<AddPlaylistPage />} />
+            <Route path="/activity" element={<ActivityPage />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/playlist/:id" element={<PlaylistDetailsPage />} />
           </Routes>

@@ -46,7 +46,7 @@ function AddPlaylistPage() {
           placeholder="Enter Playlist ID"
           style={{ padding: '8px', width: '300px' }}
         />
-        <button type="submit" style={{ marginLeft: '10px' }}>Add</button>
+        <button type="submit" style={{ fontSize: '1rem', color: 'ButtonText', background: 'ButtonFace', border: 'ButtonBorder', /* set back to default button styles (for now) */ marginLeft: '10px' }}>Add</button>
       </form>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {/(PL|LL|FL)[\w-]{10,}/.test(playlistInput) && <p style={{ color: 'yellow', wordBreak: 'break-word' }}>

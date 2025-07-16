@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Thumbnail from '../components/Thumbnail';
+import { formatDistance } from 'date-fns';
 
 function SubscriptionsPage() {
   const [playlists, setPlaylists] = useState([]);
@@ -60,7 +61,7 @@ function SubscriptionsPage() {
                 color: '#aaa',
                 margin: 0,
               }}>
-              Last checked: {new Date(playlist.lastChecked).toLocaleDateString()}
+              Last checked: {formatDistance(new Date(playlist.lastChecked), new Date(), { addSuffix: true })}
             </p>
             {/* Todo: show 'next check' (a countdown like '1h 5m'). Important to note that it would be nice if some of these properties updated dynamically when the server does its polling check*/}
           </div>

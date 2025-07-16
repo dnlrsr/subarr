@@ -47,6 +47,9 @@ app.post('/api/playlists', async (req, res) => {
   
       const info = stmt.run(playlistId, playlist.author_name, playlist.author_uri, playlist.title, 60, '', null, playlist.thumbnail);
       playlistDbId = info.lastInsertRowid;
+
+      db.prepare(`INSERT INTO activity (datetime, playlist_id, title, url, message, icon) VALUES (?, ?, ?, ?, ?, ?)`)
+      .run(new Date().toISOString(), playlistId, playlist.title, `https://www.youtube.com/playlist?list=${playlistId}`, 'Playlist added (manual)', 'view-list');
   
       // Fetch newly added playlist to pass into schedulePolling
       const newPlaylist = db.prepare('SELECT * FROM playlists WHERE playlist_id = ?').get(playlistId);
@@ -85,12 +88,47 @@ app.put('/api/playlists/:id/settings', (req, res) => {
 
 app.delete('/api/playlists/:id', (req, res) => {
   const playlist = db.prepare('SELECT * FROM playlists WHERE id = ?').get(req.params.id);
-  if (!playlist) return res.status(404).json({ error: 'Not found' });
+  if (!playlist) {
+    return res.status(404).json({ error: 'Not found' });
+  }
 
   db.prepare('DELETE FROM playlists WHERE id = ?').run(req.params.id);
   db.prepare('DELETE FROM videos WHERE playlist_id = ?').run(playlist.playlist_id);
+
+  db.prepare(`INSERT INTO activity (datetime, playlist_id, title, url, message, icon) VALUES (?, ?, ?, ?, ?, ?)`)
+  .run(new Date().toISOString(), playlistId, playlist.title, `https://www.youtube.com/playlist?list=${playlistId}`, 'Playlist removed (manual)', 'trash');
+
   res.json({ success: true });
 });
+
+app.get('/api/activity/:page', (req, res) => {
+  const pageSize = 20;
+
+  // Total count
+  const totalCountRow = db.prepare(`SELECT COUNT(*) as count FROM activity`).get();
+  const totalPages = Math.ceil(totalCountRow.count / pageSize);
+
+  // Clamp requested page between 1 and totalPages
+  const requestedPage = parseInt(req.params.page) || 1;
+  const page = Math.min(Math.max(1, requestedPage), totalPages);
+  const offset = (page - 1) * pageSize;
+
+  // Paged result with playlist title
+  const activities = db.prepare(`
+    SELECT a.id, a.datetime, a.playlist_id, a.title, a.url, a.message, a.icon, p.title AS playlist_title
+    FROM activity a
+    LEFT JOIN playlists p ON a.playlist_id = p.playlist_id
+    ORDER BY a.id DESC
+    LIMIT ? OFFSET ?
+  `).all(pageSize, offset);
+
+  res.json({
+    page,
+    totalPages,
+    activities
+  });
+});
+
 
 app.get('/api/settings', (req, res) => {
   const rows = db.prepare('SELECT key, value FROM settings').all();

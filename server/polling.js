@@ -80,6 +80,8 @@ async function updateYtSubsPlaylists() {
       // Create a polling job for the new subscription
       if (!pollingJobs.has(sub.playlist_id)) {
         console.log(`[YTSubs.app] Added '${sub.title}'`);
+        db.prepare(`INSERT INTO activity (datetime, playlist_id, title, url, message, icon) VALUES (?, ?, ?, ?, ?, ?)`)
+        .run(new Date().toISOString(), playlist.playlist_id, sub.title, `https://www.youtube.com/playlist?list=${sub.playlist_id}`, 'Playlist added (YTSubs.app)', 'view-list');
         
         await pollPlaylist(sub, false); // Initial request to get videos from feed (but don't alert for new videos for new subs)
 
@@ -94,7 +96,10 @@ async function updateYtSubsPlaylists() {
         remove.run(existingPlaylist.playlist_id);
         clearInterval(pollingJobs.get(existingPlaylist.playlist_id).intervalId);
         pollingJobs.delete(existingPlaylist.playlist_id);
-        console.log(`[YTSubs.app] Removed '${existingPlaylist.title}'`);
+
+        console.log(`[YTSubs.app] Removed '${existingPlaylist.title}' (${existingPlaylist.playlist_id})`);
+        db.prepare(`INSERT INTO activity (datetime, playlist_id, title, url, message, icon) VALUES (?, ?, ?, ?, ?, ?)`)
+        .run(new Date().toISOString(), existingPlaylist.playlist_id, existingPlaylist.title, `https://www.youtube.com/playlist?list=${existingPlaylist.playlist_id}`, 'Playlist removed (YTSubs.app)', 'trash');
       }
     }
   }
@@ -132,9 +137,11 @@ async function pollPlaylist(playlist, alertForNewVideos = true) {
         return;
       }
 
-      if (getSettings().webhook_url) {
-        console.log(`New video found: ${video.title}`);
+      console.log(`New video found: ${video.title}`);
+      db.prepare(`INSERT INTO activity (datetime, playlist_id, title, url, message, icon) VALUES (?, ?, ?, ?, ?, ?)`)
+      .run(new Date().toISOString(), playlist.playlist_id, video.title, `https://www.youtube.com/watch?v=${video.video_id}`, 'New video found!', 'camera-video-fill');
 
+      if (getSettings().webhook_url) {
         await fetch(getSettings().webhook_url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -151,6 +158,9 @@ async function pollPlaylist(playlist, alertForNewVideos = true) {
             ],
           }),
         });
+
+        db.prepare(`INSERT INTO activity (datetime, playlist_id, title, url, message, icon) VALUES (?, ?, ?, ?, ?, ?)`)
+        .run(new Date().toISOString(), playlist.playlist_id, video.title, null, 'Discord notification sent', 'bell-fill');
       }
     });
 

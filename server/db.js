@@ -25,6 +25,16 @@ CREATE TABLE IF NOT EXISTS videos (
   thumbnail TEXT
 );
 
+CREATE TABLE IF NOT EXISTS activity (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  datetime TEXT,
+  playlist_id TEXT,
+  title TEXT,
+  url TEXT,
+  message TEXT,
+  icon TEXT
+);
+
 CREATE TABLE IF NOT EXISTS settings (
   key TEXT PRIMARY KEY,
   value TEXT
