@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 const db = require('./db');
 const { parseVideosFromFeed } = require('./rssParser');
+const { getPostProcessors, runPostProcessor } = require('./postProcessors');
 
 function getSettings() {
   const rows = db.prepare('SELECT key, value FROM settings').all();
@@ -141,26 +142,16 @@ async function pollPlaylist(playlist, alertForNewVideos = true) {
       db.prepare(`INSERT INTO activity (datetime, playlist_id, title, url, message, icon) VALUES (?, ?, ?, ?, ?, ?)`)
       .run(new Date().toISOString(), playlist.playlist_id, video.title, `https://www.youtube.com/watch?v=${video.video_id}`, 'New video found!', 'camera-video-fill');
 
-      if (getSettings().webhook_url) {
-        await fetch(getSettings().webhook_url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            embeds: [
-              {
-                title: `New Video: ${video.title}`,
-                url: `https://www.youtube.com/watch?v=${video.video_id}`,
-                thumbnail: { url: video.thumbnail },
-                timestamp: video.published_at,
-                color: 0xff0000,
-                footer: { text: `From playlist: ${playlist.title}` },
-              },
-            ],
-          }),
-        });
-
-        db.prepare(`INSERT INTO activity (datetime, playlist_id, title, url, message, icon) VALUES (?, ?, ?, ?, ?, ?)`)
-        .run(new Date().toISOString(), playlist.playlist_id, video.title, null, 'Discord notification sent', 'bell-fill');
+      for (const postProcessor of getPostProcessors()) {
+        try {
+          runPostProcessor(postProcessor.type, postProcessor.target, postProcessor.data, { video, playlist }); // Todo: for OOP & polymorphism, maybe we should instead be calling postProcessor.run() or whatever
+  
+          db.prepare(`INSERT INTO activity (datetime, playlist_id, title, url, message, icon) VALUES (?, ?, ?, ?, ?, ?)`)
+          .run(new Date().toISOString(), playlist.playlist_id, video.title, null, `Post processor '${postProcessor.name}' run`, postProcessor.type === 'webhook' ? 'broadcast' : 'cpu-fill');
+        }
+        catch (error) {
+          console.error(`Error running post processor '${postProcessor.name}':`, error); // Todo: should an error like this become an 'activity item' as well? (Sonarr would probably call this a "health issue")
+        }
       }
     });
 

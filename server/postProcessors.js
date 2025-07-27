@@ -1,0 +1,75 @@
+const fetch = require('node-fetch');
+const db = require('./db');
+
+/* Notes:
+  This is the most sensitive part of our application - running processes or calling webhooks could expose secrets, allow attackers to invoke malicious processes, etc.
+  - Soon after adding this feature, we should probably implement an API key for making changes to the application
+  - We should implement a timeout on webhook calls & process invocation
+
+*/
+
+function getPostProcessors() {
+  const rows = db.prepare('SELECT * FROM post_processors').all();
+  return rows;
+}
+
+async function runPostProcessor(type, target, data, videoInfo) {
+  if (type === 'webhook') {
+    let { method = 'POST', headers = {}, body } = JSON.parse(data);
+
+    target = replaceVariables(target, videoInfo, true);
+    body = replaceVariables(body, videoInfo);
+
+    const response = await fetch(target, {
+      method,
+      headers,
+      body: body ? body /* Coming from the post processor UI, body will already be stringified, so we can just send as-is */ : undefined,
+    });
+
+    const text = await response.text();
+    if (!response.ok) {
+      throw new Error(text);
+    }
+
+    return text;
+  }
+  // Todo: support 'process'
+  else {
+    throw new Error(`Unknown processor type: ${type}`);
+  }
+}
+
+function replaceVariables(text, videoInfo, urlsafe = false) {
+  const example = { // Some services (eg Discord) won't accept the webhook unless we provide example data for the variables
+    video: {
+      title: 'Example Video',
+      video_id: 'dQw4w9WgXcQ',
+      thumbnail: 'https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg',
+      published_at: new Date().toISOString(),
+    },
+    playlist: {
+      title: 'Example Playlist'
+    }
+  };
+
+  const data = videoInfo || example;
+
+  const replacements = {
+    '[[video.title]]': data.video.title,
+    '[[video.thumbnail]]': data.video.thumbnail,
+    '[[video.video_id]]': data.video.video_id,
+    '[[video.published_at]]': data.video.published_at,
+    '[[playlist.title]]': data.playlist.title,
+  };
+
+  let result = text;
+  for (const [key, value] of Object.entries(replacements)) {
+    const replacement = urlsafe ? encodeURIComponent(value) : value;
+    result = result.replaceAll(key, replacement);
+  }
+
+  return result;
+}
+
+
+module.exports = { getPostProcessors, runPostProcessor };

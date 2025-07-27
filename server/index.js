@@ -3,11 +3,14 @@ const cors = require('cors');
 const db = require('./db');
 const { parseVideosFromFeed } = require('./rssParser');
 const { schedulePolling, updateYtSubsPlaylists } = require('./polling');
+const { getPostProcessors, runPostProcessor } = require('./postProcessors');
 
 const playlists = db.prepare('SELECT * FROM playlists').all();
 for (const playlist of playlists) {
   schedulePolling(playlist);
 }
+
+//Todo: I should eventually move all db queries to the db.js file
 
 // Schedule YTSubs.app polling
 setInterval(() => {
@@ -163,6 +166,60 @@ app.put('/api/settings', (req, res) => {
   }
 });
 
+app.get('/api/postprocessors', (req, res) => {
+  res.json(getPostProcessors());
+});
+
+app.post('/api/postprocessors', (req, res) => {
+  const { name, type, target, data } = req.body;
+  if (!name || !type || !target || !data)
+    return res.status(400).json({ error: 'Missing fields' });
+
+  const stmt = db.prepare(`
+    INSERT INTO post_processors (name, type, target, data)
+    VALUES (?, ?, ?, ?)
+  `);
+  const result = stmt.run(name, type, target, data);
+
+  res.status(201).json({ success: true, id: result.lastInsertRowid });
+});
+
+app.put('/api/postprocessors/:id', (req, res) => {
+  const { name, type, target, data } = req.body;
+  if (!name || !type || !target || !data)
+    return res.status(400).json({ error: 'Missing fields' });
+
+  const result = db.prepare(`
+    UPDATE post_processors SET name = ?, type = ?, target = ?, data = ? WHERE id = ?
+  `).run(name, type, target, data, req.params.id);
+
+  if (result.changes === 0)
+    return res.status(404).json({ error: 'Not found' });
+  
+  res.json({ success: true });
+});
+
+app.delete('/api/postprocessors/:id', (req, res) => {
+  const result = db.prepare(`DELETE FROM post_processors WHERE id = ?`).run(req.params.id);
+  if (result.changes === 0)
+    return res.status(404).json({ error: 'Not found' });
+  
+  res.json({ success: true });
+});
+
+app.post('/api/postprocessors/test', async (req, res) => {
+  const { type, target, data } = req.body;
+  if (!type || !target || !data)
+    return res.status(400).json({ error: 'Missing fields' });
+
+  try {
+    const response = await runPostProcessor(type, target, data);
+    res.json({ success: true, status: response.status, response: `Post processor responded with: ${response}` });
+  }
+  catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

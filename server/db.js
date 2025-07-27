@@ -27,17 +27,25 @@ CREATE TABLE IF NOT EXISTS videos (
 
 CREATE TABLE IF NOT EXISTS activity (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  datetime TEXT,
+  datetime TEXT NOT NULL,
   playlist_id TEXT,
   title TEXT,
   url TEXT,
   message TEXT,
-  icon TEXT
+  icon TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS settings (
   key TEXT PRIMARY KEY,
   value TEXT
+);
+
+CREATE TABLE IF NOT EXISTS post_processors (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  type TEXT NOT NULL,
+  target TEXT NOT NULL,
+  data TEXT NOT NULL
 );
 `);
 
