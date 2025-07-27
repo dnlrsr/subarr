@@ -140,14 +140,14 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
   const dialogRef = useRef();
 
   return (
-    <dialog ref={dialogRef} style={{width: 720 /* Todo: need mobile sizing */, borderRadius: 6, padding: 0, borderWidth: 1, maxHeight: '90%', color: 'inherit', overflow: 'hidden'}}>
+    <dialog ref={dialogRef} style={{width: 'min(720px, 100vw - 20px)' /* Todo: need mobile sizing */, maxHeight: '90vh', borderRadius: 6, padding: 0, borderWidth: 1, color: 'inherit', overflow: 'hidden'}}>
       {/* Todo: have a "template" selector (that can auto-populate for things like Discord, Pushbullet, etc) */}
-      <div style={{display: 'flex', flexDirection: 'column', backgroundColor: '#2a2a2a', width: '100%'}}>
+      <div style={{display: 'flex', flexDirection: 'column', backgroundColor: '#2a2a2a', width: '100%', height: '100%', maxHeight: 'inherit'}}>
         <button style={{position: 'absolute', top: 0, right: 0, width: 60, height: 60}} onClick={() => handleCancel()}>
           <i style={{fontSize: 'xx-large'}} className="bi bi-x"/>
         </button>
         <h3 style={{padding: '15px 50px 15px 30px', borderBottom: '1px solid grey', margin: 0}}>Edit Post Processor: {postProcessor?.name || 'New'}</h3>
-        <div style={{padding: 30, flex: 1}}>{/* Todo: scrollable */}
+        <div style={{padding: 30, flex: 1, overflowY: 'auto', minHeight: 0}}>
           <div className='setting' /* Todo: might want to use a slightly different styling here */>
             <div style={{minWidth: 175}}>Name</div>
             <input type="text"
