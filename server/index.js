@@ -29,7 +29,7 @@ app.get('/api/playlists', (req, res) => {
 });
 
 app.post('/api/playlists', async (req, res) => {
-  const { playlistId } = req.body;
+  let { playlistId } = req.body;
   if (!/^(PL|UU|LL|FL)[\w-]{10,}$/.test(playlistId)) {
     return res.status(400).json({ error: 'Invalid playlist ID' });
   }

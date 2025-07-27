@@ -15,7 +15,7 @@ function SubscriptionsPage() {
         setPlaylists(data.map(p => ({
           ...p,
           thumbnail: p.thumbnail || fallbackThumbnail,
-          lastChecked: p.last_checked || 'Unknown',
+          lastChecked: p.last_checked,
         })));
       })
       .catch(err => {
@@ -61,7 +61,7 @@ function SubscriptionsPage() {
                 color: '#aaa',
                 margin: 0,
               }}>
-              Last checked: {formatDistance(new Date(playlist.lastChecked), new Date(), { addSuffix: true })}
+              Last checked: {playlist.lastChecked ? formatDistance(new Date(playlist.lastChecked), new Date(), { addSuffix: true }) : 'Unknown'}
             </p>
             {/* Todo: show 'next check' (a countdown like '1h 5m'). Important to note that it would be nice if some of these properties updated dynamically when the server does its polling check*/}
           </div>
