@@ -305,6 +305,10 @@ tbody a {
     position: relative;
   }
 
+  .playlistDetails-poster {
+    display: none;
+  }
+
   .setting {
     flex-direction: column;
     align-items: start;

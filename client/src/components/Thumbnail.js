@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-function Thumbnail({ src, alt, fallback = 'https://placehold.co/160x90?text=Thumbnail+loading...', width, height, maxRetries = 5 }) {
+function Thumbnail({ className, src, alt, fallback = 'https://placehold.co/160x90?text=Thumbnail+loading...', width, height, maxRetries = 5 }) {
   const [currentSrc, setCurrentSrc] = useState(src);
   const [error, setError] = useState(false);
   const [attempt, setAttempt] = useState(0);
@@ -27,6 +27,7 @@ function Thumbnail({ src, alt, fallback = 'https://placehold.co/160x90?text=Thum
 
   return (
     <img
+      className={className}
       src={error && attempt >= maxRetries ? fallback : currentSrc} // Todo: I'd like this to show the fallback immediately, then only update when the true src has been loaded successfully
       alt={alt}
       width={width ?? 160}

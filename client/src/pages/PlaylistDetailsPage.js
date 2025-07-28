@@ -78,9 +78,9 @@ function PlaylistDetailsPage() {
         </button>
       </div>
       <div style={{height: 425, width: '100%', backgroundColor: 'black'}}>
-        <div style={{height: 'calc(100% - 60px)', padding: 30, display: 'flex'}}>
-          <Thumbnail height='350' width='350' src={playlist.thumbnail}/>{/* Todo: don't show thumbnail on mobile (this is how sonarr works) */}
-          <div style={{display: 'flex', flexDirection: 'column', marginLeft: 40}}>
+        <div style={{height: 'calc(100% - 60px)', padding: 30, display: 'flex', gap: 40}}>
+          <Thumbnail className='playlistDetails-poster' height='350' width='350' src={playlist.thumbnail}/>
+          <div style={{display: 'flex', flexDirection: 'column'}}>
             <div style={{fontSize: 'xxx-large'}}>{playlist.title}</div>
             <label>{/* Todo: change label-input selections to be styled & controlled like settings page */}
             Check Interval (minutes):{' '}
