@@ -13,8 +13,10 @@ async function parseVideosFromFeed(playlistId, playlistInfoCallback, videoInfoCa
   const feedUrl = `https://www.youtube.com/feeds/videos.xml?playlist_id=${playlistId}`;
 
   const feed = await parser.parseURL(feedUrl);
-  const playlistTitle = feed.title || `Playlist ${playlistId.slice(0, 6)}`;
   const playlistAuthor = feed.author || {};
+  const playlistTitle = feed.title === 'Videos' && feed.author?.name ? 
+    feed.author.name : // If a user is adding a UU playlist, we should use the author name instead of the playlist name (which will always be "Videos") to avoid confusion
+    feed.title || `Playlist ${playlistId.slice(0, 6)}`;
   const playlistThumbnail = feed.items?.[0]?.['media:group']?.['media:thumbnail']?.[0]?.$?.url || null;
 
   if (playlistInfoCallback) {
