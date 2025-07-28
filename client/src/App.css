@@ -136,6 +136,7 @@ button:disabled {
 
 .navgroup.active a.subnav {
   padding-left: 35px;
+  width: calc(100% - 48px);
 }
 
 .navgroup:not(.active) a.subnav {
