@@ -109,17 +109,6 @@ button:disabled {
   box-shadow: 2px 0 5px rgba(0,0,0,0.3);
 }
 
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-  width: 100%;
-}
-
-.sidebar li {
-  width: 100%;
-  text-align: center;
-}
-
 .sidebar a {
   color: white;
   text-decoration: none;
@@ -131,11 +120,26 @@ button:disabled {
   gap: 5px;
 }
 
-.sidebar a.active-link {
+.navgroup.active {
   background-color: #1f1f1f;
   border-left: 4px solid var(--accent-color);
+}
+
+.navgroup.active a {
+  padding-left: calc(1rem - 4px);
+}
+
+.navgroup.active a.active {
   color: var(--accent-color);
   padding-left: calc(1rem - 4px);
+}
+
+.navgroup.active a.subnav {
+  padding-left: 35px;
+}
+
+.navgroup:not(.active) a.subnav {
+  display: none;
 }
 
 .sidebar a:hover {

@@ -30,37 +30,31 @@ function AppLayout() {
       </header>
       <div className="app-container">
         <nav className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
-          <ul>
-            <li>
-              <NavLink to="/" end className={({ isActive }) =>
-                  isActive || location.pathname.startsWith('/playlist')
-                    ? 'active-link'
-                    : ''
-                }
+          <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
+            {console.log(location.pathname.startsWith('/playlist'))}
+            <div className={`navgroup ${location.pathname === '/' || location.pathname.startsWith('/playlist') || location.pathname === '/add' ? 'active' : ''}`}>
+              <NavLink to="/" className={({ isActive }) => isActive || location.pathname.startsWith('/playlist') ? 'active' : ''}
                 onClick={() => setSidebarOpen(false)}>
                 <i className="bi bi-play-fill" style={{fontSize: 'large'}}></i>
                 Playlists
               </NavLink>
-            </li>
-            <li>
-              <NavLink to="/add" className={({ isActive }) => isActive ? 'active-link' : ''} onClick={() => setSidebarOpen(false)}>
-                <i className="bi bi-plus-square" style={{fontSize: 'medium', marginRight: 5}}></i>
-                Add Playlist
+              <NavLink className='subnav' to="/add" onClick={() => setSidebarOpen(false)}>
+                Add New
               </NavLink>
-            </li>
-            <li>
-              <NavLink to="/activity" className={({ isActive }) => isActive ? 'active-link' : ''} onClick={() => setSidebarOpen(false)}>
+            </div>
+            <div className={`navgroup ${location.pathname === '/activity' ? 'active' : ''}`}>
+              <NavLink to="/activity" onClick={() => setSidebarOpen(false)}>
                 <i className="bi bi-clock" style={{fontSize: 'medium', marginRight: 5}}></i>
                 Activity
               </NavLink>
-            </li>
-            <li>
+            </div>
+            <div className={`navgroup ${location.pathname === '/settings' ? 'active' : ''}`}>
               <NavLink to="/settings" className={({ isActive }) => isActive ? 'active-link' : ''} onClick={() => setSidebarOpen(false)}>
                 <i className="bi bi-gear-fill" style={{fontSize: 'medium', marginRight: 5}}></i>
                 Settings
               </NavLink>
-            </li>
-          </ul>
+            </div>
+          </div>
         </nav>
         <main className="main-content">
           <Routes>
