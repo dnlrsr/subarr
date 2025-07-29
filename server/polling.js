@@ -1,7 +1,7 @@
-const fetch = require('node-fetch');
 const db = require('./db');
 const { parseVideosFromFeed } = require('./rssParser');
 const { getPostProcessors, runPostProcessor } = require('./postProcessors');
+const { fetchWithRetry } = require('./utils');
 
 function getSettings() {
   const rows = db.prepare('SELECT key, value FROM settings').all();
@@ -40,7 +40,7 @@ async function updateYtSubsPlaylists() {
     return;
 
   try {
-    const res = await fetch(`https://ytsubs.app/subscriptions?api_key=${ytsubs_apikey}`)
+    const res = await fetchWithRetry(`https://ytsubs.app/subscriptions?api_key=${ytsubs_apikey}`)
     const data = await res.json();
 
     const fetchedSubs = data.subscriptions.map(sub => ({

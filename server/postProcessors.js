@@ -1,5 +1,5 @@
-const fetch = require('node-fetch');
 const db = require('./db');
+const { fetchWithRetry } = require('./utils');
 
 /* Notes:
   This is the most sensitive part of our application - running processes or calling webhooks could expose secrets, allow attackers to invoke malicious processes, etc.
