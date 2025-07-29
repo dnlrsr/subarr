@@ -6,6 +6,9 @@ const db = require('./db');
   - Soon after adding this feature, we should probably implement an API key for making changes to the application
   - We should implement a timeout on webhook calls & process invocation
 
+  - For security, we probably want to execute 'process' post processors with child_process.spawn (https://nodejs.org/api/child_process.html#child_processspawncommand-args-options)
+    which doesn't create a shell
+
 */
 
 function getPostProcessors() {
