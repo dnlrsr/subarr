@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Thumbnail from '../components/Thumbnail';
 import { formatDistance } from 'date-fns';
 
-function SubscriptionsPage() {
+function SubscriptionsPage({ searchTerm }) {
   const [playlists, setPlaylists] = useState([]);
 
   useEffect(() => {
@@ -12,16 +12,22 @@ function SubscriptionsPage() {
       .then(data => {
         const fallbackThumbnail = 'https://i.ytimg.com/vi/5qap5aO4i9A/hqdefault.jpg';
   
-        setPlaylists(data.map(p => ({
+        const fetchedPlaylists = data.map(p => ({
           ...p,
           thumbnail: p.thumbnail || fallbackThumbnail,
           lastChecked: p.last_checked,
-        })));
+        }));
+
+        setPlaylists(fetchedPlaylists);
       })
       .catch(err => {
         console.error('Failed to load playlists:', err);
       });
-  }, []);  
+  }, []);
+
+  const filteredPlaylists = playlists.filter(p =>
+    p.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div
@@ -32,9 +38,8 @@ function SubscriptionsPage() {
         padding: '10px'
       }}
     >
-      {/* Todo: add search */}
       {/* Todo: need header for bulk options like delete multiple playlists */}
-      {playlists.sort((a, b) => a.title.localeCompare(b.title)).map(playlist => (
+      {filteredPlaylists.sort((a, b) => a.title.localeCompare(b.title)).map(playlist => (
         <Link className='playlist-card'
           key={playlist.id}
           to={`/playlist/${playlist.id}`}

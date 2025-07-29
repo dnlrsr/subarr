@@ -11,6 +11,8 @@ function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
 
+  const [searchTerm, setSearchTerm] = useState('');
+
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
@@ -18,15 +20,21 @@ function AppLayout() {
   return (
     <div className="app-layout">
       <header className="app-header">
-        <Link to='/'>
-          <img src="/logo192.png" alt="App Icon" className="header-icon" />
+        <Link className='app-icon' to='/'>
+          <img className="header-icon" src="/logo192.png" alt="App Icon" />
         </Link>
         <button className="sidebar-toggle" onClick={toggleSidebar}>
           ☰
         </button>
-        <Link to='/' style={{textDecoration: 'none'}}>
-          <h1>YouTubarr</h1>
-        </Link>
+        <div style={{display: location.pathname === '/' ? 'flex' : 'none' /* Only show the search bar on the home page */}}>
+          <i className="bi bi-search" style={{fontSize: 'medium'}}/>
+          <input
+            style={{backgroundColor: 'transparent', border: 'none', borderBottom: 'solid 1px white', marginLeft: 8, width: 200, color: 'inherit', fontSize: 'medium', outline: 'none'}}
+            placeholder='Search'
+            type='text'
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}/>
+        </div>
       </header>
       <div className="app-container">
         <nav className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
@@ -57,7 +65,7 @@ function AppLayout() {
         </nav>
         <main className="main-content">
           <Routes>
-            <Route path="/" element={<SubscriptionsPage />} />
+            <Route path="/" element={<SubscriptionsPage searchTerm={searchTerm} />} />
             <Route path="/add" element={<AddPlaylistPage />} />
             <Route path="/activity" element={<ActivityPage />} />
             <Route path="/settings" element={<SettingsPage />} />
