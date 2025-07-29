@@ -12,7 +12,6 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
   ];
 
   useEffect(() => {
-    console.log('editingItem:', editingItem)
     if (editingItem) {
       const copy = JSON.parse(JSON.stringify(editingItem)); // Create deep copy of editingItem
       setPostProcessor(copy);

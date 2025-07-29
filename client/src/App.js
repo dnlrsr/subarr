@@ -31,7 +31,6 @@ function AppLayout() {
       <div className="app-container">
         <nav className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
           <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
-            {console.log(location.pathname.startsWith('/playlist'))}
             <div className={`navgroup ${location.pathname === '/' || location.pathname.startsWith('/playlist') || location.pathname === '/add' ? 'active' : ''}`}>
               <NavLink to="/" className={({ isActive }) => isActive || location.pathname.startsWith('/playlist') ? 'active' : ''}
                 onClick={() => setSidebarOpen(false)}>
