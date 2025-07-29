@@ -8,11 +8,27 @@ const parser = new Parser({
   }
 });
 
+async function parseUrlWithRetry(url, retries = 3, delay = 1000) {
+  for (let attempt = 0; attempt < retries; attempt++) {
+    try {
+      const feed = await parser.parseURL(url);
+      return feed;
+    }
+    catch (err) {
+      if (attempt === retries - 1)
+        throw err; // rethrow final failure
+      
+      console.warn(`parseURL failed (attempt ${attempt + 1}):`, err.message);
+      await new Promise(res => setTimeout(res, delay));
+    }
+  }
+}
+
 async function parseVideosFromFeed(playlistId, playlistInfoCallback, videoInfoCallback) {
   // Todo: right now the feed url is hardcoded, but in the future we might want to make this an override-able property of the playlist
   const feedUrl = `https://www.youtube.com/feeds/videos.xml?playlist_id=${playlistId}`;
 
-  const feed = await parser.parseURL(feedUrl);
+  const feed = await parseUrlWithRetry(feedUrl);
   const playlistAuthor = feed.author || {};
   const playlistTitle = feed.title === 'Videos' && feed.author?.name ? 
     `${feed.author.name} Uploads` : // If a user is adding a UU playlist, we should use the author name instead of the playlist name (which will always be "Videos") to avoid confusion

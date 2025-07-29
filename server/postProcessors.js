@@ -23,7 +23,7 @@ async function runPostProcessor(type, target, data, videoInfo) {
     target = replaceVariables(target, videoInfo, true);
     body = replaceVariables(body, videoInfo);
 
-    const response = await fetch(target, {
+    const response = await fetchWithRetry(target, {
       method,
       headers,
       body: body ? body /* Coming from the post processor UI, body will already be stringified, so we can just send as-is */ : undefined,
