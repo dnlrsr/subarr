@@ -1,5 +1,8 @@
+const path = require('path');
 const Database = require('better-sqlite3');
-const db = new Database('youtubarr.db');
+
+const dbPath = path.join(__dirname, 'youtubarr.db'); // Always use youtubarr.db from the server folder
+const db = new Database(dbPath);
 
 // Create tables if they don't exist
 db.exec(`

@@ -45,6 +45,21 @@ However, this works perfectly fine for mine (and maybe other people's) needs.
 - Backup & Restore functionality (_should_ be pretty easy by just giving a copy of the sqlite db?)
 - _Index more than 15 items initially? (this would require significant up-front processing power like TubeSync does - so...unlikely)_
 
+
+### Installation
+
+Make sure you have Node >= 18 installed, then run the following:
+
+```
+git clone https://github.com/derekantrican/youtubarr.git
+cd youtubarr
+npm install
+# optionally create server/.env with PORT=5000 or whatever
+npm run start-server # On Windows, use 'npm run start-server-win'
+```
+
+And if you'd like to set it to run at startup, put that last command into a .service file (Linux) or your Startup folder (Windows).
+
 ### Plans for future maintenance
 
 I am currently just building this as a hobby project for myself and I already have about 10x the amount of hobby projects that I can handle 😆. So I'll probably build this out enough for _me_, then other people will have to add to it if they want to keep it alive.
