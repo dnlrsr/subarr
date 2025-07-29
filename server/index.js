@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const db = require('./db');
+const path = require('path');
 const { parseVideosFromFeed } = require('./rssParser');
 const { schedulePolling, updateYtSubsPlaylists } = require('./polling');
 const { getPostProcessors, runPostProcessor } = require('./postProcessors');
@@ -21,7 +22,6 @@ updateYtSubsPlaylists(); // also run on startup
 const app = express();
 app.use(cors());
 app.use(express.json());
-const PORT = 3001; //Todo: update port in the future (this is probably a pretty common port). Maybe use a settings.json defined port?
 
 app.get('/api/playlists', (req, res) => {
   const rows = db.prepare('SELECT * FROM playlists').all();
@@ -221,6 +221,24 @@ app.post('/api/postprocessors/test', async (req, res) => {
   }
 });
 
+
+if (process.env.NODE_ENV === 'production') { // In production, allow the express server to serve both the api & the client UI
+  // Serve static files from the React build folder
+  app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
+
+  // If React app uses client-side routing, fallback to index.html for all other routes
+  app.use((req, res, next) => {
+    const accept = req.headers.accept || '';
+    if (req.method === 'GET' && accept.includes('text/html')) {
+      res.sendFile(path.resolve(__dirname, '..', 'client', 'build', 'index.html'));
+    }
+    else {
+      next();
+    }
+  });
+}
+
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
