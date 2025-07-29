@@ -34,7 +34,7 @@ However, this works perfectly fine for mine (and maybe other people's) needs.
 
 - Add playlists
 - Limit playlist items by regular expression
-- Receive notifications about new items via Discord webhook _(mostly just for testing right now)_
+- Exclude shorts
 - [ytsubs.app](https://github.com/derekantrican/ytsubs) integration to import user's YouTube subscriptions and keep them in sync
 - Post processors (call a webhook when a new video is found - eg Discord, Raindrop.io, etc)
 
