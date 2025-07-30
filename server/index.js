@@ -100,7 +100,7 @@ app.delete('/api/playlists/:id', (req, res) => {
   db.prepare('DELETE FROM videos WHERE playlist_id = ?').run(playlist.playlist_id);
 
   db.prepare(`INSERT INTO activity (datetime, playlist_id, title, url, message, icon) VALUES (?, ?, ?, ?, ?, ?)`)
-  .run(new Date().toISOString(), playlistId, playlist.title, `https://www.youtube.com/playlist?list=${playlistId}`, 'Playlist removed (manual)', 'trash');
+  .run(new Date().toISOString(), playlist.id, playlist.title, `https://www.youtube.com/playlist?list=${playlist.id}`, 'Playlist removed (manual)', 'trash');
 
   res.json({ success: true });
 });
