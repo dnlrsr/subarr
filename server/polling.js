@@ -31,6 +31,11 @@ function schedulePolling(playlist) {
   console.log(`Scheduled polling for playlist '${title}' every ${check_interval_minutes} minutes`);
 }
 
+function removePolling(playlist_id) {
+  clearInterval(pollingJobs.get(playlist_id).intervalId);
+  pollingJobs.delete(playlist_id);
+}
+
 async function updateYtSubsPlaylists() {
   const settings = getSettings();
   const ytsubs_apikey = settings.ytsubs_apikey;
@@ -94,9 +99,8 @@ async function updateYtSubsPlaylists() {
     const remove = db.prepare(`DELETE FROM playlists WHERE playlist_id = ?`);
     for (const existingPlaylist of existing) {
       if (!fetchedIds.has(existingPlaylist.playlist_id)) {
+        removePolling(existingPlaylist.playlist_id)
         remove.run(existingPlaylist.playlist_id);
-        clearInterval(pollingJobs.get(existingPlaylist.playlist_id).intervalId);
-        pollingJobs.delete(existingPlaylist.playlist_id);
 
         console.log(`[YTSubs.app] Removed '${existingPlaylist.title}' (${existingPlaylist.playlist_id})`);
         db.prepare(`INSERT INTO activity (datetime, playlist_id, title, url, message, icon) VALUES (?, ?, ?, ?, ?, ?)`)
@@ -162,4 +166,4 @@ async function pollPlaylist(playlist, alertForNewVideos = true) {
   }
 }
 
-module.exports = { schedulePolling, updateYtSubsPlaylists };
+module.exports = { schedulePolling, removePolling, updateYtSubsPlaylists };

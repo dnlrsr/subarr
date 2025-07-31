@@ -4,7 +4,7 @@ const cors = require('cors');
 const db = require('./db');
 const path = require('path');
 const { parseVideosFromFeed } = require('./rssParser');
-const { schedulePolling, updateYtSubsPlaylists } = require('./polling');
+const { schedulePolling, updateYtSubsPlaylists, removePolling } = require('./polling');
 const { getPostProcessors, runPostProcessor } = require('./postProcessors');
 
 const playlists = db.prepare('SELECT * FROM playlists').all();
@@ -95,6 +95,8 @@ app.delete('/api/playlists/:id', (req, res) => {
   if (!playlist) {
     return res.status(404).json({ error: 'Not found' });
   }
+
+  removePolling(playlist.playlist_id);
 
   db.prepare('DELETE FROM playlists WHERE id = ?').run(req.params.id);
   db.prepare('DELETE FROM videos WHERE playlist_id = ?').run(playlist.playlist_id);
