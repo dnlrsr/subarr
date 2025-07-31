@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS playlists (
 
 CREATE TABLE IF NOT EXISTS videos (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  playlist_id INTEGER,
+  playlist_id TEXT NOT NULL,
   video_id TEXT NOT NULL,
   title TEXT,
   published_at TEXT,
