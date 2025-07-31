@@ -30,7 +30,9 @@ function AddPlaylistPage() {
     if (res.ok) {
       alert('Playlist added!'); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
       setPlaylistInput('');
-      navigate('/'); //Navigate back to homepage
+
+      const data = await res.json();
+      navigate(`/playlist/${data.id}`); //Navigate to new playlist page (NOTE: this is a little different than Sonarr - Sonarr doesn't go anywhere after adding a show)
     } else {
       alert('Error adding playlist'); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
     }
