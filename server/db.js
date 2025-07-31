@@ -25,7 +25,8 @@ CREATE TABLE IF NOT EXISTS videos (
   video_id TEXT NOT NULL,
   title TEXT,
   published_at TEXT,
-  thumbnail TEXT
+  thumbnail TEXT,
+  UNIQUE (playlist_id, video_id)  -- Unique by both playlist_id & video_id (since the same video could exist on multiple playlists)
 );
 
 CREATE TABLE IF NOT EXISTS activity (
