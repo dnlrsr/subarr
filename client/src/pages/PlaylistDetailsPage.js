@@ -87,7 +87,7 @@ function PlaylistDetailsPage() {
             <input
               type="number"
               value={interval}
-              min={5}
+              min={5} // A minimum of 5 minutes will help avoid too many iterations on the server (which might hit YouTube API limits?)
               onChange={e => setInterval(e.target.value)}
               style={{ width: '60px' }}
             />
