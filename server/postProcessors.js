@@ -67,7 +67,14 @@ function replaceVariables(text, videoInfo, urlsafe = false) {
 
   let result = text;
   for (const [key, value] of Object.entries(replacements)) {
-    const replacement = urlsafe ? encodeURIComponent(value) : value;
+    let replacement = value;
+    if (urlsafe) {
+      replacement = encodeURIComponent(value);
+    }
+    else {
+      // Escape properly for JSON strings
+      replacement = JSON.stringify(value).slice(1, -1); // slice removes surrounding quotes
+    }
     result = result.replaceAll(key, replacement);
   }
 
