@@ -81,14 +81,14 @@ function SettingsPage() {
         <div style={{fontWeight: 'bold', fontSize: 'xx-large'}}>
           Settings
         </div>
-        <div className='setting'>
+        <div className='setting flex-column-mobile'>
           <div style={{minWidth: 175}}>YTSubs.app API key</div>
           <input type="text"
             value={ytsubsApiKey}
             onChange={e => setYtsubsApiKey(e.target.value)}
           />
         </div>
-        <div className='setting'>
+        <div className='setting flex-column-mobile'>
           {/* Todo: maybe instead of just "exclude shorts", we could let users choose from one of these prefixes: https://stackoverflow.com/a/77816885*/}
           <div style={{minWidth: 175}}>Exclude shorts</div>
           <label className='container'>

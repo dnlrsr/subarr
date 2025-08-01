@@ -34,7 +34,7 @@ function Thumbnail({ className, src, alt, fallback = 'https://placehold.co/160x9
       height={height ?? 90}
       loading="lazy"
       onError={handleError}
-      style={{ objectFit: 'cover' }}
+      style={{ objectFit: 'cover', maxWidth: '100%' }}
     />
   );
 }

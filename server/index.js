@@ -107,6 +107,22 @@ app.delete('/api/playlists/:id', (req, res) => {
   res.json({ success: true });
 });
 
+app.get('/api/search', async (req, res) => {
+  try {
+    let playlistInfo;
+  
+    await parseVideosFromFeed(req.query.id, playlist => { // Todo: this will print a number of things to the server console output if it fails, so we should try to prevent that
+      playlistInfo = playlist
+    });
+  
+    res.json(playlistInfo);
+  }
+  catch (err) {
+    console.error('Failed to parse playlist:', err);
+    res.status(400).json({ error: `Failed to get playlist information for ${req.query.id}` });
+  }
+});
+
 app.get('/api/activity/:page', (req, res) => {
   const pageSize = 20;
 

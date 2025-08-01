@@ -147,14 +147,14 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
         </button>
         <h3 style={{padding: '15px 50px 15px 30px', borderBottom: '1px solid grey', margin: 0}}>Edit Post Processor: {postProcessor?.name || 'New'}</h3>
         <div style={{padding: 30, flex: 1, overflowY: 'auto', minHeight: 0}}>
-          <div className='setting' /* Todo: might want to use a slightly different styling here */>
+          <div className='setting flex-column-mobile' /* Todo: might want to use a slightly different styling here */>
             <div style={{minWidth: 175}}>Name</div>
             <input type="text"
               value={postProcessor?.name}
               onChange={e => setPostProcessor({...postProcessor, name: e.target.value})}
             />
           </div>
-          <div className='setting' /* Todo: might want to use a slightly different styling here */>
+          <div className='setting flex-column-mobile' /* Todo: might want to use a slightly different styling here */>
             <div style={{minWidth: 175}}>Type</div>
             <div>
               <select
@@ -167,7 +167,7 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
               <div style={{fontSize: 'small', color: 'yellow', marginTop: 5, fontStyle: 'italic'}}>*Only webhook is supported for now - processes (like yt-dlp) will be supported later</div>
             </div>
           </div>
-          <div className='setting' /* Todo: might want to use a slightly different styling here */>
+          <div className='setting flex-column-mobile' /* Todo: might want to use a slightly different styling here */>
             <div style={{minWidth: 175}}>{postProcessor?.type === 'webhook' ? 'URL' : 'File path'}</div>
             <input type="text"
               value={postProcessor?.target}
@@ -176,7 +176,7 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
           </div>
           {postProcessorData ?
           <>
-            <div className='setting' /* Todo: might want to use a slightly different styling here */>
+            <div className='setting flex-column-mobile' /* Todo: might want to use a slightly different styling here */>
               <div style={{minWidth: 175}}>Method</div>
               <select
                 value={postProcessorData.method}
@@ -186,7 +186,7 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
                 )}
               </select>
             </div>
-            <div className='setting' /* Todo: might want to use a slightly different styling here */>
+            <div className='setting flex-column-mobile' /* Todo: might want to use a slightly different styling here */>
               <div style={{minWidth: 175}}>Headers</div>
               <div style={{display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'end'}}>
                 {postProcessorData.headers?.map((header, index) =>
@@ -209,7 +209,7 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
                 </button>
               </div>
             </div>
-            <div className='setting' /* Todo: might want to use a slightly different styling here */>
+            <div className='setting flex-column-mobile' /* Todo: might want to use a slightly different styling here */>
               <div style={{minWidth: 175}}>Body</div>
               <div style={{display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'end'}}>
                 <textarea style={{resize: 'vertical', width: 'calc(100% - 18px)', minHeight: 125}}

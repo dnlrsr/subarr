@@ -317,8 +317,11 @@ tbody a {
     display: none;
   }
 
-  .setting {
+  .flex-column-mobile {
     flex-direction: column;
+  }
+
+  .setting {
     align-items: start;
     gap: 0px;
     margin-bottom: 30px;
