@@ -82,7 +82,7 @@ function AddPlaylistPage() {
         <i className="bi bi-search" style={{fontSize: 'large', padding: '10px 15px', height: 'calc(100% - 22px)', border: 'solid 1px white', borderRight: 'none', borderRadius: '4px 0px 0px 4px'}}/>
         <input
           style={{flexGrow: 1, backgroundColor: '#333', border: 'solid 1px white', padding: '6px 16px', height: 'calc(100% - 14px)', color: 'inherit', fontSize: 'medium', outline: 'none'}}
-          placeholder='Enter a youtube channel url (eg https://www.youtube.com/@MrBeast) or playlist id/url (eg UU..., PL..., etc)'
+          placeholder='Enter a youtube channel url (eg youtube.com/@MrBeast) or playlist id/url (eg UU..., PL..., etc)'
           type='text'
           value={playlistInput}
           onChange={e => setPlaylistInput(e.target.value)}/>
