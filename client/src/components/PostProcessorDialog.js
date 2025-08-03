@@ -11,6 +11,53 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
     // 'process', // Todo: support 'process'
   ];
 
+  const [selectedTemplate, setSelectedTemplate] = useState('');
+  const templates = {
+    'Discord': {
+      type: 'webhook',
+      target: 'YOUR_DISCORD_WEBHOOK_URL',
+      data: {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: `{
+  "username": "YouTubarr",
+  "embeds": [{
+    "title": "New Video: [[video.title]]",
+    "url": "https://www.youtube.com/watch?v=[[video.video_id]]",
+    "thumbnail": {
+      "url": "[[video.thumbnail]]"
+    },
+    "timestamp": "[[video.published_at]]",
+    "color": 16711680,
+    "footer": {
+      "text": "From playlist: [[playlist.title]]"
+    }
+  }]
+}`
+      },
+    },
+    'Raindrop.io': {
+      type: 'webhook',
+      target: 'https://api.raindrop.io/rest/v1/raindrop',
+      data: {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer YOUR_INTEGRATION_TEST_TOKEN',
+          'Content-Type': 'application/json'
+        },
+        body: `{
+  "link": "https://www.youtube.com/watch?v=[[video.video_id]]\",
+  "title": "[[video.title]]",
+  "cover": "[[video.thumbnail]]",
+  "type": "video"
+}`
+      },
+    },
+    // More templates (eg Pushbullet, etc) can be added here as requested
+  };
+
   useEffect(() => {
     if (editingItem) {
       const copy = JSON.parse(JSON.stringify(editingItem)); // Create deep copy of editingItem
@@ -32,6 +79,25 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
       dialogRef.current?.close();
     }
   }, [editingItem]);
+
+  const applyTemplate = (templateName) => {
+    if (!templateName)
+      return;
+
+    const templateData = templates[templateName];
+
+    setPostProcessor({
+      ...postProcessor,
+      type: templateData.type,
+      target: templateData.target,
+    });
+
+    const parsedData = templateData.data;
+    setPostProcessorData({
+      ...parsedData,
+      headers: Object.entries(parsedData.headers || {}).map(([name, value]) => ({ name, value })),
+    });
+  };
 
   const constructFinalWebhook = () => {
     const data = {
@@ -99,6 +165,11 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
   };
 
   const handleSave = async () => {
+    if (!postProcessor.name) {
+      setMessage('Please provide a name for your post processor');
+      return;
+    }
+
     if (!postProcessor.target) {
       setMessage('Post processor target (URL/process) cannot be empty');
       return;
@@ -140,7 +211,6 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
 
   return (
     <dialog ref={dialogRef} style={{width: 'min(720px, 100vw - 20px)' /* Todo: need mobile sizing */, maxHeight: '90vh', borderRadius: 6, padding: 0, borderWidth: 1, color: 'inherit', overflow: 'hidden'}}>
-      {/* Todo: have a "template" selector (that can auto-populate for things like Discord, Pushbullet, etc) */}
       <div style={{display: 'flex', flexDirection: 'column', backgroundColor: '#2a2a2a', width: '100%', height: '100%', maxHeight: 'inherit'}}>
         <button style={{position: 'absolute', top: 0, right: 0, width: 60, height: 60}} onClick={() => handleCancel()}>
           <i style={{fontSize: 'xx-large'}} className="bi bi-x"/>
@@ -153,6 +223,23 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
               value={postProcessor?.name}
               onChange={e => setPostProcessor({...postProcessor, name: e.target.value})}
             />
+          </div>
+          <div className='setting flex-column-mobile' /* Todo: might want to use a slightly different styling here */>
+            <div style={{minWidth: 175}}>Apply template</div>
+            <div style={{display: 'flex', width: '100%'}}>
+              <select
+                style={{marginTop: 0}}
+                value={selectedTemplate}
+                onChange={e => setSelectedTemplate(e.target.value)}>
+                {[''].concat(Object.keys(templates)).map(template =>
+                  <option key={template} value={template}>{template}</option>
+                )}
+              </select>
+              <button style={{backgroundColor: 'green', marginLeft: 10, borderRadius: 5, width: 40}}
+                onClick={() => applyTemplate(selectedTemplate)}>
+                <i style={{fontSize: 'x-large'}} className="bi bi-check"/>
+              </button>
+            </div>
           </div>
           <div className='setting flex-column-mobile' /* Todo: might want to use a slightly different styling here */>
             <div style={{minWidth: 175}}>Type</div>
@@ -225,7 +312,7 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
           : null}
           {message && (
             <p style={{ marginTop: 10, marginBottom: 0, color: 'red' }}>
-              {message}
+              {message}{/* Todo: this message might be off the screen for mobile or small screens (if the dialog body is scrolled up) */}
             </p>
           )}
         </div>
