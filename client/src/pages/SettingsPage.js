@@ -109,7 +109,7 @@ function SettingsPage() {
         }}>
           {postProcessors.map(postProcessor =>
             <div key={postProcessor.id} className='playlist-card' /* Todo: make this class more generic */ style={{padding: 10}}>
-              <button onClick={() => setEditingPostProcessor(postProcessor /* Todo: make an object copy of postProcessor*/)} style={{display: 'flex', flexDirection: 'column', alignItems: 'start', width: '100%', height: '100%'}}>
+              <button onClick={() => setEditingPostProcessor(postProcessor)} style={{display: 'flex', flexDirection: 'column', alignItems: 'start', width: '100%', height: '100%'}}>
                 <h3 style={{fontSize: 'x-large', margin: '0 0 5px 0',}}>{postProcessor.name}</h3>
                 <div style={{display: 'flex', backgroundColor: 'var(--accent-color)', padding: 5, margin: 10, gap: 5, borderRadius: 2}}>
                   <i style={{fontSize: 'medium'}} className={`bi bi-${postProcessor.type === 'webhook' ? 'broadcast' : 'cpu-fill'}`}/>

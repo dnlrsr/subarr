@@ -91,7 +91,6 @@ function PlaylistDetailsPage() {
               onChange={e => setInterval(e.target.value)}
               style={{ width: '60px' }}
             />
-            {/* Todo: don't allow a number lower than 5 minutes */}
           </label>
           <br />
           <label>

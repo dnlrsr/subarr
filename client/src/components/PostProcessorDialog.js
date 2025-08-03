@@ -209,21 +209,21 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
   const dialogRef = useRef();
 
   return (
-    <dialog ref={dialogRef} style={{width: 'min(720px, 100vw - 20px)' /* Todo: need mobile sizing */, maxHeight: '90vh', borderRadius: 6, padding: 0, borderWidth: 1, color: 'inherit', overflow: 'hidden'}}>
+    <dialog ref={dialogRef} style={{width: 'min(720px, 100vw - 20px)', maxHeight: '90vh', borderRadius: 6, padding: 0, borderWidth: 1, color: 'inherit', overflow: 'hidden'}}>
       <div style={{display: 'flex', flexDirection: 'column', backgroundColor: '#2a2a2a', width: '100%', height: '100%', maxHeight: 'inherit'}}>
         <button style={{position: 'absolute', top: 0, right: 0, width: 60, height: 60}} onClick={() => handleCancel()}>
           <i style={{fontSize: 'xx-large'}} className="bi bi-x"/>
         </button>
         <h3 style={{padding: '15px 50px 15px 30px', borderBottom: '1px solid grey', margin: 0}}>Edit Post Processor: {postProcessor?.name || 'New'}</h3>
         <div style={{padding: 30, flex: 1, overflowY: 'auto', minHeight: 0}}>
-          <div className='setting flex-column-mobile' /* Todo: might want to use a slightly different styling here */>
+          <div className='setting flex-column-mobile'>
             <div style={{minWidth: 175}}>Name</div>
             <input type="text"
               value={postProcessor?.name}
               onChange={e => setPostProcessor({...postProcessor, name: e.target.value})}
             />
           </div>
-          <div className='setting flex-column-mobile' /* Todo: might want to use a slightly different styling here */>
+          <div className='setting flex-column-mobile'>
             <div style={{minWidth: 175}}>Apply template</div>
             <div style={{display: 'flex', width: '100%'}}>
               <select
@@ -240,7 +240,7 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
               </button>
             </div>
           </div>
-          <div className='setting flex-column-mobile' /* Todo: might want to use a slightly different styling here */>
+          <div className='setting flex-column-mobile'>
             <div style={{minWidth: 175}}>Type</div>
             <div>
               <select
@@ -253,7 +253,7 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
               <div style={{fontSize: 'small', color: 'yellow', marginTop: 5, fontStyle: 'italic'}}>*Only webhook is supported for now - processes (like yt-dlp) will be supported later</div>
             </div>
           </div>
-          <div className='setting flex-column-mobile' /* Todo: might want to use a slightly different styling here */>
+          <div className='setting flex-column-mobile'>
             <div style={{minWidth: 175}}>{postProcessor?.type === 'webhook' ? 'URL' : 'File path'}</div>
             <input type="text"
               value={postProcessor?.target}
@@ -262,7 +262,7 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
           </div>
           {postProcessorData ?
           <>
-            <div className='setting flex-column-mobile' /* Todo: might want to use a slightly different styling here */>
+            <div className='setting flex-column-mobile'>
               <div style={{minWidth: 175}}>Method</div>
               <select
                 value={postProcessorData.method}
@@ -272,7 +272,7 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
                 )}
               </select>
             </div>
-            <div className='setting flex-column-mobile' /* Todo: might want to use a slightly different styling here */>
+            <div className='setting flex-column-mobile'>
               <div style={{minWidth: 175}}>Headers</div>
               <div style={{display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'end'}}>
                 {postProcessorData.headers?.map((header, index) =>
@@ -295,7 +295,7 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
                 </button>
               </div>
             </div>
-            <div className='setting flex-column-mobile' /* Todo: might want to use a slightly different styling here */>
+            <div className='setting flex-column-mobile'>
               <div style={{minWidth: 175}}>Body</div>
               <div style={{display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'end'}}>
                 <textarea style={{resize: 'vertical', width: 'calc(100% - 18px)', minHeight: 125}}

@@ -161,7 +161,8 @@ async function pollPlaylist(playlist, alertForNewVideos = true) {
 
     db.prepare(`UPDATE playlists SET last_checked = ? WHERE playlist_id = ?`)
       .run(new Date().toISOString(), playlist.playlist_id);
-  } catch (err) {
+  }
+  catch (err) {
     console.error(`Failed to poll ${playlist.title}:`, err); // Todo: mark as 'health issue'? (eg a 404 will be thrown when a playlist is deleted)
   }
 }
