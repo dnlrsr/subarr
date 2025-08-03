@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Thumbnail from '../components/Thumbnail';
 import { getErrorResponse } from '../utils/fetchUtils';
+import LoadingIndicator from '../components/LoadingIndicator';
 
 function AddPlaylistPage() {
   const navigate = useNavigate();
 
   const [playlistInput, setPlaylistInput] = useState('');
-  const [isSearching, setIsSearching] = useState(false); // Todo: use isSearching to show a loading "spinner"
+  const [isSearching, setIsSearching] = useState(false);
   const [playlistInfo, setPlaylistInfo] = useState(null);
   const [error, setError] = useState('');
 
@@ -30,7 +31,7 @@ function AddPlaylistPage() {
           });
   
           if (!res.ok) {
-            throw new Error(await getErrorResponse(res));
+            throw new Error(await getErrorResponse(res, true));
           }
   
           const data = await res.json();
@@ -112,7 +113,27 @@ function AddPlaylistPage() {
         </div>
       </div>
       : null}
-      {error && <p style={{ color: 'red' }}>{error}</p>}{/* Todo: show a more nicely-styled message */}
+      {isSearching ?
+      <div style={{display: 'flex', justifyContent: 'center'}}>
+        <LoadingIndicator/>
+      </div>
+      : null}
+      {error ?
+      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 20}}>
+        <div style={{ fontSize: 'x-large', textAlign: 'center' }}>
+          {error}
+        </div>
+        <p style={{marginBottom: 0}}>Valid values are:</p>
+        <ol>
+          <li style={{overflowWrap: 'anywhere'}}>
+            YouTube channel urls (eg youtube.com/@MrBeast or<br />https://www.youtube.com/channel/UCY1kMZp36IQSyNx_9h4mpCg)
+          </li>
+          <li style={{overflowWrap: 'anywhere'}}>
+            YouTube playlist urls or ids (eg UUuAXFkgsw1L7xaCfnd5JJOw or<br />https://www.youtube.com/playlist?list=PLopY4n17t8RCqmupsW66yOsR5eDPRUN_y)
+          </li>
+        </ol>
+      </div>
+      : null}
       {/(PL|LL|FL)[\w-]{10,}/.test(playlistInput) && <p style={{ color: 'yellow', wordBreak: 'break-word' }}>
         Warning: YouTube playlist RSS feeds only return the top 15 items, so if this playlist is not ordered Newest → Oldest,
         YouTubarr may never see new videos on this playlist (see <a href='https://issuetracker.google.com/issues/429563457' target='_blank' rel='noreferrer'>

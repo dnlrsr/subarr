@@ -154,7 +154,7 @@ app.get('/api/search', async (req, res) => {
   }
   catch (err) {
     console.error('Failed to parse playlist:', err.message);
-    res.status(400).json({ error: `Failed to get playlist information for ${req.query.q}` });
+    res.status(400).json({ error: `Couldn't find any results for '${req.query.q}'` });
   }
 });
 

@@ -1,4 +1,4 @@
-export async function getErrorResponse(res) {
+export async function getErrorResponse(res, returnRawError) {
   let errorText = `Server responded with ${res.status}`;
   let bodyText;
 
@@ -12,13 +12,13 @@ export async function getErrorResponse(res) {
   try {
     const resJson = JSON.parse(bodyText);
     if (resJson?.error) {
-      return `Server responded with "${resJson.error}"`;
+      return returnRawError ? resJson.error : `Server responded with "${resJson.error}"`;
     }
     else {
       return errorText;
     }
   }
   catch (jsonErr) {
-    return `Server responded with: ${bodyText}`;
+    return returnRawError ? bodyText : `Server responded with: ${bodyText}`;
   }
 }
