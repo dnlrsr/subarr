@@ -137,7 +137,8 @@ function AddPlaylistPage() {
       {/(PL|LL|FL)[\w-]{10,}/.test(playlistInput) && <p style={{ color: 'yellow', wordBreak: 'break-word' }}>
         Warning: YouTube playlist RSS feeds only return the top 15 items, so if this playlist is not ordered Newest → Oldest,
         YouTubarr may never see new videos on this playlist (see <a href='https://issuetracker.google.com/issues/429563457' target='_blank' rel='noreferrer'>
-        https://issuetracker.google.com/issues/429563457</a>)
+        https://issuetracker.google.com/issues/429563457</a>). If this is the case, you may want to use the channel's
+        uploads playlist and a regex filter.
       </p>}
     </div>
   );
