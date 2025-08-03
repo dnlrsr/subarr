@@ -11,8 +11,6 @@ function AddPlaylistPage() {
   const [playlistInfo, setPlaylistInfo] = useState(null);
   const [error, setError] = useState('');
 
-  //Todo: it would be really nice if there was an easy API we could call and get the channel info (eg thumbnail & description) from the UC or UU playlist
-
   useEffect(() => {
     setPlaylistInfo(null);
   
