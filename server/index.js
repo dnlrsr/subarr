@@ -124,16 +124,23 @@ app.get('/api/search', async (req, res) => {
     }
     else if (/(https:\/\/)?(www\.)?youtube\.com\/(@|channel)/.test(req.query.q)) {
       // If this is a youtube channel URL, we can actually find the uploads playlist by grepping it from the HTML source code of the webpage
-      // Todo: using a technique like this (parsing the HTML source code) might actually be able to get us the channel thumbnail, description, etc
+
       const response = await fetch(req.query.q);
       const responseText = await response.text();
-      const matches = [...responseText.matchAll(/https:\/\/www\.youtube\.com\/feeds\/videos\.xml\?channel_id=(UC|UU|PL|LL|FL)[\w-]{10,}/g)];
+      const channelFeedMatches = [...responseText.matchAll(/https:\/\/www\.youtube\.com\/feeds\/videos\.xml\?channel_id=(UC|UU|PL|LL|FL)[\w-]{10,}/g)];
 
-      if (matches.length > 0 && matches[0][0]) {
+      if (channelFeedMatches.length > 0 && channelFeedMatches[0][0]) {
         console.log(`Successfully grabbed channel playlist id from source code of ${req.query.q}`);
-        await parseVideosFromFeed(matches[0][0].match(/(UC|UU|PL|LL|FL)[\w-]{10,}/)[0].replace(/^UC/, 'UU'), playlist => { // Todo: this will print a number of things to the server console output if it fails, so we should try to prevent that
+        await parseVideosFromFeed(channelFeedMatches[0][0].match(/(UC|UU|PL|LL|FL)[\w-]{10,}/)[0].replace(/^UC/, 'UU'), playlist => { // Todo: this will print a number of things to the server console output if it fails, so we should try to prevent that
           playlistInfo = playlist
         });
+
+        // Also grep the channel thumbnail from the HTML source code (which could also be done for banners, description, etc in the future)
+        const channelThumbnailMatch = /"avatarViewModel":{"image":{"sources":(?<avatar_array>\[[^\]]+\])/.exec(responseText);
+        if (channelThumbnailMatch) {
+          const avatarArray = JSON.parse(channelThumbnailMatch.groups.avatar_array);
+          playlistInfo.thumbnail = avatarArray.find(a => a.width === 160)?.url ?? avatarArray[0].url;
+        }
       }
       else {
         throw new Error(`Could not extract playlist id from source code of ${req.query.q}`);
