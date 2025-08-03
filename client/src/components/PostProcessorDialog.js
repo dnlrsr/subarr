@@ -87,15 +87,14 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
     const templateData = templates[templateName];
 
     setPostProcessor({
-      ...postProcessor,
+      ...postProcessor, //Expanding this allows us to keep the id & name (if we're editing an already-existing post processor)
       type: templateData.type,
       target: templateData.target,
     });
 
-    const parsedData = templateData.data;
     setPostProcessorData({
-      ...parsedData,
-      headers: Object.entries(parsedData.headers || {}).map(([name, value]) => ({ name, value })),
+      ...templateData.data,
+      headers: Object.entries(templateData.data.headers || {}).map(([name, value]) => ({ name, value })),
     });
   };
 
