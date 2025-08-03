@@ -61,7 +61,12 @@ app.post('/api/playlists', async (req, res) => {
     });
 
     res.status(201).json({ id: playlistDbId });
-  } catch (err) {
+  }
+  catch (err) {
+    if (err.message.includes('UNIQUE constraint failed')) {
+      res.status(500).json({ error: 'Playlist is already added' });
+    }
+
     console.error('Failed to fetch RSS feed', err);
     res.status(500).json({ error: 'Failed to fetch playlist metadata' });
   }

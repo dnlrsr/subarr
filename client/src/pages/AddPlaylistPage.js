@@ -72,7 +72,8 @@ function AddPlaylistPage() {
       navigate(`/playlist/${data.id}`); //Navigate to new playlist page (NOTE: this is a little different than Sonarr - Sonarr doesn't go anywhere after adding a show)
     }
     else {
-      alert('Error adding playlist'); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
+      const addError = await getErrorResponse(res);
+      alert(`Error adding playlist: ${addError}`); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
     }
   };
 
