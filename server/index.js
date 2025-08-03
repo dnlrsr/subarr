@@ -111,15 +111,38 @@ app.get('/api/search', async (req, res) => {
   try {
     let playlistInfo;
   
-    await parseVideosFromFeed(req.query.id, playlist => { // Todo: this will print a number of things to the server console output if it fails, so we should try to prevent that
-      playlistInfo = playlist
-    });
+    const hasValidPlaylistId = query => /(UC|UU|PL|LL|FL)[\w-]{10,}/.test(query);
+    if (hasValidPlaylistId(req.query.q)) {
+      await parseVideosFromFeed(req.query.q, playlist => { // Todo: this will print a number of things to the server console output if it fails, so we should try to prevent that
+        playlistInfo = playlist
+      });
+    }
+    else if (/(https:\/\/)?(www\.)?youtube\.com\/(@|channel)/.test(req.query.q)) {
+      // If this is a youtube channel URL, we can actually find the uploads playlist by grepping it from the HTML source code of the webpage
+      // Todo: using a technique like this (parsing the HTML source code) might actually be able to get us the channel thumbnail, description, etc
+      const response = await fetch(req.query.q);
+      const responseText = await response.text();
+      const matches = [...responseText.matchAll(/https:\/\/www\.youtube\.com\/feeds\/videos\.xml\?channel_id=(UC|UU|PL|LL|FL)[\w-]{10,}/g)];
+
+      if (matches.length > 0 && matches[0][0]) {
+        console.log(`Successfully grabbed channel playlist id from source code of ${req.query.q}`);
+        await parseVideosFromFeed(matches[0][0].match(/(UC|UU|PL|LL|FL)[\w-]{10,}/)[0].replace(/^UC/, 'UU'), playlist => { // Todo: this will print a number of things to the server console output if it fails, so we should try to prevent that
+          playlistInfo = playlist
+        });
+      }
+      else {
+        throw new Error(`Could not extract playlist id from source code of ${req.query.q}`);
+      }
+    }
+    else {
+      throw new Error(`Could not understand '${req.query.q}'`);
+    }
   
     res.json(playlistInfo);
   }
   catch (err) {
-    console.error('Failed to parse playlist:', err);
-    res.status(400).json({ error: `Failed to get playlist information for ${req.query.id}` });
+    console.error('Failed to parse playlist:', err.message);
+    res.status(400).json({ error: `Failed to get playlist information for ${req.query.q}` });
   }
 });
 
