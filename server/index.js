@@ -118,7 +118,8 @@ app.get('/api/search', async (req, res) => {
   
     const hasValidPlaylistId = query => /(UC|UU|PL|LL|FL)[\w-]{10,}/.test(query);
     if (hasValidPlaylistId(req.query.q)) {
-      await parseVideosFromFeed(req.query.q, playlist => { // Todo: this will print a number of things to the server console output if it fails, so we should try to prevent that
+      const adjustedPlaylistId = req.query.q.match(/(UC|UU|PL|LL|FL)[\w-]{10,}/)[0].replace(/^UC/, 'UU');
+      await parseVideosFromFeed(adjustedPlaylistId, playlist => { // Todo: this will print a number of things to the server console output if it fails, so we should try to prevent that
         playlistInfo = playlist
       });
     }
