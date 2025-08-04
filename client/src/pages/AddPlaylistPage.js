@@ -93,7 +93,9 @@ function AddPlaylistPage() {
         </button>
       </div>
       {playlistInfo ?
-      <div className='flex-column-mobile' style={{display: 'flex', backgroundColor: '#2a2a2a', marginTop: 20, padding: 20, gap: 20}}>
+      <div className='flex-column-mobile' 
+        style={{display: 'flex', marginTop: 20, padding: 20, gap: 20, backgroundImage: playlistInfo.banner ? `url(${playlistInfo.banner})` : '',
+                backgroundColor: playlistInfo.banner ? 'rgb(0, 0, 0, 0.7)' : '#2a2a2a', backgroundSize: 'cover', backgroundBlendMode: 'darken'}}>
         <Thumbnail height='180' width='320' src={playlistInfo.thumbnail}/>{/* Todo: we should have a note for UC & UU playlists that RSS feeds don't provide the channel thumbnail, but the user can customize the thumbnail later */}
         <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1}}>
           <div style={{display: 'flex', marginBottom: 20}}>

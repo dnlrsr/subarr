@@ -29,6 +29,7 @@ async function parseVideosFromFeed(playlistId, playlistInfoCallback, videoInfoCa
   const feedUrl = `https://www.youtube.com/feeds/videos.xml?playlist_id=${playlistId}`;
 
   const feed = await parseUrlWithRetry(feedUrl);
+  const channelId = feed['yt:channelId'];
   const playlistAuthor = feed.author || {};
   const playlistTitle = feed.title === 'Videos' && feed.author?.name ? 
     feed.author.name : // If a user is adding a UU playlist, we should use the author name instead of the playlist name (which will always be "Videos") to avoid confusion
@@ -36,7 +37,8 @@ async function parseVideosFromFeed(playlistId, playlistInfoCallback, videoInfoCa
   const playlistThumbnail = feed.items?.[0]?.['media:group']?.['media:thumbnail']?.[0]?.$?.url || null;
 
   if (playlistInfoCallback) {
-    playlistInfoCallback({
+    await playlistInfoCallback({
+      channel_id: channelId, // This isn't part of the db item, but it will be used to grab the banner, etc info for the channel
       playlist_id: playlistId,
       author_name : playlistAuthor?.name,
       author_uri : playlistAuthor?.uri,

@@ -6,6 +6,7 @@ const path = require('path');
 const { parseVideosFromFeed } = require('./rssParser');
 const { schedulePolling, updateYtSubsPlaylists, removePolling } = require('./polling');
 const { getPostProcessors, runPostProcessor } = require('./postProcessors');
+const { tryParseAdditionalChannelData } = require('./utils');
 
 const playlists = db.prepare('SELECT * FROM playlists').all();
 for (const playlist of playlists) {
@@ -43,13 +44,19 @@ app.post('/api/playlists', async (req, res) => {
 
   try {
     let playlistDbId = null;
-    await parseVideosFromFeed(playlistId, playlist => {
+    await parseVideosFromFeed(playlistId, async playlist => {
+      if (playlistId.startsWith('UU')) {
+        const channelInfo = await tryParseAdditionalChannelData(`https://www.youtube.com/channel/${playlist.channel_id}`);
+        playlist.thumbnail = channelInfo.thumbnail;
+        playlist.banner = channelInfo.banner;
+      }
+
       const stmt = db.prepare(`
-        INSERT INTO playlists (playlist_id, author_name, author_uri, title, check_interval_minutes, regex_filter, last_checked, thumbnail, source)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'manual')
+        INSERT INTO playlists (playlist_id, author_name, author_uri, title, check_interval_minutes, regex_filter, last_checked, thumbnail, banner, source)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'manual')
       `);
   
-      const info = stmt.run(playlistId, playlist.author_name, playlist.author_uri, playlist.title, 60, '', null, playlist.thumbnail);
+      const info = stmt.run(playlistId, playlist.author_name, playlist.author_uri, playlist.title, 60, '', null, playlist.thumbnail, playlist.banner);
       playlistDbId = info.lastInsertRowid;
 
       db.prepare(`INSERT INTO activity (datetime, playlist_id, title, url, message, icon) VALUES (?, ?, ?, ?, ?, ?)`)
@@ -126,22 +133,14 @@ app.get('/api/search', async (req, res) => {
     else if (/(https:\/\/)?(www\.)?youtube\.com\/(@|channel)/.test(req.query.q)) {
       // If this is a youtube channel URL, we can actually find the uploads playlist by grepping it from the HTML source code of the webpage
 
-      const response = await fetch(req.query.q);
-      const responseText = await response.text();
-      const channelFeedMatches = [...responseText.matchAll(/https:\/\/www\.youtube\.com\/feeds\/videos\.xml\?channel_id=(UC|UU|PL|LL|FL)[\w-]{10,}/g)];
-
-      if (channelFeedMatches.length > 0 && channelFeedMatches[0][0]) {
-        console.log(`Successfully grabbed channel playlist id from source code of ${req.query.q}`);
-        await parseVideosFromFeed(channelFeedMatches[0][0].match(/(UC|UU|PL|LL|FL)[\w-]{10,}/)[0].replace(/^UC/, 'UU'), playlist => { // Todo: this will print a number of things to the server console output if it fails, so we should try to prevent that
+      const channelInfo = await tryParseAdditionalChannelData(req.query.q.startsWith('https://') ? req.query.q : `https://${req.query.q}`);
+      if (channelInfo.playlist_id) {
+        await parseVideosFromFeed(channelInfo.playlist_id, playlist => { // Todo: this will print a number of things to the server console output if it fails, so we should try to prevent that
           playlistInfo = playlist
         });
 
-        // Also grep the channel thumbnail from the HTML source code (which could also be done for banners, description, etc in the future)
-        const channelThumbnailMatch = /"avatarViewModel":{"image":{"sources":(?<avatar_array>\[[^\]]+\])/.exec(responseText);
-        if (channelThumbnailMatch) {
-          const avatarArray = JSON.parse(channelThumbnailMatch.groups.avatar_array);
-          playlistInfo.thumbnail = avatarArray.find(a => a.width === 160)?.url ?? avatarArray[0].url;
-        }
+        playlistInfo.thumbnail = channelInfo.thumbnail;
+        playlistInfo.banner = channelInfo.banner;
       }
       else {
         throw new Error(`Could not extract playlist id from source code of ${req.query.q}`);

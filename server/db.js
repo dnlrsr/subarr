@@ -4,7 +4,15 @@ const Database = require('better-sqlite3');
 const dbPath = path.join(__dirname, 'youtubarr.db'); // Always use youtubarr.db from the server folder
 const db = new Database(dbPath);
 
-// Create tables if they don't exist
+// Migration: migrate old db schemas
+const existingColumns = db.prepare(`PRAGMA table_info(playlists);`).all();
+const columnNames = new Set(existingColumns.map(col => col.name));
+
+if (!columnNames.has('banner')) {
+  db.prepare(`ALTER TABLE playlists ADD COLUMN banner TEXT;`).run();
+}
+
+// Initialization: create tables if they don't exist
 db.exec(`
 CREATE TABLE IF NOT EXISTS playlists (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -16,6 +24,7 @@ CREATE TABLE IF NOT EXISTS playlists (
   regex_filter TEXT,
   last_checked TEXT,
   thumbnail TEXT,
+  banner TEXT,
   source TEXT DEFAULT 'manual'
 );
 

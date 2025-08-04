@@ -1,7 +1,7 @@
 const db = require('./db');
 const { parseVideosFromFeed } = require('./rssParser');
 const { getPostProcessors, runPostProcessor } = require('./postProcessors');
-const { fetchWithRetry } = require('./utils');
+const { fetchWithRetry, tryParseAdditionalChannelData } = require('./utils');
 
 function getSettings() {
   const rows = db.prepare('SELECT key, value FROM settings').all();
@@ -49,6 +49,7 @@ async function updateYtSubsPlaylists() {
     const data = await res.json();
 
     const fetchedSubs = data.subscriptions.map(sub => ({
+      channel_id: sub.snippet.resourceId.channelId, // This isn't part of the db item, but it will be used below to grab the banner, etc info for the channel
       playlist_id: sub.snippet.resourceId.channelId.replace(/^UC/, exclude_shorts ? 'UULF' : 'UU'), // Reference: other possible prefixes: https://stackoverflow.com/a/77816885
       title: sub.snippet.title,
       check_interval_minutes: 15, // Even though this is hard-coded, it needs to be defined here for the schedulePolling job
@@ -62,8 +63,8 @@ async function updateYtSubsPlaylists() {
     
     // Add or update subscribed playlists
     const insert = db.prepare(`
-      INSERT INTO playlists (playlist_id, title, author_name, author_uri, thumbnail, check_interval_minutes, regex_filter, source)
-      VALUES (?, ?, ?, ?, ?, 15, NULL, 'ytsubs.app')
+      INSERT INTO playlists (playlist_id, title, author_name, author_uri, thumbnail, banner, check_interval_minutes, regex_filter, source)
+      VALUES (?, ?, ?, ?, ?, ?, 15, NULL, 'ytsubs.app')
       ON CONFLICT(playlist_id) DO UPDATE SET
       title = excluded.title,
       author_name = excluded.author_name,
@@ -75,12 +76,15 @@ async function updateYtSubsPlaylists() {
     `);
       
     for (const sub of fetchedSubs) {
+      const channelInfo = await tryParseAdditionalChannelData(`https://www.youtube.com/channel/${sub.channel_id}`);
+
       insert.run(
         sub.playlist_id,
         sub.title,
         sub.author_name,
         sub.author_uri,
-        sub.thumbnail
+        sub.thumbnail,
+        channelInfo.banner
       ); //Todo: we should make sure this doesn't overwrite the existing interval check (if a user changes a sub's interval to 1 hour but then ytsubs is synced again and changes it back to 15min)
       
       // Create a polling job for the new subscription
