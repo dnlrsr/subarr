@@ -65,8 +65,9 @@ function SettingsPage() {
     }
   };
 
+  //Todo: something about this page has the *tiniest* scroll on mobile (like 2px)
   return (
-    <div>
+    <div style={{height: '100%'}}>
       <div style={{ display: 'flex', alignItems: 'center', padding: '0px 20px', gap: 10, backgroundColor: '#262626', height: 60 }}>
         {/* Todo: highlight button icon on color (maybe not red though?) */}
         <button
@@ -77,7 +78,7 @@ function SettingsPage() {
           <div style={{fontSize: 'small'}}>Save</div>
         </button>
       </div>
-      <div style={{padding: 30}}>
+      <div style={{display: 'flex', flexDirection: 'column', height: 'calc(100% - 120px)' /* Todo: not sure why this has to be 120 and not 60 */, padding: 30}}>
         <div style={{fontWeight: 'bold', fontSize: 'xx-large'}}>
           Settings
         </div>
@@ -131,6 +132,15 @@ function SettingsPage() {
           </p>
         )}
         <PostProcessorDialog editingItem={editingPostProcessor} onClose={() => setEditingPostProcessor(null)} onRefreshPostProcessors={() => refreshPostProcessors()}/>
+        <div style={{flexGrow: 1}}/>
+        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+          <a style={{height: 36}} href='https://ko-fi.com/E1E5RZJY' target='_blank' rel='noreferrer'>
+            <img height='36' style={{border: 0, height: 36}} src='https://storage.ko-fi.com/cdn/kofi6.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' />
+          </a>
+          <a href='https://github.com/derekantrican/youtubarr' target='_blank' rel='noreferrer'>
+            <i style={{height: 36, width: 36, fontSize: '36px', color: 'white', textAlign: 'center'}} className='bi bi-github'/>
+          </a>
+        </div>
       </div>
     </div>
   );
