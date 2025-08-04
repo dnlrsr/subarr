@@ -317,6 +317,10 @@ tbody a {
     display: none;
   }
 
+  .small-padding-mobile {
+    padding: 5px !important; /* Using !important to allow inline style to define the padding, but might want to avoid */
+  }
+
   .flex-column-mobile {
     flex-direction: column;
   }
