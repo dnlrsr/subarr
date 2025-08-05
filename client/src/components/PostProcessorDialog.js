@@ -48,7 +48,7 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
           'Content-Type': 'application/json'
         },
         body: `{
-  "link": "https://www.youtube.com/watch?v=[[video.video_id]]\",
+  "link": "https://www.youtube.com/watch?v=[[video.video_id]]",
   "title": "[[video.title]]",
   "cover": "[[video.thumbnail]]",
   "type": "video"
