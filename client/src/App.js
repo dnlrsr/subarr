@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink, useLocation, Link } from 'react-router-dom';
+import Markdown from 'react-markdown';
 import SubscriptionsPage from './pages/SubscriptionsPage';
 import AddPlaylistPage from './pages/AddPlaylistPage';
 import SettingsPage from './pages/SettingsPage';
 import PlaylistDetailsPage from './pages/PlaylistDetailsPage';
 import './App.css';
 import ActivityPage from './pages/ActivityPage';
+import { formatDistance } from 'date-fns';
+import DialogBase from './components/DialogBase';
 
 function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -13,9 +16,32 @@ function AppLayout() {
 
   const [searchTerm, setSearchTerm] = useState('');
 
+  const [currentVersion, setCurrentVersion] = useState(null);
+  const [newVersionInfo, setNewVersionInfo] = useState(null);
+  const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
+
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
+  
+  useEffect(() => {
+    async function checkForUpdate() {
+      const metaResponse = await fetch('/api/meta');
+      const currentVersionNumber = (await metaResponse.json()).versions.youtubarr;
+      setCurrentVersion(currentVersionNumber);
+
+      const githubResponse = await fetch('https://api.github.com/repos/derekantrican/youtubarr/releases');
+      const latestVersionInfo = (await githubResponse.json())[0];
+      const latestVersionNumber = Number(latestVersionInfo.tag_name);
+
+      if (currentVersionNumber < latestVersionNumber) {
+        setNewVersionInfo(latestVersionInfo);
+        setUpdateDialogOpen(true);
+      }
+    }
+
+    checkForUpdate();
+  }, []);
 
   return (
     <div className="app-layout">
@@ -72,6 +98,19 @@ function AppLayout() {
             <Route path="/playlist/:id" element={<PlaylistDetailsPage />} />
           </Routes>
         </main>
+        <DialogBase isOpen={updateDialogOpen} onClose={() => setUpdateDialogOpen(false)} title='Update available!'>
+            <div style={{display: 'flex'}}>
+              <div style={{minWidth: 80}}>{currentVersion} → {newVersionInfo?.tag_name}</div>
+              <div style={{marginLeft: 20, fontStyle: 'italic'}}>(Released: {newVersionInfo ? formatDistance(new Date(newVersionInfo.published_at), new Date(), { addSuffix: true }) : null})</div>
+            </div>
+            <Markdown components={{
+              p: ({node, ...props}) => (<p style={{overflowWrap: 'anywhere'}} {...props}/>),
+              code: ({node, ...props}) => (<code style={{backgroundColor: 'lightgray', color: 'black', padding: '2px 5px'}} {...props}/>),
+            }}>
+                {newVersionInfo?.body}
+            </Markdown>
+            <a style={{overflowWrap: 'anywhere'}} href={newVersionInfo?.html_url} target='_blank' rel='noreferrer'>{newVersionInfo?.html_url}</a>
+        </DialogBase>
       </div>
     </div>
   );

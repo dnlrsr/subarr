@@ -6,7 +6,7 @@ const path = require('path');
 const { parseVideosFromFeed } = require('./rssParser');
 const { schedulePolling, updateYtSubsPlaylists, removePolling } = require('./polling');
 const { getPostProcessors, runPostProcessor } = require('./postProcessors');
-const { tryParseAdditionalChannelData } = require('./utils');
+const { tryParseAdditionalChannelData, getMeta } = require('./utils');
 
 const playlists = db.prepare('SELECT * FROM playlists').all();
 for (const playlist of playlists) {
@@ -275,6 +275,10 @@ app.post('/api/postprocessors/test', async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
+
+app.get('/api/meta', (req, res) => {
+  res.json(getMeta());
+})
 
 
 if (process.env.NODE_ENV === 'production') { // In production, allow the express server to serve both the api & the client UI

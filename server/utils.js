@@ -41,4 +41,13 @@ async function tryParseAdditionalChannelData(url) {
   return channelInfo;
 }
 
-module.exports = { fetchWithRetry, tryParseAdditionalChannelData }
+function getMeta() {
+  return {
+    versions: {
+      youtubarr: 0.1,
+      node: process.version,
+    },
+  };
+}
+
+module.exports = { fetchWithRetry, tryParseAdditionalChannelData, getMeta }
