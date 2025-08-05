@@ -22,7 +22,6 @@ async function tryParseAdditionalChannelData(url) {
   const channelInfo = {};
 
   if (channelFeedMatches.length > 0 && channelFeedMatches[0][0]) {
-    console.log(`Successfully grabbed channel playlist id from source code of ${url}`);
     channelInfo.playlist_id = channelFeedMatches[0][0].match(/(UC|UU|PL|LL|FL)[\w-]{10,}/)[0].replace(/^UC/, 'UU');
   }
 

@@ -5,12 +5,12 @@ const dbPath = path.join(__dirname, 'youtubarr.db'); // Always use youtubarr.db 
 const db = new Database(dbPath);
 
 // Migration: migrate old db schemas
-const existingColumns = db.prepare(`PRAGMA table_info(playlists);`).all();
-const columnNames = new Set(existingColumns.map(col => col.name));
+// const existingColumns = db.prepare(`PRAGMA table_info(playlists);`).all();
+// const columnNames = new Set(existingColumns.map(col => col.name));
 
-if (!columnNames.has('banner')) {
-  db.prepare(`ALTER TABLE playlists ADD COLUMN banner TEXT;`).run();
-}
+// if (!columnNames.has('banner')) {
+//   db.prepare(`ALTER TABLE playlists ADD COLUMN banner TEXT;`).run();
+// }
 
 // Initialization: create tables if they don't exist
 db.exec(`

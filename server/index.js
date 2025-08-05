@@ -135,6 +135,7 @@ app.get('/api/search', async (req, res) => {
 
       const channelInfo = await tryParseAdditionalChannelData(req.query.q.startsWith('https://') ? req.query.q : `https://${req.query.q}`);
       if (channelInfo.playlist_id) {
+        console.log(`Successfully grabbed channel playlist id from source code of ${url}`);
         await parseVideosFromFeed(channelInfo.playlist_id, playlist => { // Todo: this will print a number of things to the server console output if it fails, so we should try to prevent that
           playlistInfo = playlist
         });
