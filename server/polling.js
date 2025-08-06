@@ -1,12 +1,7 @@
-const db = require('./db');
 const { parseVideosFromFeed } = require('./rssParser');
-const { getPostProcessors, runPostProcessor } = require('./postProcessors');
+const { runPostProcessor } = require('./postProcessors');
 const { fetchWithRetry, tryParseAdditionalChannelData } = require('./utils');
-
-function getSettings() {
-  const rows = db.prepare('SELECT key, value FROM settings').all();
-  return Object.fromEntries(rows.map(row => [row.key, row.value]));
-}
+const { getPostProcessors, getSettings, insertActivity, updatePlaylistLastChecked, insertPlaylistYTSubs, getPlaylists, deletePlaylist, getYTSubsPlaylists } = require('./dbQueries');
 
 const pollingJobs = new Map(); // Map of playlistId -> { intervalId, intervalMinutes, regex }
 
@@ -37,7 +32,7 @@ function removePolling(playlist_id) {
 }
 
 async function updateYtSubsPlaylists() {
-  const settings = getSettings();
+  const settings = Object.fromEntries(getSettings().map(row => [row.key, row.value]));
   const ytsubs_apikey = settings.ytsubs_apikey;
   const exclude_shorts = (settings.exclude_shorts ?? 'false') === 'true'; // SQLite can't store bool
 
@@ -59,39 +54,17 @@ async function updateYtSubsPlaylists() {
     }));
     const fetchedIds = new Set(fetchedSubs.map(s => s.playlist_id));
 
-    const existing = db.prepare(`SELECT * FROM playlists WHERE source = 'ytsubs.app'`).all();
+    const existing = getYTSubsPlaylists();
     
-    // Add or update subscribed playlists
-    const insert = db.prepare(`
-      INSERT INTO playlists (playlist_id, title, author_name, author_uri, thumbnail, banner, check_interval_minutes, regex_filter, source)
-      VALUES (?, ?, ?, ?, ?, ?, 15, NULL, 'ytsubs.app')
-      ON CONFLICT(playlist_id) DO UPDATE SET
-      title = excluded.title,
-      author_name = excluded.author_name,
-      author_uri = excluded.author_uri,
-      thumbnail = excluded.thumbnail,
-      check_interval_minutes = excluded.check_interval_minutes,
-      regex_filter = excluded.regex_filter,
-      source = excluded.source
-    `);
-      
+    // Add or update subscribed playlists      
     for (const sub of fetchedSubs) {
       const channelInfo = await tryParseAdditionalChannelData(`https://www.youtube.com/channel/${sub.channel_id}`);
-
-      insert.run(
-        sub.playlist_id,
-        sub.title,
-        sub.author_name,
-        sub.author_uri,
-        sub.thumbnail,
-        channelInfo.banner
-      ); //Todo: we should make sure this doesn't overwrite the existing interval check (if a user changes a sub's interval to 1 hour but then ytsubs is synced again and changes it back to 15min)
+      insertPlaylistYTSubs(sub, channelInfo); //Todo: we should make sure this doesn't overwrite the existing interval check (if a user changes a sub's interval to 1 hour but then ytsubs is synced again and changes it back to 15min)
       
       // Create a polling job for the new subscription
       if (!pollingJobs.has(sub.playlist_id)) {
         console.log(`[YTSubs.app] Added '${sub.title}'`);
-        db.prepare(`INSERT INTO activity (datetime, playlist_id, title, url, message, icon) VALUES (?, ?, ?, ?, ?, ?)`)
-        .run(new Date().toISOString(), playlist.playlist_id, sub.title, `https://www.youtube.com/playlist?list=${sub.playlist_id}`, 'Playlist added (YTSubs.app)', 'view-list');
+        insertActivity(playlist.playlist_id, sub.title, `https://www.youtube.com/playlist?list=${sub.playlist_id}`, 'Playlist added (YTSubs.app)', 'view-list');
         
         await pollPlaylist(sub, false); // Initial request to get videos from feed (but don't alert for new videos for new subs)
 
@@ -100,15 +73,13 @@ async function updateYtSubsPlaylists() {
     }
       
     // Remove unsubscribed playlists
-    const remove = db.prepare(`DELETE FROM playlists WHERE playlist_id = ?`);
     for (const existingPlaylist of existing) {
       if (!fetchedIds.has(existingPlaylist.playlist_id)) {
         removePolling(existingPlaylist.playlist_id)
-        remove.run(existingPlaylist.playlist_id);
+        deletePlaylist(existingPlaylist.playlist_id)
 
         console.log(`[YTSubs.app] Removed '${existingPlaylist.title}' (${existingPlaylist.playlist_id})`);
-        db.prepare(`INSERT INTO activity (datetime, playlist_id, title, url, message, icon) VALUES (?, ?, ?, ?, ?, ?)`)
-        .run(new Date().toISOString(), existingPlaylist.playlist_id, existingPlaylist.title, `https://www.youtube.com/playlist?list=${existingPlaylist.playlist_id}`, 'Playlist removed (YTSubs.app)', 'trash');
+        insertActivity(existingPlaylist.playlist_id, existingPlaylist.title, `https://www.youtube.com/playlist?list=${existingPlaylist.playlist_id}`, 'Playlist removed (YTSubs.app)', 'trash');
       }
     }
   }
@@ -128,7 +99,7 @@ async function pollPlaylist(playlist, alertForNewVideos = true) {
   console.log(`[Poll] Checking: ${playlist.title} (${playlist.playlist_id})`);
 
   try {
-    const settings = getSettings();
+    const settings = Object.fromEntries(getSettings().map(row => [row.key, row.value]));
     const exclude_shorts = (settings.exclude_shorts ?? 'false') === 'true'; // SQLite can't store bool
 
     await parseVideosFromFeed(playlist.playlist_id, null, async (video, alreadyExists) => {
@@ -147,15 +118,13 @@ async function pollPlaylist(playlist, alertForNewVideos = true) {
       }
 
       console.log(`New video found: ${video.title}`);
-      db.prepare(`INSERT INTO activity (datetime, playlist_id, title, url, message, icon) VALUES (?, ?, ?, ?, ?, ?)`)
-      .run(new Date().toISOString(), playlist.playlist_id, video.title, `https://www.youtube.com/watch?v=${video.video_id}`, 'New video found!', 'camera-video-fill');
+      insertActivity(playlist.playlist_id, video.title, `https://www.youtube.com/watch?v=${video.video_id}`, 'New video found!', 'camera-video-fill');
 
       for (const postProcessor of getPostProcessors()) {
         try {
           await runPostProcessor(postProcessor.type, postProcessor.target, postProcessor.data, { video, playlist }); // Todo: for OOP & polymorphism, maybe we should instead be calling postProcessor.run() or whatever
   
-          db.prepare(`INSERT INTO activity (datetime, playlist_id, title, url, message, icon) VALUES (?, ?, ?, ?, ?, ?)`)
-          .run(new Date().toISOString(), playlist.playlist_id, video.title, null, `Post processor '${postProcessor.name}' run`, postProcessor.type === 'webhook' ? 'broadcast' : 'cpu-fill');
+          insertActivity(playlist.playlist_id, video.title, null, `Post processor '${postProcessor.name}' run`, postProcessor.type === 'webhook' ? 'broadcast' : 'cpu-fill');
         }
         catch (error) {
           console.error(`Error running post processor '${postProcessor.name}':`, error); // Todo: should an error like this become an 'activity item' as well? (Sonarr would probably call this a "health issue")
@@ -163,8 +132,7 @@ async function pollPlaylist(playlist, alertForNewVideos = true) {
       }
     });
 
-    db.prepare(`UPDATE playlists SET last_checked = ? WHERE playlist_id = ?`)
-      .run(new Date().toISOString(), playlist.playlist_id);
+    updatePlaylistLastChecked(playlist.playlist_id, new Date().toISOString());
   }
   catch (err) {
     console.error(`Failed to poll ${playlist.title}:`, err); // Todo: mark as 'health issue'? (eg a 404 will be thrown when a playlist is deleted)

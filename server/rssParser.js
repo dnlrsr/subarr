@@ -1,5 +1,5 @@
-const db = require('./db');
 const Parser = require('rss-parser');
+const { insertVideo } = require('./dbQueries');
 
 const parser = new Parser({
   customFields: {
@@ -47,12 +47,6 @@ async function parseVideosFromFeed(playlistId, playlistInfoCallback, videoInfoCa
     });
   }
 
-  // Insert videos
-  const insertVideo = db.prepare(`
-    INSERT OR IGNORE INTO videos (playlist_id, video_id, title, published_at, thumbnail)
-    VALUES (?, ?, ?, ?, ?)
-  `); // "OR IGNORE" will ignore conflicts (we could also update the item on conflicts, but we'll handle that elsewhere)
-
   for (const item of feed.items) {
     const videoId = item.id?.split(':')?.[2];
     const videoTitle = item.title || 'Untitled';
@@ -61,7 +55,7 @@ async function parseVideosFromFeed(playlistId, playlistInfoCallback, videoInfoCa
 
     let alreadyExists = false;
     if (videoId) {
-      const result = insertVideo.run(playlistId, videoId, videoTitle, publishedAt, videoThumbnail);
+      const result = insertVideo(playlistId, videoId, videoTitle, publishedAt, videoThumbnail);
       alreadyExists = result.changes === 0;
     }
 

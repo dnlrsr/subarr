@@ -1,19 +1,33 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const db = require('./db');
 const path = require('path');
 const { parseVideosFromFeed } = require('./rssParser');
 const { schedulePolling, updateYtSubsPlaylists, removePolling } = require('./polling');
-const { getPostProcessors, runPostProcessor } = require('./postProcessors');
+const { runPostProcessor } = require('./postProcessors');
 const { tryParseAdditionalChannelData, getMeta } = require('./utils');
+const {
+  getPlaylists,
+  getSettings,
+  insertPlaylistManual,
+  getPlaylist,
+  insertActivity,
+  updatePlaylist,
+  deletePlaylist,
+  deleteVideosForPlaylist,
+  getActivitiesCount,
+  getActivities,
+  insertSettings,
+  getPostProcessors,
+  insertPostProcessor,
+  deletePostProcessor,
+  getVideosForPlaylist
+} = require('./dbQueries');
 
-const playlists = db.prepare('SELECT * FROM playlists').all();
+const playlists = getPlaylists();
 for (const playlist of playlists) {
   schedulePolling(playlist);
 }
-
-//Todo: I should eventually move all db queries to the db.js file
 
 // Schedule YTSubs.app polling
 setInterval(() => {
@@ -26,8 +40,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/api/playlists', (req, res) => {
-  const rows = db.prepare('SELECT * FROM playlists').all();
-  res.json(rows);
+  res.json(getPlaylists());
 });
 
 app.post('/api/playlists', async (req, res) => {
@@ -36,7 +49,7 @@ app.post('/api/playlists', async (req, res) => {
     return res.status(400).json({ error: 'Invalid playlist ID' });
   }
 
-  const settings = Object.fromEntries(db.prepare('SELECT key, value FROM settings').all().map(row => [row.key, row.value]));
+  const settings = Object.fromEntries(getSettings().map(row => [row.key, row.value]));
   const exclude_shorts = (settings.exclude_shorts ?? 'false') === 'true'; // SQLite can't store bool
   if (exclude_shorts) {
     playlistId = playlistId.replace(/^^UU(?!LF)/, 'UULF'); // Reference: other possible prefixes: https://stackoverflow.com/a/77816885
@@ -51,19 +64,13 @@ app.post('/api/playlists', async (req, res) => {
         playlist.banner = channelInfo.banner;
       }
 
-      const stmt = db.prepare(`
-        INSERT INTO playlists (playlist_id, author_name, author_uri, title, check_interval_minutes, regex_filter, last_checked, thumbnail, banner, source)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'manual')
-      `);
-  
-      const info = stmt.run(playlistId, playlist.author_name, playlist.author_uri, playlist.title, 60, '', null, playlist.thumbnail, playlist.banner);
+      const info = insertPlaylistManual(playlistId, playlist);
       playlistDbId = info.lastInsertRowid;
 
-      db.prepare(`INSERT INTO activity (datetime, playlist_id, title, url, message, icon) VALUES (?, ?, ?, ?, ?, ?)`)
-      .run(new Date().toISOString(), playlistId, playlist.title, `https://www.youtube.com/playlist?list=${playlistId}`, 'Playlist added (manual)', 'view-list');
+      insertActivity(playlistId, playlist.title, `https://www.youtube.com/playlist?list=${playlistId}`, 'Playlist added (manual)', 'view-list');
   
       // Fetch newly added playlist to pass into schedulePolling
-      const newPlaylist = db.prepare('SELECT * FROM playlists WHERE playlist_id = ?').get(playlistId);
+      const newPlaylist = getPlaylist(playlistDbId);
       schedulePolling(newPlaylist);
     });
 
@@ -80,41 +87,36 @@ app.post('/api/playlists', async (req, res) => {
 });
 
 app.get('/api/playlists/:id', (req, res) => {
-  const playlist = db.prepare('SELECT * FROM playlists WHERE id = ?').get(req.params.id);
-  if (!playlist) return res.status(404).json({ error: 'Not found' });
+  const playlist = getPlaylist(req.params.id);
+  if (!playlist)
+    return res.status(404).json({ error: 'Not found' });
 
-  const videos = db.prepare('SELECT * FROM videos WHERE playlist_id = ? ORDER BY published_at DESC').all(playlist.playlist_id);
+  const videos = getVideosForPlaylist(playlist.playlist_id);
   res.json({ playlist, videos });
 });
 
 app.put('/api/playlists/:id/settings', (req, res) => {
   const { check_interval_minutes, regex_filter } = req.body;
-  const stmt = db.prepare(`
-    UPDATE playlists
-    SET check_interval_minutes = ?, regex_filter = ?
-    WHERE id = ?
-  `);
-  stmt.run(check_interval_minutes, regex_filter, req.params.id);
+  updatePlaylist(req.params.id, check_interval_minutes, regex_filter);
 
-  const updatedPlaylist = db.prepare('SELECT * FROM playlists WHERE id = ?').get(req.params.id);
+  const updatedPlaylist = getPlaylist(req.params.id);
   schedulePolling(updatedPlaylist); // reschedules with updated values
 
   res.json({ success: true });
 });
 
 app.delete('/api/playlists/:id', (req, res) => {
-  const playlist = db.prepare('SELECT * FROM playlists WHERE id = ?').get(req.params.id);
+  const playlist = getPlaylist(req.params.id);
   if (!playlist) {
     return res.status(404).json({ error: 'Not found' });
   }
 
   removePolling(playlist.playlist_id);
 
-  db.prepare('DELETE FROM playlists WHERE id = ?').run(req.params.id);
-  db.prepare('DELETE FROM videos WHERE playlist_id = ?').run(playlist.playlist_id);
+  deletePlaylist(req.params.id);
+  deleteVideosForPlaylist(playlist.playlist_id);
 
-  db.prepare(`INSERT INTO activity (datetime, playlist_id, title, url, message, icon) VALUES (?, ?, ?, ?, ?, ?)`)
-  .run(new Date().toISOString(), playlist.id, playlist.title, `https://www.youtube.com/playlist?list=${playlist.id}`, 'Playlist removed (manual)', 'trash');
+  insertActivity(playlist.playlist_id, playlist.title, `https://www.youtube.com/playlist?list=${playlist.id}`, 'Playlist removed (manual)', 'trash');
 
   res.json({ success: true });
 });
@@ -163,7 +165,7 @@ app.get('/api/activity/:page', (req, res) => {
   const pageSize = 20;
 
   // Total count
-  const totalCountRow = db.prepare(`SELECT COUNT(*) as count FROM activity`).get();
+  const totalCountRow = getActivitiesCount();
   const totalPages = Math.ceil(totalCountRow.count / pageSize);
 
   // Clamp requested page between 1 and totalPages
@@ -172,13 +174,7 @@ app.get('/api/activity/:page', (req, res) => {
   const offset = (page - 1) * pageSize;
 
   // Paged result with playlist title
-  const activities = db.prepare(`
-    SELECT a.id, a.datetime, a.playlist_id, a.title, a.url, a.message, a.icon, p.id AS playlist_db_id, p.title AS playlist_title
-    FROM activity a
-    LEFT JOIN playlists p ON a.playlist_id = p.playlist_id
-    ORDER BY a.id DESC
-    LIMIT ? OFFSET ?
-  `).all(pageSize, offset);
+  const activities = getActivities(pageSize, offset);
 
   res.json({
     page,
@@ -187,9 +183,10 @@ app.get('/api/activity/:page', (req, res) => {
   });
 });
 
+// Sonarr general settings (apikey, urlbase, port, etc) are stored in C:\ProgramData\Sonarr\config.xml. Maybe we should do the same for our .env or something
+
 app.get('/api/settings', (req, res) => {
-  const rows = db.prepare('SELECT key, value FROM settings').all();
-  const settings = Object.fromEntries(rows.map(row => [row.key, row.value]));
+  const settings = Object.fromEntries(getSettings().map(row => [row.key, row.value]));
   res.json(settings);
 });
 
@@ -200,22 +197,11 @@ app.put('/api/settings', (req, res) => {
     return res.status(400).json({ error: 'Request body must be an array' });
   }
 
-  const stmt = db.prepare(`
-    INSERT INTO settings (key, value)
-    VALUES (?, ?)
-    ON CONFLICT(key) DO UPDATE SET value = excluded.value
-  `);
-
-  const insertMany = db.transaction((settingsArray) => {
-    for (const { key, value } of settingsArray) {
-      stmt.run(key, value);
-    }
-  });
-
   try {
-    insertMany(settings);
+    insertSettings(settings);
     res.json({ success: true });
-  } catch (err) {
+  }
+  catch (err) {
     console.error('Failed to update settings:', err);
     res.status(500).json({ error: 'Failed to update settings' });
   }
@@ -230,11 +216,7 @@ app.post('/api/postprocessors', (req, res) => {
   if (!name || !type || !target || !data)
     return res.status(400).json({ error: 'Missing fields' });
 
-  const stmt = db.prepare(`
-    INSERT INTO post_processors (name, type, target, data)
-    VALUES (?, ?, ?, ?)
-  `);
-  const result = stmt.run(name, type, target, data);
+  const result = insertPostProcessor(name, type, target, data);
 
   res.status(201).json({ success: true, id: result.lastInsertRowid });
 });
@@ -244,9 +226,7 @@ app.put('/api/postprocessors/:id', (req, res) => {
   if (!name || !type || !target || !data)
     return res.status(400).json({ error: 'Missing fields' });
 
-  const result = db.prepare(`
-    UPDATE post_processors SET name = ?, type = ?, target = ?, data = ? WHERE id = ?
-  `).run(name, type, target, data, req.params.id);
+  const result = updatePostProcessor(name, type, target, data, req.params.id);
 
   if (result.changes === 0)
     return res.status(404).json({ error: 'Not found' });
@@ -255,7 +235,7 @@ app.put('/api/postprocessors/:id', (req, res) => {
 });
 
 app.delete('/api/postprocessors/:id', (req, res) => {
-  const result = db.prepare(`DELETE FROM post_processors WHERE id = ?`).run(req.params.id);
+  const result = deletePostProcessor(req.params.id);
   if (result.changes === 0)
     return res.status(404).json({ error: 'Not found' });
   

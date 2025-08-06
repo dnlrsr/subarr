@@ -1,4 +1,3 @@
-const db = require('./db');
 const { fetchWithRetry } = require('./utils');
 
 /* Notes:
@@ -10,11 +9,6 @@ const { fetchWithRetry } = require('./utils');
     which doesn't create a shell
 
 */
-
-function getPostProcessors() {
-  const rows = db.prepare('SELECT * FROM post_processors').all();
-  return rows;
-}
 
 async function runPostProcessor(type, target, data, videoInfo) {
   if (type === 'webhook') {
@@ -82,4 +76,4 @@ function replaceVariables(text, videoInfo, urlsafe = false) {
 }
 
 
-module.exports = { getPostProcessors, runPostProcessor };
+module.exports = { runPostProcessor };
