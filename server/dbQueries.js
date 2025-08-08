@@ -126,8 +126,6 @@ function getActivitiesCount() {
 }
 
 function getActivities(pageSize, offset) {
-  // Todo: NOTE that the JOIN will not work if the playlist has been removed from the database (meaning that activity items - even from days ago - will now be broken)
-  //   We should move the JOIN part to the insertActivity call and modify the activity schema so this data is permanently stored
   return db.prepare(`
     SELECT a.id, a.datetime, a.playlist_id, a.title, a.url, a.message, a.icon, p.id AS playlist_db_id, p.title AS playlist_title
     FROM activity a
