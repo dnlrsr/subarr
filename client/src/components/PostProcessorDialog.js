@@ -301,12 +301,10 @@ function PostProcessorDataUI({ postProcessorData, type, updateData, showVariable
         <div style={{minWidth: 175}}>Headers</div>
         <div style={{display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'end'}}>
           {postProcessorData.headers?.map((header, index) =>
-            <div key={index} style={{display: 'flex', width: '100%'}}>
-              <input type='text' style={{borderRadius: '4px 0px 0px 4px', marginTop: 0 /* Todo: handle in CSS */}}
-                value={header.name}
+            <div className='pairedInput' key={index} style={{display: 'flex', width: '100%'}}>
+              <input type='text' value={header.name}
                 onChange={e => updateData({...postProcessorData, headers: postProcessorData.headers.map((h, i) => i === index ? {name: e.target.value, value: h.value} : h)})}/>
-              <input type='text' style={{borderRadius: '0px 4px 4px 0px', marginTop: 0 /* Todo: handle in CSS */}}
-                value={header.value}
+              <input type='text' value={header.value}
                 onChange={e => updateData({...postProcessorData, headers: postProcessorData.headers.map((h, i) => i === index ? {name: h.name, value: e.target.value} : h)})}/>
               <button style={{backgroundColor: '#f04b4b', borderRadius: 5, width: 40, margin: '5px 0px 5px 5px'}}
                 onClick={() => updateData({...postProcessorData, headers: postProcessorData.headers.filter((h, i) => i !== index)})}>

@@ -178,6 +178,16 @@ tbody a {
   margin-top: 6px;
 }
 
+div.pairedInput>input:nth-child(1) {
+  border-radius: 4px 0px 0px 4px;
+  margin-top: 0px;
+}
+
+div.pairedInput>input:nth-child(2) {
+  border-radius: 0px 4px 4px 0px;
+  margin-top: 0px;
+}
+
 .container {
   display: block;
   position: relative;
