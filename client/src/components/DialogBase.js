@@ -1,7 +1,19 @@
+import { useEffect, useRef } from "react";
+
 function DialogBase({isOpen, onClose, title, children, buttons, dialogStyle, childrenStyle}) {
-  // Todo: this currently still allows the user to interact with the app outside of the dialog
+  const dialogRef = useRef(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      dialogRef.current?.showModal();
+    }
+    else {
+      dialogRef.current?.close();
+    }
+  }, [isOpen]);
+
   return (
-    <dialog open={isOpen} onClose={onClose}
+    <dialog ref={dialogRef} onClose={onClose}
       style={{width: 'min(720px, 100vw - 20px)', maxHeight: '90vh', borderRadius: 6, padding: 0, borderWidth: 1, color: 'inherit', overflow: 'hidden',
               position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', ...dialogStyle}}>
       <div style={{display: 'flex', flexDirection: 'column', backgroundColor: '#2a2a2a', width: '100%', height: '100%', maxHeight: 'inherit'}}>
