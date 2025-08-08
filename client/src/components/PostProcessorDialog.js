@@ -212,68 +212,70 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
   };
 
   return (
-    <DialogBase isOpen={postProcessor !== null} onClose={() => handleCancel()} title={`Edit Post Processor: ${postProcessor?.name || 'New'}`}
-      buttons={
-      <>
-        <button onClick={() => handleDelete()} style={{backgroundColor: '#f04b4b', fontSize: 'medium', padding: '6px 16px', borderRadius: 4, marginRight: 'auto'}}>Delete</button>
-        <button onClick={() => handleTest()} style={{backgroundColor: '#393f45', fontSize: 'medium', padding: '6px 16px', borderRadius: 4, marginLeft: 10}}>Test</button>
-        <button onClick={() => handleCancel()} style={{backgroundColor: '#393f45', fontSize: 'medium', padding: '6px 16px', borderRadius: 4, marginLeft: 10}}>Cancel</button>
-        <button onClick={() => handleSave()} style={{backgroundColor: '#393f45', fontSize: 'medium', padding: '6px 16px', borderRadius: 4, marginLeft: 10}}>Save</button>
-      </>}
-    >
-      <div className='setting flex-column-mobile'>
-        <div style={{minWidth: 175}}>Name</div>
-        <input type="text"
-          value={postProcessor?.name}
-          onChange={e => setPostProcessor({...postProcessor, name: e.target.value})}
-        />
-      </div>
-      <div className='setting flex-column-mobile'>
-        <div style={{minWidth: 175}}>Apply template</div>
-        <div style={{display: 'flex', width: '100%'}}>
+    <div>
+      <DialogBase isOpen={postProcessor !== null} onClose={() => handleCancel()} title={`Edit Post Processor: ${postProcessor?.name || 'New'}`}
+        buttons={
+        <>
+          <button onClick={() => handleDelete()} style={{backgroundColor: '#f04b4b', fontSize: 'medium', padding: '6px 16px', borderRadius: 4, marginRight: 'auto'}}>Delete</button>
+          <button onClick={() => handleTest()} style={{backgroundColor: '#393f45', fontSize: 'medium', padding: '6px 16px', borderRadius: 4, marginLeft: 10}}>Test</button>
+          <button onClick={() => handleCancel()} style={{backgroundColor: '#393f45', fontSize: 'medium', padding: '6px 16px', borderRadius: 4, marginLeft: 10}}>Cancel</button>
+          <button onClick={() => handleSave()} style={{backgroundColor: '#393f45', fontSize: 'medium', padding: '6px 16px', borderRadius: 4, marginLeft: 10}}>Save</button>
+        </>}
+      >
+        <div className='setting flex-column-mobile'>
+          <div style={{minWidth: 175}}>Name</div>
+          <input type="text"
+            value={postProcessor?.name}
+            onChange={e => setPostProcessor({...postProcessor, name: e.target.value})}
+          />
+        </div>
+        <div className='setting flex-column-mobile'>
+          <div style={{minWidth: 175}}>Apply template</div>
+          <div style={{display: 'flex', width: '100%'}}>
+            <select
+              style={{marginTop: 0}}
+              value={selectedTemplate}
+              onChange={e => setSelectedTemplate(e.target.value)}>
+              {[''].concat(Object.keys(templates)).map(template =>
+                <option key={template} value={template}>{template}</option>
+              )}
+            </select>
+            <button style={{backgroundColor: 'green', marginLeft: 10, borderRadius: 5, width: 40}}
+              onClick={() => applyTemplate(selectedTemplate)}>
+              <i style={{fontSize: 'x-large'}} className="bi bi-check"/>
+            </button>
+          </div>
+        </div>
+        <div className='setting flex-column-mobile'>
+          <div style={{minWidth: 175}}>Type</div>
           <select
-            style={{marginTop: 0}}
-            value={selectedTemplate}
-            onChange={e => setSelectedTemplate(e.target.value)}>
-            {[''].concat(Object.keys(templates)).map(template =>
-              <option key={template} value={template}>{template}</option>
+            value={postProcessor?.type}
+            onChange={e => setPostProcessor({...postProcessor, type: e.target.value})}>
+            {postProcessorTypes.map(type =>
+              <option key={type} value={type}>{type}</option>
             )}
           </select>
-          <button style={{backgroundColor: 'green', marginLeft: 10, borderRadius: 5, width: 40}}
-            onClick={() => applyTemplate(selectedTemplate)}>
-            <i style={{fontSize: 'x-large'}} className="bi bi-check"/>
-          </button>
         </div>
-      </div>
-      <div className='setting flex-column-mobile'>
-        <div style={{minWidth: 175}}>Type</div>
-        <select
-          value={postProcessor?.type}
-          onChange={e => setPostProcessor({...postProcessor, type: e.target.value})}>
-          {postProcessorTypes.map(type =>
-            <option key={type} value={type}>{type}</option>
-          )}
-        </select>
-      </div>
-      <div className='setting flex-column-mobile'>
-        <div style={{minWidth: 175}}>{postProcessor?.type === 'webhook' ? 'URL' : 'File path'}</div>
-        <input type="text"
-          value={postProcessor?.target}
-          onChange={e => setPostProcessor({...postProcessor, target: e.target.value})}
-        />
-      </div>
-      <PostProcessorDataUI 
-        postProcessorData={postProcessorData}
-        type={postProcessor?.type}
-        updateData={val => setPostProcessorData(val)}
-        showVariablesDialog={() => setIsVariablesDialogOpen(true)}/>
-      {message && (
-        <p style={{ marginTop: 10, marginBottom: 0, color: 'red' }}>
-          {message}{/* Todo: this message might be off the screen for mobile or small screens (if the dialog body is scrolled up) */}
-        </p>
-      )}
+        <div className='setting flex-column-mobile'>
+          <div style={{minWidth: 175}}>{postProcessor?.type === 'webhook' ? 'URL' : 'File path'}</div>
+          <input type="text"
+            value={postProcessor?.target}
+            onChange={e => setPostProcessor({...postProcessor, target: e.target.value})}
+          />
+        </div>
+        <PostProcessorDataUI 
+          postProcessorData={postProcessorData}
+          type={postProcessor?.type}
+          updateData={val => setPostProcessorData(val)}
+          showVariablesDialog={() => setIsVariablesDialogOpen(true)}/>
+        {message && (
+          <p style={{ marginTop: 10, marginBottom: 0, color: 'red' }}>
+            {message}{/* Todo: this message might be off the screen for mobile or small screens (if the dialog body is scrolled up) */}
+          </p>
+        )}
+      </DialogBase>
       <VariablesDialog isOpen={isVariablesDialogOpen} onClose={() => setIsVariablesDialogOpen(false)}/>
-    </DialogBase>
+    </div>
   );
 }
 
