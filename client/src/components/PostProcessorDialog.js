@@ -1,5 +1,6 @@
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { getErrorResponse } from "../utils/fetchUtils";
+import DialogBase from "./DialogBase";
 
 function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
   const [postProcessor, setPostProcessor] = useState(null);
@@ -76,14 +77,11 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
         ...parsedData,
         headers: Object.entries(parsedData.headers || {}).map(([name, value]) => ({ name, value })),
       });
-
-      dialogRef.current?.showModal();
     }
     else {
       setPostProcessor(null);
       setPostProcessorData(null);
       setMessage(null);
-      dialogRef.current?.close();
     }
   }, [editingItem]);
 
@@ -213,79 +211,69 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
     }
   };
 
-  const dialogRef = useRef();
-
   return (
-    <dialog ref={dialogRef} style={{width: 'min(720px, 100vw - 20px)', maxHeight: '90vh', borderRadius: 6, padding: 0, borderWidth: 1, color: 'inherit', overflow: 'hidden'}}>
-      <div style={{display: 'flex', flexDirection: 'column', backgroundColor: '#2a2a2a', width: '100%', height: '100%', maxHeight: 'inherit'}}>
-        <button style={{position: 'absolute', top: 0, right: 0, width: 60, height: 60}} onClick={() => handleCancel()}>
-          <i style={{fontSize: 'xx-large'}} className="bi bi-x"/>
-        </button>
-        <h3 style={{padding: '15px 50px 15px 30px', borderBottom: '1px solid grey', margin: 0}}>Edit Post Processor: {postProcessor?.name || 'New'}</h3>
-        <div style={{padding: 30, flex: 1, overflowY: 'auto', minHeight: 0}}>
-          <div className='setting flex-column-mobile'>
-            <div style={{minWidth: 175}}>Name</div>
-            <input type="text"
-              value={postProcessor?.name}
-              onChange={e => setPostProcessor({...postProcessor, name: e.target.value})}
-            />
-          </div>
-          <div className='setting flex-column-mobile'>
-            <div style={{minWidth: 175}}>Apply template</div>
-            <div style={{display: 'flex', width: '100%'}}>
-              <select
-                style={{marginTop: 0}}
-                value={selectedTemplate}
-                onChange={e => setSelectedTemplate(e.target.value)}>
-                {[''].concat(Object.keys(templates)).map(template =>
-                  <option key={template} value={template}>{template}</option>
-                )}
-              </select>
-              <button style={{backgroundColor: 'green', marginLeft: 10, borderRadius: 5, width: 40}}
-                onClick={() => applyTemplate(selectedTemplate)}>
-                <i style={{fontSize: 'x-large'}} className="bi bi-check"/>
-              </button>
-            </div>
-          </div>
-          <div className='setting flex-column-mobile'>
-            <div style={{minWidth: 175}}>Type</div>
-            <select
-              value={postProcessor?.type}
-              onChange={e => setPostProcessor({...postProcessor, type: e.target.value})}>
-              {postProcessorTypes.map(type =>
-                <option key={type} value={type}>{type}</option>
-              )}
-            </select>
-          </div>
-          <div className='setting flex-column-mobile'>
-            <div style={{minWidth: 175}}>{postProcessor?.type === 'webhook' ? 'URL' : 'File path'}</div>
-            <input type="text"
-              value={postProcessor?.target}
-              onChange={e => setPostProcessor({...postProcessor, target: e.target.value})}
-            />
-          </div>
-          <PostProcessorDataUI 
-            postProcessorData={postProcessorData}
-            type={postProcessor?.type}
-            updateData={val => setPostProcessorData(val)}
-            showVariablesDialog={() => setIsVariablesDialogOpen(true)}/>
-          {message && (
-            <p style={{ marginTop: 10, marginBottom: 0, color: 'red' }}>
-              {message}{/* Todo: this message might be off the screen for mobile or small screens (if the dialog body is scrolled up) */}
-            </p>
-          )}
-        </div>
-        <div style={{padding: '15px 30px', display: 'flex'}}>
-          {/* Todo: it looks like these buttons are inheriting "empty button" styles from elsewhere in the app - I should separate those with a class or something better*/}
-          {/* Todo: need button hover indicator */}
-          <button onClick={() => handleDelete()} style={{backgroundColor: '#f04b4b', fontSize: 'medium', padding: '6px 16px', borderRadius: 4, marginRight: 'auto'}}>Delete</button>
-          <button onClick={() => handleTest()} style={{backgroundColor: '#393f45', fontSize: 'medium', padding: '6px 16px', borderRadius: 4, marginLeft: 10}}>Test</button>
-          <button onClick={() => handleCancel()} style={{backgroundColor: '#393f45', fontSize: 'medium', padding: '6px 16px', borderRadius: 4, marginLeft: 10}}>Cancel</button>
-          <button onClick={() => handleSave()} style={{backgroundColor: '#393f45', fontSize: 'medium', padding: '6px 16px', borderRadius: 4, marginLeft: 10}}>Save</button>
+    <DialogBase isOpen={postProcessor !== null} onClose={() => handleCancel()} title={`Edit Post Processor: ${postProcessor?.name || 'New'}`}
+      buttons={
+      <>
+        <button onClick={() => handleDelete()} style={{backgroundColor: '#f04b4b', fontSize: 'medium', padding: '6px 16px', borderRadius: 4, marginRight: 'auto'}}>Delete</button>
+        <button onClick={() => handleTest()} style={{backgroundColor: '#393f45', fontSize: 'medium', padding: '6px 16px', borderRadius: 4, marginLeft: 10}}>Test</button>
+        <button onClick={() => handleCancel()} style={{backgroundColor: '#393f45', fontSize: 'medium', padding: '6px 16px', borderRadius: 4, marginLeft: 10}}>Cancel</button>
+        <button onClick={() => handleSave()} style={{backgroundColor: '#393f45', fontSize: 'medium', padding: '6px 16px', borderRadius: 4, marginLeft: 10}}>Save</button>
+      </>}
+    >
+      <div className='setting flex-column-mobile'>
+        <div style={{minWidth: 175}}>Name</div>
+        <input type="text"
+          value={postProcessor?.name}
+          onChange={e => setPostProcessor({...postProcessor, name: e.target.value})}
+        />
+      </div>
+      <div className='setting flex-column-mobile'>
+        <div style={{minWidth: 175}}>Apply template</div>
+        <div style={{display: 'flex', width: '100%'}}>
+          <select
+            style={{marginTop: 0}}
+            value={selectedTemplate}
+            onChange={e => setSelectedTemplate(e.target.value)}>
+            {[''].concat(Object.keys(templates)).map(template =>
+              <option key={template} value={template}>{template}</option>
+            )}
+          </select>
+          <button style={{backgroundColor: 'green', marginLeft: 10, borderRadius: 5, width: 40}}
+            onClick={() => applyTemplate(selectedTemplate)}>
+            <i style={{fontSize: 'x-large'}} className="bi bi-check"/>
+          </button>
         </div>
       </div>
+      <div className='setting flex-column-mobile'>
+        <div style={{minWidth: 175}}>Type</div>
+        <select
+          value={postProcessor?.type}
+          onChange={e => setPostProcessor({...postProcessor, type: e.target.value})}>
+          {postProcessorTypes.map(type =>
+            <option key={type} value={type}>{type}</option>
+          )}
+        </select>
+      </div>
+      <div className='setting flex-column-mobile'>
+        <div style={{minWidth: 175}}>{postProcessor?.type === 'webhook' ? 'URL' : 'File path'}</div>
+        <input type="text"
+          value={postProcessor?.target}
+          onChange={e => setPostProcessor({...postProcessor, target: e.target.value})}
+        />
+      </div>
+      <PostProcessorDataUI 
+        postProcessorData={postProcessorData}
+        type={postProcessor?.type}
+        updateData={val => setPostProcessorData(val)}
+        showVariablesDialog={() => setIsVariablesDialogOpen(true)}/>
+      {message && (
+        <p style={{ marginTop: 10, marginBottom: 0, color: 'red' }}>
+          {message}{/* Todo: this message might be off the screen for mobile or small screens (if the dialog body is scrolled up) */}
+        </p>
+      )}
       <VariablesDialog isOpen={isVariablesDialogOpen} onClose={() => setIsVariablesDialogOpen(false)}/>
-    </dialog>
+    </DialogBase>
   );
 }
 
@@ -373,35 +361,18 @@ function VariablesDialog({isOpen, onClose}) {
     ['[[playlist.title]]', 'Title of source playlist'],
   ]
 
-  useEffect(() => {
-    if (isOpen) {
-      dialogRef.current?.showModal();
-    }
-    else {
-      dialogRef.current?.close();
-    }
-  }, [isOpen]);
-
-  const dialogRef = useRef();
-
   return (
-    <dialog ref={dialogRef} style={{borderRadius: 6, padding: 0, borderWidth: 1, color: 'inherit', overflow: 'hidden', width: 400}}>
-      <div style={{display: 'flex', flexDirection: 'column', padding: 10, backgroundColor: '#2a2a2a', width: 'calc(100% - 20px)'}}>
-        <button style={{position: 'absolute', top: 0, right: 0, marginRight: 5, width: 30, height: 30}} onClick={() => onClose()}>
-          <i style={{fontSize: 'xx-large'}} className="bi bi-x"/>
-        </button>
-        <h3 style={{padding: 5, borderBottom: '1px solid grey', margin: 0}}>Variables</h3>
-        <p style={{fontStyle: 'italic'}}>You can use the following variables in the url, path, args, and body of your post-processor to include information about the new video</p>
-        <div style={{display: 'grid', gridTemplateColumns: 'auto auto', columnGap: 30}}>
-          {possibleVariables.map((pair, i) =>
-            <Fragment key={i}>
-              <p style={{margin: '10px 0px'}}>{pair[0]}</p>
-              <p style={{margin: '10px 0px'}}>{pair[1]}</p>
-            </Fragment>
-          )}
-        </div>
+    <DialogBase dialogStyle={{width: 400}} childrenStyle={{padding: 10}} isOpen={isOpen} onClose={onClose} title='Variables'>
+      <p style={{fontStyle: 'italic'}}>You can use the following variables in the url, path, args, and body of your post-processor to include information about the new video</p>
+      <div style={{display: 'grid', gridTemplateColumns: 'auto auto', columnGap: 30}}>
+        {possibleVariables.map((pair, i) =>
+          <Fragment key={i}>
+            <p style={{margin: '10px 0px'}}>{pair[0]}</p>
+            <p style={{margin: '10px 0px'}}>{pair[1]}</p>
+          </Fragment>
+        )}
       </div>
-    </dialog>
+    </DialogBase>
   );
 }
 
