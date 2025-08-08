@@ -1,4 +1,6 @@
 const fetch = require('node-fetch');
+const { spawn } = require('node:child_process');
+const parseArgs = require('string-argv').default;
 
 async function fetchWithRetry(url, options = {}, retries = 3) {
   for (let attempt = 0; attempt < retries; attempt++) {
@@ -13,6 +15,39 @@ async function fetchWithRetry(url, options = {}, retries = 3) {
     }
   }
 }
+
+async function runCommand(command, args) {
+  console.log(`Launching command '${command}' with args '${args}'`);
+  return new Promise((resolve, reject) => {
+    const child = spawn(command, parseArgs(args));
+
+    let stdout = '';
+    let stderr = '';
+
+    child.stdout.on('data', data => {
+      // Todo: for yt-dlp (or youtube-dl) it would be nice if we could parse the output to get real-time download progress and return it to the UI
+      stdout += data.toString();
+    });
+
+    child.stderr.on('data', data => {
+      stderr += data.toString();
+    });
+
+    child.on('close', code => {
+      if (code === 0) {
+        resolve(stdout.trim());
+      }
+      else {
+        reject(new Error(`Process exited with code ${code}:\n${stderr.trim()}`));
+      }
+    });
+
+    child.on('error', err => {
+      reject(new Error(`Failed to start process: ${err.message}`));
+    });
+  });
+}
+
 
 async function tryParseAdditionalChannelData(url) {
   const response = await fetch(url);
@@ -50,4 +85,4 @@ function getMeta() {
   };
 }
 
-module.exports = { fetchWithRetry, tryParseAdditionalChannelData, getMeta }
+module.exports = { fetchWithRetry, runCommand, tryParseAdditionalChannelData, getMeta }

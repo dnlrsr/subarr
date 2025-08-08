@@ -8,7 +8,7 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
   const [isVariablesDialogOpen, setIsVariablesDialogOpen] = useState(false);
   const postProcessorTypes = [
     'webhook',
-    // 'process', // Todo: support 'process'
+    'process',
   ];
 
   const [selectedTemplate, setSelectedTemplate] = useState('');
@@ -53,6 +53,13 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
   "cover": "[[video.thumbnail]]",
   "type": "video"
 }`
+      },
+    },
+    'yt-dlp': {
+      type: 'process',
+      target: 'PATH_TO_YT-DLP',
+      data: {
+        args: `https://www.youtube.com/watch?v=[[video.video_id]] -o "[[playlist.title]]/%(title)s.%(ext)s"`,
       },
     },
     // More templates (eg Pushbullet, etc) can be added here as requested
@@ -242,16 +249,13 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
           </div>
           <div className='setting flex-column-mobile'>
             <div style={{minWidth: 175}}>Type</div>
-            <div>
-              <select
-                value={postProcessor?.type}
-                onChange={e => setPostProcessor({...postProcessor, type: e.target.value})}>
-                {postProcessorTypes.map(type =>
-                  <option key={type} value={type}>{type}</option>
-                )}
-              </select>
-              <div style={{fontSize: 'small', color: 'yellow', marginTop: 5, fontStyle: 'italic'}}>*Only webhook is supported for now - processes (like yt-dlp) will be supported later</div>
-            </div>
+            <select
+              value={postProcessor?.type}
+              onChange={e => setPostProcessor({...postProcessor, type: e.target.value})}>
+              {postProcessorTypes.map(type =>
+                <option key={type} value={type}>{type}</option>
+              )}
+            </select>
           </div>
           <div className='setting flex-column-mobile'>
             <div style={{minWidth: 175}}>{postProcessor?.type === 'webhook' ? 'URL' : 'File path'}</div>
@@ -260,55 +264,11 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
               onChange={e => setPostProcessor({...postProcessor, target: e.target.value})}
             />
           </div>
-          {postProcessorData ?
-          <>
-            <div className='setting flex-column-mobile'>
-              <div style={{minWidth: 175}}>Method</div>
-              <select
-                value={postProcessorData.method}
-                onChange={e => setPostProcessorData({...postProcessorData, method: e.target.value})}>
-                {['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].map(type =>
-                  <option key={type} value={type}>{type}</option>
-                )}
-              </select>
-            </div>
-            <div className='setting flex-column-mobile'>
-              <div style={{minWidth: 175}}>Headers</div>
-              <div style={{display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'end'}}>
-                {postProcessorData.headers?.map((header, index) =>
-                  <div key={index} style={{display: 'flex', width: '100%'}}>
-                    <input type='text' style={{borderRadius: '4px 0px 0px 4px', marginTop: 0 /* Todo: handle in CSS */}}
-                      value={header.name}
-                      onChange={e => setPostProcessorData({...postProcessorData, headers: postProcessorData.headers.map((h, i) => i === index ? {name: e.target.value, value: h.value} : h)})}/>
-                    <input type='text' style={{borderRadius: '0px 4px 4px 0px', marginTop: 0 /* Todo: handle in CSS */}}
-                      value={header.value}
-                      onChange={e => setPostProcessorData({...postProcessorData, headers: postProcessorData.headers.map((h, i) => i === index ? {name: h.name, value: e.target.value} : h)})}/>
-                    <button style={{backgroundColor: '#f04b4b', borderRadius: 5, width: 40, margin: '5px 0px 5px 5px'}}
-                      onClick={() => setPostProcessorData({...postProcessorData, headers: postProcessorData.headers.filter((h, i) => i !== index)})}>
-                      <i style={{fontSize: 'x-large'}} className="bi bi-dash"/>
-                    </button>
-                  </div>
-                )}
-                <button style={{backgroundColor: 'green', borderRadius: 5, width: 40}}
-                  onClick={() => setPostProcessorData({...postProcessorData, headers: [...(postProcessorData.headers ?? []), {}]})}>
-                  <i style={{fontSize: 'x-large'}} className="bi bi-plus"/>
-                </button>
-              </div>
-            </div>
-            <div className='setting flex-column-mobile'>
-              <div style={{minWidth: 175}}>Body</div>
-              <div style={{display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'end'}}>
-                <textarea style={{resize: 'vertical', width: 'calc(100% - 18px)', minHeight: 125}}
-                  value={postProcessorData.body}
-                  onChange={e => setPostProcessorData({...postProcessorData, body: e.target.value})}
-                />
-                <button style={{fontFamily: '"Caveat", cursive', fontSize: 'large'}} onClick={() => setIsVariablesDialogOpen(true)}>
-                  <div>f(x)</div>
-                </button>
-              </div>
-            </div>
-          </>
-          : null}
+          <PostProcessorDataUI 
+            postProcessorData={postProcessorData}
+            type={postProcessor?.type}
+            updateData={val => setPostProcessorData(val)}
+            showVariablesDialog={() => setIsVariablesDialogOpen(true)}/>
           {message && (
             <p style={{ marginTop: 10, marginBottom: 0, color: 'red' }}>
               {message}{/* Todo: this message might be off the screen for mobile or small screens (if the dialog body is scrolled up) */}
@@ -326,6 +286,81 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
       </div>
       <VariablesDialog isOpen={isVariablesDialogOpen} onClose={() => setIsVariablesDialogOpen(false)}/>
     </dialog>
+  );
+}
+
+function PostProcessorDataUI({ postProcessorData, type, updateData, showVariablesDialog }) {
+
+  if (!postProcessorData)
+    return null;
+
+  return (
+    type === 'webhook' ?
+    <>
+      <div className='setting flex-column-mobile'>
+        <div style={{minWidth: 175}}>Method</div>
+        <select
+          value={postProcessorData.method}
+          onChange={e => updateData({...postProcessorData, method: e.target.value})}>
+          {['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].map(type =>
+            <option key={type} value={type}>{type}</option>
+          )}
+        </select>
+      </div>
+      <div className='setting flex-column-mobile'>
+        <div style={{minWidth: 175}}>Headers</div>
+        <div style={{display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'end'}}>
+          {postProcessorData.headers?.map((header, index) =>
+            <div key={index} style={{display: 'flex', width: '100%'}}>
+              <input type='text' style={{borderRadius: '4px 0px 0px 4px', marginTop: 0 /* Todo: handle in CSS */}}
+                value={header.name}
+                onChange={e => updateData({...postProcessorData, headers: postProcessorData.headers.map((h, i) => i === index ? {name: e.target.value, value: h.value} : h)})}/>
+              <input type='text' style={{borderRadius: '0px 4px 4px 0px', marginTop: 0 /* Todo: handle in CSS */}}
+                value={header.value}
+                onChange={e => updateData({...postProcessorData, headers: postProcessorData.headers.map((h, i) => i === index ? {name: h.name, value: e.target.value} : h)})}/>
+              <button style={{backgroundColor: '#f04b4b', borderRadius: 5, width: 40, margin: '5px 0px 5px 5px'}}
+                onClick={() => updateData({...postProcessorData, headers: postProcessorData.headers.filter((h, i) => i !== index)})}>
+                <i style={{fontSize: 'x-large'}} className="bi bi-dash"/>
+              </button>
+            </div>
+          )}
+          <button style={{backgroundColor: 'green', borderRadius: 5, width: 40}}
+            onClick={() => updateData({...postProcessorData, headers: [...(postProcessorData.headers ?? []), {}]})}>
+            <i style={{fontSize: 'x-large'}} className="bi bi-plus"/>
+          </button>
+        </div>
+      </div>
+      <div className='setting flex-column-mobile'>
+        <div style={{minWidth: 175}}>Body</div>
+        <div style={{display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'end'}}>
+          <textarea style={{resize: 'vertical', width: 'calc(100% - 18px)', minHeight: 125}}
+            value={postProcessorData.body}
+            onChange={e => updateData({...postProcessorData, body: e.target.value})}
+          />
+          <button style={{fontFamily: '"Caveat", cursive', fontSize: 'large'}} onClick={() => showVariablesDialog()}>
+            <div>f(x)</div>
+          </button>
+        </div>
+      </div>
+    </>
+    : 
+    <>
+      <div>
+        {/* Todo: we probably also want to allow "environment variables" like "headers" above */}
+        <div className='setting flex-column-mobile'>
+          <div style={{minWidth: 175}}>Arguments</div>
+          <div style={{display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'end'}}>
+            <textarea style={{resize: 'vertical', width: 'calc(100% - 18px)', minHeight: 125}}
+              value={postProcessorData.args}
+              onChange={e => updateData({...postProcessorData, args: e.target.value})}
+            />
+            <button style={{fontFamily: '"Caveat", cursive', fontSize: 'large'}} onClick={() => showVariablesDialog()}>
+              <div>f(x)</div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 
@@ -356,7 +391,7 @@ function VariablesDialog({isOpen, onClose}) {
           <i style={{fontSize: 'xx-large'}} className="bi bi-x"/>
         </button>
         <h3 style={{padding: 5, borderBottom: '1px solid grey', margin: 0}}>Variables</h3>
-        <p style={{fontStyle: 'italic'}}>You can use the following variables in the URL and Body of your post-processor to include information about the new video</p>
+        <p style={{fontStyle: 'italic'}}>You can use the following variables in the url, path, args, and body of your post-processor to include information about the new video</p>
         <div style={{display: 'grid', gridTemplateColumns: 'auto auto', columnGap: 30}}>
           {possibleVariables.map((pair, i) =>
             <Fragment key={i}>

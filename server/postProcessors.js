@@ -1,13 +1,9 @@
-const { fetchWithRetry } = require('./utils');
+const { fetchWithRetry, runCommand } = require('./utils');
 
 /* Notes:
   This is the most sensitive part of our application - running processes or calling webhooks could expose secrets, allow attackers to invoke malicious processes, etc.
   - Soon after adding this feature, we should probably implement an API key for making changes to the application
   - We should implement a timeout on webhook calls & process invocation
-
-  - For security, we probably want to execute 'process' post processors with child_process.spawn (https://nodejs.org/api/child_process.html#child_processspawncommand-args-options)
-    which doesn't create a shell
-
 */
 
 async function runPostProcessor(type, target, data, videoInfo) {
@@ -30,7 +26,13 @@ async function runPostProcessor(type, target, data, videoInfo) {
 
     return text;
   }
-  // Todo: support 'process'
+  else if (type === 'process') {
+    let { args } = JSON.parse(data);
+
+    args = replaceVariables(args, videoInfo);
+
+    return await runCommand(target, args); // Currently we're awaiting the process. This can be good for testing the postprocessor, but we might not want it when running it
+  }
   else {
     throw new Error(`Unknown processor type: ${type}`);
   }

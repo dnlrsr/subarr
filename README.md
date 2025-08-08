@@ -36,11 +36,12 @@ However, this works perfectly fine for mine (and maybe other people's) needs.
 - Limit playlist items by regular expression
 - Exclude shorts
 - [ytsubs.app](https://github.com/derekantrican/ytsubs) integration to import user's YouTube subscriptions and keep them in sync
-- Post processors (call a webhook when a new video is found - eg Discord, Raindrop.io, etc)
+- Post processors (an action to run when a new video is found)
+  - Webhook: call a webhook (eg Discord, Raindrop.io, etc)
+  - Process: execute a process (eg yt-dlp to download the video)
 
 ### Future features
 
-- "Process" post processors (run a process when a new video is found - which would enable video downloading if a service like yt-dlp is installed on the system)
 - Native "url base" support like sonarr (for reverse proxies or cloudflare tunnels)
 - Backup & Restore functionality (_should_ be pretty easy by just giving a copy of the sqlite db?)
 - _Index more than 15 items initially? (this would require significant up-front processing power like TubeSync does - so...unlikely)_
