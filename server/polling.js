@@ -122,7 +122,7 @@ async function pollPlaylist(playlist, alertForNewVideos = true) {
 
       for (const postProcessor of getPostProcessors()) {
         try {
-          await runPostProcessor(postProcessor.type, postProcessor.target, postProcessor.data, { video, playlist }); // Todo: for OOP & polymorphism, maybe we should instead be calling postProcessor.run() or whatever
+          await runPostProcessor(postProcessor.type, postProcessor.target, postProcessor.data, { video, playlist });
   
           insertActivity(playlist.playlist_id, video.title, null, `Post processor '${postProcessor.name}' run`, postProcessor.type === 'webhook' ? 'broadcast' : 'cpu-fill');
         }
