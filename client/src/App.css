@@ -144,6 +144,10 @@ button:disabled {
   color: var(--danger-color);
 }
 
+.playlistDetails-recentUploads {
+  overflow: auto;
+}
+
 th, td {
   text-align: left;
   padding: 8px;
@@ -294,6 +298,10 @@ div.pairedInput>input:nth-child(2) {
 
   .playlistDetails-poster {
     display: none;
+  }
+
+  .playlistDetails-recentUploads {
+    overflow: visible; /* This switches the scroll from just the "recent uploads" list to almost the whole page */
   }
 
   .small-padding-mobile {

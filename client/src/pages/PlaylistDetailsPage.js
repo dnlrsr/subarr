@@ -117,7 +117,7 @@ function PlaylistDetailsPage() {
         {/* Todo: it would be nice if the list of recent uploads was updated dynamically when the server does its polling check */}
         {/* Todo: maybe we should show which videos won't match the regex (if a regex is specified?) */}
         {/* Todo: show a "sort by" selector (because "PL" playlists might not be in any specific order) */}
-        <div style={{ flex: 1, overflow: 'auto' }}>
+        <div className='playlistDetails-recentUploads'>
           <div
             style={{
               display: 'flex',
