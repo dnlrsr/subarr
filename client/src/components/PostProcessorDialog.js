@@ -269,7 +269,7 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
           updateData={val => setPostProcessorData(val)}
           showVariablesDialog={() => setIsVariablesDialogOpen(true)}/>
         {message && (
-          <p style={{ marginTop: 10, marginBottom: 0, color: 'red' }}>
+          <p style={{ marginTop: 10, marginBottom: 0, color: 'var(--danger-color)' }}>
             {message}{/* Todo: this message might be off the screen for mobile or small screens (if the dialog body is scrolled up) */}
           </p>
         )}

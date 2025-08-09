@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { formatDistance } from "date-fns";
+import LoadingIndicator from "../components/LoadingIndicator";
 
 function ActivityPage() {
+  const [isLoading, setIsLoading] = useState(false);
   const [activities, setActivities] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -12,6 +14,9 @@ function ActivityPage() {
   }, [page]);
 
   const refreshActivity = page => {
+    setIsLoading(true);
+    setActivities([]);
+
     fetch(`/api/activity/${page}`)
       .then(res => res.json())
       .then(data => {
@@ -21,7 +26,8 @@ function ActivityPage() {
       })
       .catch(err => {
         console.error('Error loading activity log', err);
-      });
+      })
+      .finally(() => setIsLoading(false));
   };
 
   return (
@@ -29,7 +35,7 @@ function ActivityPage() {
       <div style={{ display: 'flex', alignItems: 'center', padding: '0px 20px', gap: 10, backgroundColor: '#262626', height: 60 }}>
         <button
           className='hover-blue'
-          onClick={() => refreshActivity(page)} // Todo: some sort of "visual indicator" might be nice to show the data has been refreshed
+          onClick={() => refreshActivity(page)}
           title="Save Settings">
           <i className="bi bi-arrow-clockwise"/>
           <div style={{fontSize: 'small'}}>Refresh</div>
@@ -63,6 +69,11 @@ function ActivityPage() {
             )}
           </tbody>
         </table>
+        {isLoading ?
+          <div style={{display: 'flex', justifyContent: 'center'}}>
+            <LoadingIndicator/>
+          </div>
+        : null}
       </div>
       <div style={{display: 'flex', justifyContent: 'center'}}>
         <button

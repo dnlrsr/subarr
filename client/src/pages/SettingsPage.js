@@ -109,7 +109,7 @@ function SettingsPage() {
           marginTop: 10,
         }}>
           {postProcessors.map(postProcessor =>
-            <div key={postProcessor.id} className='playlist-card' /* Todo: make this class more generic */ style={{padding: 10}}>
+            <div key={postProcessor.id} className='card' style={{padding: 10}}>
               <button onClick={() => setEditingPostProcessor(postProcessor)} style={{display: 'flex', flexDirection: 'column', alignItems: 'start', width: '100%', height: '100%'}}>
                 <h3 style={{fontSize: 'x-large', margin: '0 0 5px 0',}}>{postProcessor.name}</h3>
                 <div style={{display: 'flex', backgroundColor: 'var(--accent-color)', padding: 5, margin: 10, gap: 5, borderRadius: 2}}>
@@ -119,7 +119,7 @@ function SettingsPage() {
               </button>
             </div>
           )}
-          <div className='playlist-card' style={{display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 10}}>
+          <div className='card' style={{display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 10}}>
             <button style={{width: '100%', height: '100%'}} onClick={() => setEditingPostProcessor(defaultWebhook)}>
               <i style={{fontSize: 'xx-large'}} className="bi bi-plus-square"/>
             </button>
