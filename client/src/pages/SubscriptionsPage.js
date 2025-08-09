@@ -40,12 +40,20 @@ function SubscriptionsPage({ searchTerm }) {
     >
       {/* Todo: need header for bulk options like delete multiple playlists */}
       {filteredPlaylists.sort((a, b) => a.title.localeCompare(b.title)).map(playlist => (
-        <Link className='card'
+        <Link 
+          style={{position: 'relative'}}
+          className='card'
           key={playlist.id}
           to={`/playlist/${playlist.id}`}
         >
+          {playlist.source === 'ytsubs.app' ?
+            <img style={{position: 'absolute', left: 3, width: 24, height: 24}} src='https://static.ytsubs.app/logo.png' alt='YTSubs.app'/>
+          : null}
           <Thumbnail src={playlist.thumbnail} alt={playlist.title} />
           <div style={{ padding: '10px' }}>
+            {/* <div style={{padding: '0px 4px', fontSize: 'small', backgroundColor: 'var(--danger-color)'}}>
+              {playlist.source}
+            </div> */}
             <h3
               style={{
                 fontSize: '1em',
@@ -59,7 +67,6 @@ function SubscriptionsPage({ searchTerm }) {
             </h3>
             {/* Todo: Sonarr has an "Options" button to choose what details are shown*/}
             {/* Todo: maybe show "From {author name} {author uri}"?*/}
-            {/* Todo: show 'source' (eg Manually added or YouTube Subscription) */}
             {/* Todo: show 'check interval'*/}
             <p style={{
                 fontSize: '0.75em',
