@@ -10,6 +10,7 @@ function PlaylistDetailsPage() {
   const [interval, setInterval] = useState(60);
   const [regex, setRegex] = useState('');
   const [videos, setVideos] = useState([]);
+  const [testingRegex, setTestingRegex] = useState(false);
 
   useEffect(() => {
     fetch(`/api/playlists/${id}`)
@@ -56,7 +57,8 @@ function PlaylistDetailsPage() {
       if (!res.ok) throw new Error('Failed to delete'); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
       alert('Playlist removed');
       navigate('/'); //Navigate back to homepage
-    } catch (err) {
+    }
+    catch (err) {
       console.error(err);
       alert('Error deleting playlist'); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
     }
@@ -80,29 +82,34 @@ function PlaylistDetailsPage() {
                    backgroundSize: 'cover', backgroundBlendMode: 'darken'}}>
         <div style={{height: 'calc(100% - 60px)', padding: 30, display: 'flex', gap: 40}}>
           <Thumbnail className='playlistDetails-poster' height='350' width='350' src={playlist.thumbnail}/>
-          <div style={{display: 'flex', flexDirection: 'column'}}>
+          <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
             <div style={{fontSize: 'xxx-large', overflowWrap: 'anywhere'}}>{playlist.title}</div>
-            <label>{/* Todo: change label-input selections to be styled & controlled like settings page */}
-            Check Interval (minutes):{' '}
-            <input
-              type="number"
-              value={interval}
-              min={5} // A minimum of 5 minutes will help avoid too many iterations on the server (which might hit YouTube API limits?)
-              onChange={e => setInterval(e.target.value)}
-              style={{ width: '60px' }}
-            />
-          </label>
-          <br />
-          <label>
-            Regex Filter (optional):{' '}
-            <input
-              type="text"
-              value={regex}
-              onChange={e => setRegex(e.target.value)}
-              style={{ width: '300px', marginTop: '5px' }}
-            />
-            {/* Todo: give a button to test the regex */}
-          </label>
+            <div className='setting flex-column-mobile'>
+              <div style={{minWidth: 190}}>Check Interval (minutes):</div>
+              <input
+                type="number"
+                value={interval}
+                min={5} // A minimum of 5 minutes will help avoid too many iterations on the server (which might hit YouTube API limits?)
+                onChange={e => setInterval(e.target.value)}
+                style={{ width: 60 }}
+              />
+            </div>
+            <div className='setting flex-column-mobile'>
+              <div style={{minWidth: 190}}>Regex Filter (optional):</div>
+              <div style={{display: 'flex', alignItems: 'center', width: '100%', marginTop: 5}}>
+                <input
+                  type="text"
+                  value={regex}
+                  onChange={e => setRegex(e.target.value)}
+                  style={{ width: 300, marginTop: 0 }}
+                />
+                <button
+                  style={{fontSize: 'medium', backgroundColor: 'cornflowerblue', borderRadius: 4, marginLeft: 5, height: 30}}
+                  onClick={() => setTestingRegex(true)}>
+                  Test
+                </button>
+              </div>
+            </div>
           {/* Todo: maybe show playlist id */}
           {/* Todo: maybe show "From {author name} {author uri}"?*/}
           {/* Todo: allow overriding the feed url with a different url (eg rss-bridge) which can allow getting more than 15 items.
@@ -115,7 +122,6 @@ function PlaylistDetailsPage() {
       </div>
       <div className='small-padding-mobile' style={{ display: 'flex', flexDirection: 'column', flex: 1, padding: 30, minHeight: 0 }}>
         {/* Todo: it would be nice if the list of recent uploads was updated dynamically when the server does its polling check */}
-        {/* Todo: maybe we should show which videos won't match the regex (if a regex is specified?) */}
         {/* Todo: show a "sort by" selector (because "PL" playlists might not be in any specific order) */}
         <div className='playlistDetails-recentUploads'>
           <div
@@ -131,7 +137,7 @@ function PlaylistDetailsPage() {
                 key={video.id}
                 style={{
                   display: 'flex',
-                  height: '92.5px',
+                  height: '90px',
                   backgroundColor: 'var(--card-bg)',
                   borderRadius: '6px',
                   overflow: 'hidden',
@@ -150,8 +156,21 @@ function PlaylistDetailsPage() {
                     style={{ width: '160px', height: '90px', objectFit: 'cover' }}
                   />
                 </a>
-                <div style={{ padding: '10px', flexGrow: 1 }}>
-                  <div style={{ fontSize: '1em', fontWeight: 'bold' }}>{video.title}</div>
+                <div style={{ display: 'flex', flexDirection: 'column', padding: '10px' }}>
+                  <div style={{ 
+                    fontSize: '1em',
+                    fontWeight: 'bold',
+                    color: testingRegex ? new RegExp(regex, 'i').test(video.title) ? 'var(--success-color)' : 'var(--danger-color)' : 'inherit',
+                    // The below styles limit the title to two lines on small screens & truncate the title with an ellipsis (...)
+                    display: '-webkit-box',
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}>
+                    {video.title}
+                  </div>
+                  <div style={{flex: 1}}/>
                   <div style={{ fontSize: '0.75em', color: '#aaa', marginTop: '4px' }}>
                     {new Date(video.published_at).toLocaleString()}
                   </div>
