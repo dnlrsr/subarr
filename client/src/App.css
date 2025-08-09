@@ -136,6 +136,14 @@ button:disabled {
   object-fit: cover;
 }
 
+.hover-blue:hover i {
+  color: cornflowerblue;
+}
+
+.hover-danger:hover i {
+  color: var(--danger-color);
+}
+
 th, td {
   text-align: left;
   padding: 8px;

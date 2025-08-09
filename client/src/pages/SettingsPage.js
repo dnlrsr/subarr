@@ -69,8 +69,8 @@ function SettingsPage() {
   return (
     <div style={{height: '100%'}}>
       <div style={{ display: 'flex', alignItems: 'center', padding: '0px 20px', gap: 10, backgroundColor: '#262626', height: 60 }}>
-        {/* Todo: highlight button icon on color (maybe not red though?) */}
         <button
+          className='hover-blue'
           onClick={handleSave}
           title="Save Settings"
         >

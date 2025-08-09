@@ -216,10 +216,10 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
       <DialogBase isOpen={postProcessor !== null} onClose={() => handleCancel()} title={`Edit Post Processor: ${postProcessor?.name || 'New'}`}
         buttons={
         <>
-          <button onClick={() => handleDelete()} style={{backgroundColor: '#f04b4b', fontSize: 'medium', padding: '6px 16px', borderRadius: 4, marginRight: 'auto'}}>Delete</button>
+          <button onClick={() => handleDelete()} style={{backgroundColor: 'var(--danger-color)', fontSize: 'medium', padding: '6px 16px', borderRadius: 4, marginRight: 'auto'}}>Delete</button>
           <button onClick={() => handleTest()} style={{backgroundColor: '#393f45', fontSize: 'medium', padding: '6px 16px', borderRadius: 4, marginLeft: 10}}>Test</button>
           <button onClick={() => handleCancel()} style={{backgroundColor: '#393f45', fontSize: 'medium', padding: '6px 16px', borderRadius: 4, marginLeft: 10}}>Cancel</button>
-          <button onClick={() => handleSave()} style={{backgroundColor: '#393f45', fontSize: 'medium', padding: '6px 16px', borderRadius: 4, marginLeft: 10}}>Save</button>
+          <button onClick={() => handleSave()} style={{backgroundColor: 'var(--success-color)', fontSize: 'medium', padding: '6px 16px', borderRadius: 4, marginLeft: 10}}>Save</button>
         </>}
       >
         <div className='setting flex-column-mobile'>
@@ -240,7 +240,7 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
                 <option key={template} value={template}>{template}</option>
               )}
             </select>
-            <button style={{backgroundColor: 'green', marginLeft: 10, borderRadius: 5, width: 40}}
+            <button style={{backgroundColor: 'cornflowerblue', marginLeft: 10, borderRadius: 5, width: 40}}
               onClick={() => applyTemplate(selectedTemplate)}>
               <i style={{fontSize: 'x-large'}} className="bi bi-check"/>
             </button>
@@ -306,13 +306,13 @@ function PostProcessorDataUI({ postProcessorData, type, updateData, showVariable
                 onChange={e => updateData({...postProcessorData, headers: postProcessorData.headers.map((h, i) => i === index ? {name: e.target.value, value: h.value} : h)})}/>
               <input type='text' value={header.value}
                 onChange={e => updateData({...postProcessorData, headers: postProcessorData.headers.map((h, i) => i === index ? {name: h.name, value: e.target.value} : h)})}/>
-              <button style={{backgroundColor: '#f04b4b', borderRadius: 5, width: 40, margin: '5px 0px 5px 5px'}}
+              <button style={{backgroundColor: 'var(--danger-color)', borderRadius: 5, width: 40, margin: '5px 0px 5px 5px'}}
                 onClick={() => updateData({...postProcessorData, headers: postProcessorData.headers.filter((h, i) => i !== index)})}>
                 <i style={{fontSize: 'x-large'}} className="bi bi-dash"/>
               </button>
             </div>
           )}
-          <button style={{backgroundColor: 'green', borderRadius: 5, width: 40}}
+          <button style={{backgroundColor: 'cornflowerblue', borderRadius: 5, width: 40}}
             onClick={() => updateData({...postProcessorData, headers: [...(postProcessorData.headers ?? []), {}]})}>
             <i style={{fontSize: 'x-large'}} className="bi bi-plus"/>
           </button>

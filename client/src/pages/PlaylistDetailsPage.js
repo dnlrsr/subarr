@@ -67,12 +67,11 @@ function PlaylistDetailsPage() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <div style={{ display: 'flex', alignItems: 'center', padding: '0px 20px', gap: 10, backgroundColor: '#262626', height: 60 }}>
-        {/* Todo: highlight button icon on color (maybe not red though?) */}
-        <button onClick={handleSave} title="Save Settings">
+        <button className='hover-blue' onClick={handleSave} title="Save Settings">
           <i className="bi bi-floppy-fill"></i>
           <div style={{ fontSize: 'small' }}>Save</div>
         </button>
-        <button onClick={handleDelete} title="Delete Playlist">
+        <button className='hover-danger' onClick={handleDelete} title="Delete Playlist">
           <i className="bi bi-trash-fill"></i>
           <div style={{ fontSize: 'small' }}>Delete</div>
         </button>

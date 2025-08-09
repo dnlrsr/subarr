@@ -107,7 +107,7 @@ function AddPlaylistPage() {
             </button>
           </div>
           <button 
-            style={{marginTop: 'auto', marginLeft: 'auto', backgroundColor: '#26be4a'/* Todo: check to see if we're already using a green elsewhere */, padding: '6px 16px', borderRadius: 4, fontSize: 'medium'}}
+            style={{marginTop: 'auto', marginLeft: 'auto', backgroundColor: 'var(--success-color)', padding: '6px 16px', borderRadius: 4, fontSize: 'medium'}}
             onClick={() => handleSubmit()}>
             Add
           </button>
@@ -136,7 +136,7 @@ function AddPlaylistPage() {
         </ol>
       </div>
       : null}
-      {/(PL|LL|FL)[\w-]{10,}/.test(playlistInput) && <p style={{ color: 'yellow', overflowWrap: 'anywhere', textAlign: 'center' }}>
+      {/(PL|LL|FL)[\w-]{10,}/.test(playlistInput) && <p style={{ color: 'var(--warning-color)', overflowWrap: 'anywhere', textAlign: 'center' }}>
         Warning: YouTube playlist RSS feeds only return the top 15 items, so if this playlist is not ordered Newest → Oldest,
         YouTubarr may never see new videos on this playlist (see <a href='https://issuetracker.google.com/issues/429563457' target='_blank' rel='noreferrer'>
         https://issuetracker.google.com/issues/429563457</a>). If this is the case, you may want to use the channel's
