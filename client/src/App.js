@@ -60,6 +60,13 @@ function AppLayout() {
             type='text'
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}/>
+          {searchTerm ?
+            <button
+            style={{ display: 'flex', alignItems: 'center', borderBottom: 'solid 1px white' }}
+            onClick={() => setSearchTerm('')}>
+              <i className="bi bi-x-lg" style={{fontSize: 'medium'}}/>
+            </button>
+          : null}
         </div>
       </header>
       <div className="app-container">
