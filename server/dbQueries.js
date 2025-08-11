@@ -1,62 +1,65 @@
 const db = require('./db');
 
-function getPlaylists() {
-  return db.prepare('SELECT * FROM playlists').all();
-}
-
-function getYTSubsPlaylists() { // Todo: combine this with getPlaylists above
-  return db.prepare(`SELECT * FROM playlists WHERE source = 'ytsubs.app'`).all();
+function getPlaylists(filteredSource) {
+  return db.prepare(`SELECT * FROM playlists ${filteredSource ? `WHERE source = '${filteredSource}'` : ''}`).all();
 }
 
 function getPlaylist(playlistDbId) {
   return db.prepare('SELECT * FROM playlists WHERE id = ?').get(playlistDbId);
 }
 
-function insertPlaylistManual(playlistId, playlist) {
-  const stmt = db.prepare(`
+function insertPlaylist(playlist, source, updateOnConflict = false) {
+  return db.prepare(`
     INSERT INTO playlists (playlist_id, author_name, author_uri, title, check_interval_minutes, regex_filter, last_checked, thumbnail, banner, source)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'manual')
-  `);
-
-  return stmt.run(playlistId, playlist.author_name, playlist.author_uri, playlist.title, 60, '', null, playlist.thumbnail, playlist.banner);
-}
-
-function insertPlaylistYTSubs(sub, channelInfo) { // Todo: maybe this can be combined with insertPlaylistManual
-  const insert = db.prepare(`
-    INSERT INTO playlists (playlist_id, title, author_name, author_uri, thumbnail, banner, check_interval_minutes, regex_filter, source)
-    VALUES (?, ?, ?, ?, ?, ?, 15, NULL, 'ytsubs.app')
-    ON CONFLICT(playlist_id) DO UPDATE SET
-    title = excluded.title,
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ${updateOnConflict ?
+    `ON CONFLICT(playlist_id) DO UPDATE SET
     author_name = excluded.author_name,
     author_uri = excluded.author_uri,
-    thumbnail = excluded.thumbnail,
+    title = excluded.title,
     check_interval_minutes = excluded.check_interval_minutes,
     regex_filter = excluded.regex_filter,
-    source = excluded.source
-  `);
-
-  insert.run(
-    sub.playlist_id,
-    sub.title,
-    sub.author_name,
-    sub.author_uri,
-    sub.thumbnail,
-    channelInfo.banner
+    last_checked = excluded.last_checked,
+    thumbnail = excluded.thumbnail,
+    banner = excluded.banner,
+    source = excluded.source`
+    : ''}
+  `).run(
+    playlist.playlist_id,
+    playlist.author_name,
+    playlist.author_uri,
+    playlist.title,
+    playlist.check_interval_minutes ?? 60, // Todo: allow customization (maybe via a "default check interval" setting)
+    '',
+    null,
+    playlist.thumbnail,
+    playlist.banner,
+    source
   );
 }
 
-function updatePlaylist(playlistId, check_interval_minutes, regex_filter) {
-  const stmt = db.prepare(`
-    UPDATE playlists
-    SET check_interval_minutes = ?, regex_filter = ?
-    WHERE id = ?
-  `);
-  stmt.run(check_interval_minutes, regex_filter, playlistId);
-}
+function updatePlaylist(id, check_interval_minutes = undefined, regex_filter = undefined, last_checked = undefined) {
+  const sets = [];
+  const params = { id };
 
-function updatePlaylistLastChecked(playlistId, last_checked) { // Todo: maybe this can be combined with updatePlaylist above
-  db.prepare(`UPDATE playlists SET last_checked = ? WHERE playlist_id = ?`)
-  .run(last_checked, playlistId);
+  if (check_interval_minutes !== undefined) {
+    sets.push('check_interval_minutes = @check_interval_minutes');
+    params.check_interval_minutes = check_interval_minutes; // number
+  }
+  if (regex_filter !== undefined) {
+    sets.push('regex_filter = @regex_filter');
+    params.regex_filter = regex_filter; // string (can be empty '')
+  }
+  if (last_checked !== undefined) {
+    sets.push('last_checked = @last_checked');
+    params.last_checked = last_checked; // ISO string
+  }
+
+  if (sets.length === 0) 
+    return; // nothing to update
+
+  const sql = `UPDATE playlists SET ${sets.join(', ')} WHERE id = @id`;
+  db.prepare(sql).run(params);
 }
 
 function deletePlaylist(playlistId) {
@@ -142,12 +145,9 @@ function insertActivity(playlistId, title, url, message, icon) {
 
 module.exports = { 
   getPlaylists,
-  getYTSubsPlaylists,
   getPlaylist,
-  insertPlaylistManual,
-  insertPlaylistYTSubs,
+  insertPlaylist,
   updatePlaylist,
-  updatePlaylistLastChecked,
   deletePlaylist,
   getVideosForPlaylist,
   insertVideo,

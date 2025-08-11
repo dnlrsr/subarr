@@ -9,7 +9,7 @@ const { tryParseAdditionalChannelData, getMeta } = require('./utils');
 const {
   getPlaylists,
   getSettings,
-  insertPlaylistManual,
+  insertPlaylist,
   getPlaylist,
   insertActivity,
   updatePlaylist,
@@ -64,7 +64,7 @@ app.post('/api/playlists', async (req, res) => {
         playlist.banner = channelInfo.banner;
       }
 
-      const info = insertPlaylistManual(playlistId, playlist);
+      const info = insertPlaylist(playlist, 'manual');
       playlistDbId = info.lastInsertRowid;
 
       insertActivity(playlistId, playlist.title, `https://www.youtube.com/playlist?list=${playlistId}`, 'Playlist added (manual)', 'view-list');

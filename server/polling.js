@@ -1,7 +1,7 @@
 const { parseVideosFromFeed } = require('./rssParser');
 const { runPostProcessor } = require('./postProcessors');
 const { fetchWithRetry, tryParseAdditionalChannelData } = require('./utils');
-const { getPostProcessors, getSettings, insertActivity, updatePlaylistLastChecked, insertPlaylistYTSubs, getPlaylists, deletePlaylist, getYTSubsPlaylists } = require('./dbQueries');
+const { getPostProcessors, getSettings, insertActivity, insertPlaylist, getPlaylists, deletePlaylist, updatePlaylist } = require('./dbQueries');
 
 const pollingJobs = new Map(); // Map of playlistId -> { intervalId, intervalMinutes, regex }
 
@@ -54,12 +54,13 @@ async function updateYtSubsPlaylists() {
     }));
     const fetchedIds = new Set(fetchedSubs.map(s => s.playlist_id));
 
-    const existing = getYTSubsPlaylists();
+    const existing = getPlaylists('ytsubs.app');
     
     // Add or update subscribed playlists      
     for (const sub of fetchedSubs) {
       const channelInfo = await tryParseAdditionalChannelData(`https://www.youtube.com/channel/${sub.channel_id}`);
-      insertPlaylistYTSubs(sub, channelInfo); //Todo: we should make sure this doesn't overwrite the existing interval check (if a user changes a sub's interval to 1 hour but then ytsubs is synced again and changes it back to 15min)
+      sub.banner = channelInfo.banner;
+      insertPlaylist(sub, 'ytsubs.app', true); //Todo: we should make sure this doesn't overwrite the existing interval check (if a user changes a sub's interval to 1 hour but then ytsubs is synced again and changes it back to 15min)
       
       // Create a polling job for the new subscription
       if (!pollingJobs.has(sub.playlist_id)) {
@@ -132,7 +133,7 @@ async function pollPlaylist(playlist, alertForNewVideos = true) {
       }
     });
 
-    updatePlaylistLastChecked(playlist.playlist_id, new Date().toISOString());
+    updatePlaylist(playlist.playlist_id, undefined, undefined, new Date().toISOString());
   }
   catch (err) {
     console.error(`Failed to poll ${playlist.title}:`, err); // Todo: mark as 'health issue'? (eg a 404 will be thrown when a playlist is deleted)
