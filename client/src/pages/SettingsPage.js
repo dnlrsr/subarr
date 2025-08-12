@@ -45,14 +45,10 @@ function SettingsPage() {
       const res = await fetch('/api/settings', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify([{ //Todo: since 'GET api/settings' returns a single object with pairs like 'ytsubs_apikey: value', we should save it in the same way
-          key: 'ytsubs_apikey',
-          value: ytsubsApiKey,
-        },
-        {
-          key: 'exclude_shorts',
-          value: String(excludeShorts), // SQLite can't store bool
-        }]),
+        body: JSON.stringify({
+          ytsubs_apikey: ytsubsApiKey,
+          exclude_shorts: String(excludeShorts), // SQLite can't store bool
+        }),
       });
   
       if (!res.ok)

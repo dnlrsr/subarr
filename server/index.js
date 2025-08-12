@@ -191,11 +191,7 @@ app.get('/api/settings', (req, res) => {
 });
 
 app.put('/api/settings', (req, res) => {
-  const settings = req.body; // Expecting an array of { key, value }
-
-  if (!Array.isArray(settings)) {
-    return res.status(400).json({ error: 'Request body must be an array' });
-  }
+  const settings = req.body;
 
   try {
     insertSettings(settings);

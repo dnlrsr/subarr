@@ -93,8 +93,8 @@ function insertSettings(settings) {
     ON CONFLICT(key) DO UPDATE SET value = excluded.value
   `);
 
-  const insertMany = db.transaction((settingsArray) => {
-    for (const { key, value } of settingsArray) {
+  const insertMany = db.transaction((settingsObj) => {
+    for (const [key, value] of Object.entries(settingsObj)) {
       stmt.run(key, value);
     }
   });
