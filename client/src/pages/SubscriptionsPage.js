@@ -38,7 +38,7 @@ function SubscriptionsPage({ searchTerm }) {
         padding: '10px'
       }}
     >
-      {/* Todo: need header for bulk options like delete multiple playlists */}
+      {/* Todo: need header for bulk options like delete multiple playlists, filter view (eg hide 'inactive' playlists that haven't had uploads for a year) */}
       {filteredPlaylists.sort((a, b) => a.title.localeCompare(b.title)).map(playlist => (
         <Link 
           style={{position: 'relative'}}
