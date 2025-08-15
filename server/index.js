@@ -130,6 +130,7 @@ app.get('/api/search', async (req, res) => {
       const adjustedPlaylistId = req.query.q.match(/(UC|UU|PL|LL|FL)[\w-]{10,}/)[0].replace(/^UC/, 'UU');
       await parseVideosFromFeed(adjustedPlaylistId, playlist => { // Todo: this will print a number of things to the server console output if it fails, so we should try to prevent that
         playlistInfo = playlist
+        // Todo: also call tryParseAdditionalChannelData here for UU type playlist ids (so we get the proper thumbnail & banner)
       });
     }
     else if (/(https:\/\/)?(www\.)?youtube\.com\/(@|channel)/.test(req.query.q)) {

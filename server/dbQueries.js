@@ -83,6 +83,7 @@ function deleteVideosForPlaylist(playlistId) {
 }
 
 function getSettings() {
+  // Todo: we should do the "string to bool" conversion here, rather than having the "SQLite can't store bool" comments elsewhere
   return db.prepare('SELECT key, value FROM settings').all();
 }
 
