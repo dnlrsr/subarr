@@ -65,7 +65,7 @@ async function updateYtSubsPlaylists() {
       // Create a polling job for the new subscription
       if (!pollingJobs.has(sub.playlist_id)) {
         console.log(`[YTSubs.app] Added '${sub.title}'`);
-        insertActivity(playlist.playlist_id, sub.title, `https://www.youtube.com/playlist?list=${sub.playlist_id}`, 'Playlist added (YTSubs.app)', 'view-list');
+        insertActivity(sub.playlist_id, sub.title, `https://www.youtube.com/playlist?list=${sub.playlist_id}`, 'Playlist added (YTSubs.app)', 'view-list');
         
         await pollPlaylist(sub, false); // Initial request to get videos from feed (but don't alert for new videos for new subs)
 
