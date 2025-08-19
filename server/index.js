@@ -53,6 +53,7 @@ app.post('/api/playlists', async (req, res) => {
   const exclude_shorts = (settings.exclude_shorts ?? 'false') === 'true'; // SQLite can't store bool
   if (exclude_shorts) {
     playlistId = playlistId.replace(/^^UU(?!LF)/, 'UULF'); // Reference: other possible prefixes: https://stackoverflow.com/a/77816885
+    // Todo: it's worth noting that "UULF" WON'T contain recordings from past live streams (those are still in "UU", however)
   }
 
   try {
