@@ -127,26 +127,8 @@ function SubscriptionsPage() {
           </Link>
         ))}
       </div>
-      {filterOptionsOpen ?
-      <div style={{position: 'fixed', top: 120 /* Todo: doublecheck this on mobile with PWA and without PWA */, right: 20, backgroundColor: '#333',
-        display: 'flex', flexDirection: 'column'}}>
-        {/* Todo: need hover indicator */}
-        <button style={{fontSize: 'medium', width: '100%', padding: '10px 20px', textAlign: 'start'}} onClick={() => applyFilter('All')}>
-          All
-        </button>
-        <button style={{fontSize: 'medium', width: '100%', padding: '10px 20px', textAlign: 'start'}} onClick={() => applyFilter('Active')}>
-          Active
-        </button>
-        <button style={{fontSize: 'medium', width: '100%', padding: '10px 20px', textAlign: 'start'}} onClick={() => applyFilter('Manually added')}>
-          Manually added
-        </button>
-        <button style={{fontSize: 'medium', width: '100%', padding: '10px 20px', textAlign: 'start'}} onClick={() => applyFilter('YTSubs')}>
-          YTSubs
-        </button>
-      </div>
-      : null}
       <DialogBase isOpen={optionsDialogOpen} onClose={() => setOptionsDialogOpen(false)} title='Options'>
-        {/* Todo: these settings need to be saved to the settings server and loaded on startup */}
+        {/* Todo: these settings need to be saved and persist (I think Sonarr just saves this to the browser's local storage?) */}
         <div className='setting flex-column-mobile'>
           <div style={{minWidth: 175}}>Show check interval</div>
           <label className='container'>
@@ -164,6 +146,24 @@ function SubscriptionsPage() {
           </label>
         </div>
       </DialogBase>
+      {filterOptionsOpen ? // Todo: clicking outside of the filter options should close it
+      <div style={{position: 'fixed', top: 120, right: 20, backgroundColor: '#333', display: 'flex', flexDirection: 'column'}}>
+        {/* Todo: need hover indicator */}
+        {/* Todo: filter should be saved and persist (I think Sonarr just saves this to the browser's local storage?) */}
+        <button style={{fontSize: 'medium', width: '100%', padding: '10px 20px', textAlign: 'start'}} onClick={() => applyFilter('All')}>
+          All
+        </button>
+        <button style={{fontSize: 'medium', width: '100%', padding: '10px 20px', textAlign: 'start'}} onClick={() => applyFilter('Active')}>
+          Active
+        </button>
+        <button style={{fontSize: 'medium', width: '100%', padding: '10px 20px', textAlign: 'start'}} onClick={() => applyFilter('Manually added')}>
+          Manually added
+        </button>
+        <button style={{fontSize: 'medium', width: '100%', padding: '10px 20px', textAlign: 'start'}} onClick={() => applyFilter('YTSubs')}>
+          YTSubs
+        </button>
+      </div>
+      : null}
     </div>
   );
 }

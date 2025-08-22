@@ -37,6 +37,21 @@ body {
   color: white;
 }
 
+.search-results {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  top: 60px;
+  left: 220px;
+  z-index: 10;
+  background-color: #494949;
+  max-height: 230px;
+  width: 230px; 
+  padding: 10px;
+  overflow-y: auto;
+  gap: 7px;
+}
+
 button {
   background: none;
   border: none;
@@ -271,6 +286,21 @@ div.pairedInput>input:nth-child(2) {
 @media (max-width: 768px) {
   .app-icon {
     flex: 0 0 60px;
+  }
+
+  .search-results {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 60px;
+    left: 130px;
+    z-index: 10;
+    background-color: #494949;
+    max-height: 230px;
+    width: 230px; 
+    padding: 10px;
+    overflow-y: auto;
+    gap: 7px;
   }
 
   .card {

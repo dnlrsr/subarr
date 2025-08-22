@@ -80,8 +80,7 @@ function AppLayout() {
           : null}
         </div>
         {searchTerm ?
-        <div style={{position: 'fixed', top: 60 /* Todo: doublecheck this on mobile with PWA and without PWA */, left: 230, zIndex: 10, backgroundColor: '#494949', maxHeight: 230, width: 230, 
-          padding: 10, display: 'flex', flexDirection: 'column', overflowY: 'auto', gap: 7}}>
+        <div className='search-results'>
           {searchResults.length > 0 ? 
             searchResults.map(p =>
               /* Todo: add hover style */
