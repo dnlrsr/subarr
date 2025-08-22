@@ -114,7 +114,7 @@ app.delete('/api/playlists/:id', (req, res) => {
 
   removePolling(playlist.playlist_id);
 
-  deletePlaylist(req.params.id);
+  deletePlaylist(playlist.playlist_id);
   deleteVideosForPlaylist(playlist.playlist_id);
 
   insertActivity(playlist.playlist_id, playlist.title, `https://www.youtube.com/playlist?list=${playlist.id}`, 'Playlist removed (manual)', 'trash');

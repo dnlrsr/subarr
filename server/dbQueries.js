@@ -38,9 +38,9 @@ function insertPlaylist(playlist, source, updateOnConflict = false) {
   );
 }
 
-function updatePlaylist(id, check_interval_minutes = undefined, regex_filter = undefined, last_checked = undefined) {
+function updatePlaylist(playlist_id, check_interval_minutes = undefined, regex_filter = undefined, last_checked = undefined) {
   const sets = [];
-  const params = { id };
+  const params = { playlist_id };
 
   if (check_interval_minutes !== undefined) {
     sets.push('check_interval_minutes = @check_interval_minutes');
@@ -58,12 +58,12 @@ function updatePlaylist(id, check_interval_minutes = undefined, regex_filter = u
   if (sets.length === 0) 
     return; // nothing to update
 
-  const sql = `UPDATE playlists SET ${sets.join(', ')} WHERE id = @id`;
+  const sql = `UPDATE playlists SET ${sets.join(', ')} WHERE playlist_id = @playlist_id`;
   db.prepare(sql).run(params);
 }
 
 function deletePlaylist(playlistId) {
-  db.prepare('DELETE FROM playlists WHERE id = ?').run(playlistId);
+  db.prepare('DELETE FROM playlists WHERE playlist_id = ?').run(playlistId);
 }
 
 function getVideosForPlaylist(playlistId) {
