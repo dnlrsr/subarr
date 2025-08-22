@@ -17,6 +17,7 @@ body {
   display: flex;
   align-items: center;
   padding: 0 1rem;
+  box-sizing: border-box;
   border-bottom: 1px solid #333;
 }
 
@@ -187,6 +188,10 @@ tbody a {
   color: white;
   max-width: 600px;
   padding: 8px;
+  margin-top: 6px;
+}
+
+.setting label {
   margin-top: 6px;
 }
 
