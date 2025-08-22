@@ -5,13 +5,15 @@ function Thumbnail({ className, src, alt, placeholder = 'https://placehold.co/16
   const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
-    if (attempt >= maxRetries) return;
+    if (attempt >= maxRetries)
+      return;
   
-    const bustedSrc = src + (src.includes('?') ? '&' : '?') + `t=${Date.now()}`;
+    // wsrv.nl is a free & open-source image caching service
+    const cachedSrc = `https://wsrv.nl/?url=${src}`; // There's also width & height options, but setting those alone seems to produce low resolution images (might need dpr or something as well)
     const img = new Image();
   
     img.onload = () => {
-      setCurrentSrc(bustedSrc);
+      setCurrentSrc(cachedSrc);
     };
   
     img.onerror = () => {
@@ -22,7 +24,7 @@ function Thumbnail({ className, src, alt, placeholder = 'https://placehold.co/16
       return () => clearTimeout(retryTimer);
     };
   
-    img.src = bustedSrc;
+    img.src = cachedSrc;
   }, [attempt, src, maxRetries]);  
 
   return (
