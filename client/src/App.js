@@ -9,16 +9,20 @@ import './App.css';
 import ActivityPage from './pages/ActivityPage';
 import { formatDistance } from 'date-fns';
 import DialogBase from './components/DialogBase';
+import Thumbnail from './components/Thumbnail';
 
 function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
 
+  const [playlists, setPlaylists] = useState([]); // Todo: this is a duplicate of the SubscriptionsPage, so maybe we should de-dupe
   const [searchTerm, setSearchTerm] = useState('');
 
   const [currentVersion, setCurrentVersion] = useState(null);
   const [newVersionInfo, setNewVersionInfo] = useState(null);
   const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
+
+  const searchResults = playlists.filter(p => p.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -40,7 +44,14 @@ function AppLayout() {
       }
     }
 
+    async function getPlaylists() {
+      const res = await fetch('/api/playlists');
+      const data = await res.json();
+      setPlaylists(data);
+    }
+
     checkForUpdate();
+    getPlaylists();
   }, []);
 
   return (
@@ -52,14 +63,14 @@ function AppLayout() {
         <button className="sidebar-toggle" onClick={toggleSidebar}>
           ☰
         </button>
-        <div style={{display: location.pathname === '/' ? 'flex' : 'none' /* Only show the search bar on the home page */}}>
+        <div style={{display: 'flex'}}>
           <i className="bi bi-search" style={{fontSize: 'medium'}}/>
           <input
             style={{backgroundColor: 'transparent', border: 'none', borderBottom: 'solid 1px white', marginLeft: 8, width: 200, color: 'inherit', fontSize: 'medium', outline: 'none'}}
             placeholder='Search'
             type='text'
             value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}/>
+            onChange={e => setSearchTerm(e.target.value) /* Todo: up & down arrow keys should select something in the results pane */}/>
           {searchTerm ?
             <button
             style={{ display: 'flex', alignItems: 'center', borderBottom: 'solid 1px white' }}
@@ -68,6 +79,34 @@ function AppLayout() {
             </button>
           : null}
         </div>
+        {searchTerm ?
+        <div style={{position: 'fixed', top: 60 /* Todo: doublecheck this on mobile with PWA and without PWA */, left: 230, zIndex: 10, backgroundColor: '#494949', maxHeight: 230, width: 230, 
+          padding: 10, display: 'flex', flexDirection: 'column', overflowY: 'auto', gap: 7}}>
+          {searchResults.length > 0 ? 
+            searchResults.map(p =>
+              /* Todo: add hover style */
+              <Link style={{color: 'inherit', textDecoration: 'none'}} to={`/playlist/${p.id}`} onClick={() => setSearchTerm('')}>
+                <div style={{display: 'flex', gap: 10}}>
+                  <div style={{flexShrink: 0}}>
+                    <Thumbnail src={p.thumbnail} width='80' height='45'/>
+                  </div>
+                  <div style={{
+                    fontSize: 'small',
+                    // The below styles limit the title to three lines on small screens & truncate the title with an ellipsis (...)
+                    display: '-webkit-box',
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis'
+                  }}>
+                    {p.title}
+                  </div>
+                </div>
+              </Link>
+            ) 
+            : <div style={{fontSize: 'small'}}>No Results</div>}
+        </div>
+        : null}
       </header>
       <div className="app-container">
         <nav className={`sidebar ${sidebarOpen ? 'open' : ''}`}>

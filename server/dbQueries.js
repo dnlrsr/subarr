@@ -1,7 +1,22 @@
 const db = require('./db');
 
 function getPlaylists(filteredSource) {
-  return db.prepare(`SELECT * FROM playlists ${filteredSource ? `WHERE source = '${filteredSource}'` : ''}`).all();
+  const stmt = db.prepare(`
+    SELECT 
+      p.*, 
+      v.last_updated
+    FROM playlists p
+    LEFT JOIN (
+      SELECT 
+        playlist_id, 
+        MAX(published_at) AS last_updated
+      FROM videos
+      GROUP BY playlist_id
+    ) v ON p.playlist_id = v.playlist_id
+    ${filteredSource ? `WHERE p.source = ?` : ''}
+  `);
+
+  return filteredSource ? stmt.all(filteredSource) : stmt.all();
 }
 
 function getPlaylist(playlistDbId) {
