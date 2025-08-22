@@ -78,7 +78,7 @@ function PlaylistDetailsPage() {
           <div style={{ fontSize: 'small' }}>Delete</div>
         </button>
       </div>
-      <div style={{height: 425, width: '100%', backgroundImage: playlist.banner ? `url(${playlist.banner})` : '', backgroundColor: 'rgb(0, 0, 0, 0.7)',
+      <div style={{height: 425, width: '100%', backgroundImage: playlist.banner ? `url(https://wsrv.nl/?url=${playlist.banner})` : '', backgroundColor: 'rgb(0, 0, 0, 0.7)',
                    backgroundSize: 'cover', backgroundBlendMode: 'darken'}}>
         <div style={{height: 'calc(100% - 60px)', padding: 30, display: 'flex', gap: 40}}>
           <Thumbnail className='playlistDetails-poster' height='350' width='350' src={playlist.thumbnail}/>
@@ -150,11 +150,7 @@ function PlaylistDetailsPage() {
                   rel="noopener noreferrer"
                   style={{ flexShrink: 0 }}
                 >
-                  <img
-                    src={video.thumbnail || 'https://via.placeholder.com/160x90?text=No+Thumbnail'}
-                    alt={video.title}
-                    style={{ width: '160px', height: '90px', objectFit: 'cover' }}
-                  />
+                  <Thumbnail src={video.thumbnail} placeholder='https://placehold.co/160x90?text=No+Thumbnail'/>
                 </a>
                 <div style={{ display: 'flex', flexDirection: 'column', padding: '10px' }}>
                   <div style={{ 
