@@ -83,7 +83,8 @@ function PlaylistDetailsPage() {
         <div style={{height: 'calc(100% - 60px)', padding: 30, display: 'flex', gap: 40}}>
           <Thumbnail className='playlistDetails-poster' height='350' width='350' src={playlist.thumbnail}/>
           <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
-            <div style={{fontSize: 'xxx-large', overflowWrap: 'anywhere'}}>{playlist.title}</div>
+            <div style={{fontSize: 'xxx-large', overflowWrap: 'anywhere'}} title={playlist.playlist_id}>{playlist.title}</div>
+            {!playlist.playlist_id.startsWith('UU') ? <div style={{fontStyle: 'italic', marginBottom: 10}}>{`By ${playlist.author_name}`}</div> : null}
             <div className='setting flex-column-mobile'>
               <div style={{minWidth: 190}}>Check Interval (minutes):</div>
               <input
@@ -110,8 +111,6 @@ function PlaylistDetailsPage() {
                 </button>
               </div>
             </div>
-          {/* Todo: maybe show playlist id */}
-          {/* Todo: maybe show "From {author name} {author uri}"?*/}
           {/* Todo: allow overriding the feed url with a different url (eg rss-bridge) which can allow getting more than 15 items.
           HOWEVER, this might require custom parsing to get details like thumbnail (and I tested a rss-bridge URL for a playlist
           of 114 items - some rss-bridge instances timed out and some capped the return at 99 items).
