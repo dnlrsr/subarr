@@ -14,11 +14,12 @@ Here are all the similar things I could find and how this is different:
 - [Pinchflat](https://github.com/kieraneglin/pinchflat) active, but based on yt-dlp for indexing
 - [MetaTube](https://github.com/JVT038/MetaTube) seemingly inactive? Also seems to just do videos, not playlists
 - [ytdl-sub](https://github.com/jmbannon/ytdl-sub) active, but no UI
-- [Tube Archivist](https://github.com/tubearchivist/tubearchivist) active,
+- [Tube Archivist](https://github.com/tubearchivist/tubearchivist) active, but also seems to be based on yt-dlp
 - [DireDireCrocs's Youtubarr](https://github.com/DireDireCrocs/Youtubarr) uses the full YouTube API and is intended for music videos & [Lidarr](https://lidarr.audio/) integration
+- [Ytmdl](https://github.com/deepjyoti30/ytmdl) seeimingly inactive? Also seems to rely on youtube-dl and be music video specific
 - [Tubarr](https://vc.bridgew.edu/cgi/viewcontent.cgi?article=1691&context=honors_proj) not public - a student's capstone project
 
-As you can see, there's a few other solutions, but most are based on [yt-dlp](https://github.com/yt-dlp/yt-dlp) for getting playlist information. This works fine if you want to index an _entire playlist_ (which a user may, very well, want to do) but it can require a LOT of polling activity (particularly for large channels).
+As you can see, there's a few other solutions, but most are based on [yt-dlp](https://github.com/yt-dlp/yt-dlp) for getting playlist information. This works fine if you want to index an _entire playlist_ (which a user may, very well, want to do) but it can require a LOT of polling activity (particularly for large channels). _Tube Archivist above even calls out 2-4GB of memory dedicated to its functionality_
 
 Sonarr is based on RSS feeds - explicitly designed for this purpose of getting new updates from subscription-like sources. This is much lighter in processing requirements. I've also tried to make this UI as similar as possible to the other *arr apps for familiarity.
 
