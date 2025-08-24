@@ -9,11 +9,18 @@ This is an attempt to create a Sonarr-like application for YouTube videos. A lot
 
 _Why not use one of the existing solutions?_
 
-So far, the only (active) existing solution I've found, [TubeSync](https://github.com/meeb/tubesync), seems to be based on [yt-dlp](https://github.com/yt-dlp/yt-dlp) for getting playlist information. This works fine if you want to index an _entire playlist_ (which a user may, very well, want to do) but it can require a LOT of polling activity (particularly for large channels).
+Here are all the similar things I could find and how this is different:
+- [TubeSync](https://github.com/meeb/tubesync) active, but based on yt-dlp for indexing
+- [Pinchflat](https://github.com/kieraneglin/pinchflat) active, but based on yt-dlp for indexing
+- [MetaTube](https://github.com/JVT038/MetaTube) seemingly inactive? Also seems to just do videos, not playlists
+- [ytdl-sub](https://github.com/jmbannon/ytdl-sub) active, but no UI
+- [Tube Archivist](https://github.com/tubearchivist/tubearchivist) active,
+- [DireDireCrocs's Youtubarr](https://github.com/DireDireCrocs/Youtubarr) uses the full YouTube API and is intended for music videos & [Lidarr](https://lidarr.audio/) integration
+- [Tubarr](https://vc.bridgew.edu/cgi/viewcontent.cgi?article=1691&context=honors_proj) not public - a student's capstone project
 
-_It's been brought to my attention that while I've been working on this for about 2 months, just last week there was another service called "YouTubarr" published: https://github.com/DireDireCrocs/Youtubarr . However, this seems to be specific to music (and connecting to [Lidarr](https://lidarr.audio/)) and also relies on the official YouTube API_
+As you can see, there's a few other solutions, but most are based on [yt-dlp](https://github.com/yt-dlp/yt-dlp) for getting playlist information. This works fine if you want to index an _entire playlist_ (which a user may, very well, want to do) but it can require a LOT of polling activity (particularly for large channels).
 
-Sonarr is based on RSS feeds - explicitly designed for this purpose of getting new updates from subscription-like sources. This is much lighter in processing requirements.
+Sonarr is based on RSS feeds - explicitly designed for this purpose of getting new updates from subscription-like sources. This is much lighter in processing requirements. I've also tried to make this UI as similar as possible to the other *arr apps for familiarity.
 
 _What are the limitations of the RSS feed approach?_
 
