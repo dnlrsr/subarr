@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, NavLink, useLocation, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, NavLink, useLocation, Link, useNavigate } from 'react-router-dom';
 import Markdown from 'react-markdown';
 import SubscriptionsPage from './pages/SubscriptionsPage';
 import AddPlaylistPage from './pages/AddPlaylistPage';
@@ -9,20 +9,47 @@ import './App.css';
 import ActivityPage from './pages/ActivityPage';
 import { formatDistance } from 'date-fns';
 import DialogBase from './components/DialogBase';
-import Thumbnail from './components/Thumbnail';
+import SearchResults from './components/SearchResults';
 
 function AppLayout() {
+  const navigate = useNavigate();
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
-
-  const [playlists, setPlaylists] = useState([]); // Todo: this is a duplicate of the SubscriptionsPage, so maybe we should de-dupe
-  const [searchTerm, setSearchTerm] = useState('');
 
   const [currentVersion, setCurrentVersion] = useState(null);
   const [newVersionInfo, setNewVersionInfo] = useState(null);
   const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
 
+  const [playlists, setPlaylists] = useState([]); // Todo: this is a duplicate of the SubscriptionsPage, so maybe we should de-dupe
+  const [searchTerm, setSearchTerm] = useState('');
   const searchResults = playlists.filter(p => p.title.toLowerCase().includes(searchTerm.toLowerCase()));
+  const [highlightedSearchResult, setHighlightedSearchResult] = useState(-1);
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'ArrowDown' || e.key === 'Tab') {
+      e.preventDefault();
+      setHighlightedSearchResult(highlightedSearchResult + 1);
+    }
+    else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setHighlightedSearchResult(highlightedSearchResult - 1);
+    }
+    else if (e.key === 'Enter') {
+      e.preventDefault();
+      
+      if (highlightedSearchResult > -1) {
+        navigate(`/playlist/${searchResults[highlightedSearchResult].id}`);
+      }
+
+      resetSearchSelection();
+    }
+  }
+
+  const resetSearchSelection = () => {
+    setSearchTerm('')
+    setHighlightedSearchResult(-1);
+  };
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -70,7 +97,8 @@ function AppLayout() {
             placeholder='Search'
             type='text'
             value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value) /* Todo: up & down arrow keys should select something in the results pane */}/>
+            onChange={e => setSearchTerm(e.target.value)}
+            onKeyDown={e => handleKeyDown(e)}/>
           {searchTerm ?
             <button
             style={{ display: 'flex', alignItems: 'center', borderBottom: 'solid 1px white' }}
@@ -79,33 +107,7 @@ function AppLayout() {
             </button>
           : null}
         </div>
-        {searchTerm ?
-        <div className='search-results'>
-          {searchResults.length > 0 ? 
-            searchResults.map(p =>
-              /* Todo: add hover style */
-              <Link style={{color: 'inherit', textDecoration: 'none'}} to={`/playlist/${p.id}`} onClick={() => setSearchTerm('')}>
-                <div style={{display: 'flex', gap: 10}}>
-                  <div style={{flexShrink: 0}}>
-                    <Thumbnail src={p.thumbnail} width='80' height='45'/>
-                  </div>
-                  <div style={{
-                    fontSize: 'small',
-                    // The below styles limit the title to three lines on small screens & truncate the title with an ellipsis (...)
-                    display: '-webkit-box',
-                    WebkitLineClamp: 3,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis'
-                  }}>
-                    {p.title}
-                  </div>
-                </div>
-              </Link>
-            ) 
-            : <div style={{fontSize: 'small'}}>No Results</div>}
-        </div>
-        : null}
+        <SearchResults isOpen={searchTerm} searchResults={searchResults} highlightedSearchResult={highlightedSearchResult} onClose={() => resetSearchSelection()}/>
       </header>
       <div className="app-container">
         <nav className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
