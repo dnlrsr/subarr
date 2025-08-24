@@ -12,17 +12,17 @@ _Why not use one of the existing solutions?_
 Here are all the similar things I could find and how this is different:
 | Name | Active? | Stars | Indexer | Comment |
 |----------------------|---------|-------|---------|---------|
-| [Tube Archivist](https://github.com/tubearchivist/tubearchivist) | ✅ | 6.7k | yt-dlp | Based on yt-dlp |
-| [Pinchflat](https://github.com/kieraneglin/pinchflat) | ✅ | 3.6k | yt-dlp | |
-| [ytdl-sub](https://github.com/jmbannon/ytdl-sub) | ✅ | 2.5k | yt-dlp | No UI |
-| [TubeSync](https://github.com/meeb/tubesync) | ✅ | 2.4k | yt-dlp | |
-| [YTPTube](https://github.com/arabcoders/ytptube) | ✅ | 348 | yt-dlp | Essentially a web UI wrapper around yt-dlp |
-| [Youtarr](https://github.com/DialmasterOrg/Youtarr) | ✅ | 54 | yt-dlp | |
-| [DireDireCrocs's Youtubarr](https://github.com/DireDireCrocs/Youtubarr) | ✅ | 11 | YouTube API | Focused on music videos & [Lidarr](https://lidarr.audio/) integration (also only recently created) |
-| [Subscribarr](https://github.com/jschaufuss/subscribarr) | ✅ | 3 | RSS feeds | Includes YouTube playlists but is more generic *arr management (Sonarr & Radarr) |
-| [Tubarr](https://github.com/TubarrApp/Tubarr) | ✅ | 0 | yt-dlp | No UI, “pre-pre-pre-alpha” status |
-| [MetaTube](https://github.com/JVT038/MetaTube) | ❌ | 362 | N/A | Seems to only handle individual videos, not playlists |
-| [Ytmdl](https://github.com/deepjyoti30/ytmdl) | ❌ | 3.4k | youtube-dl | Also music-video specific |
+| [Tube Archivist](https://github.com/tubearchivist/tubearchivist) | ✅ | ![](https://img.shields.io/github/stars/tubearchivist/tubearchivist?label=&style=flat-square&color=white) | yt-dlp | Based on yt-dlp |
+| [Pinchflat](https://github.com/kieraneglin/pinchflat) | ✅ | ![](https://img.shields.io/github/stars/kieraneglin/pinchflat?label=&style=flat-square&color=white) | yt-dlp | |
+| [ytdl-sub](https://github.com/jmbannon/ytdl-sub) | ✅ | ![](https://img.shields.io/github/stars/jmbannon/ytdl-sub?label=&style=flat-square&color=white) | yt-dlp | No UI |
+| [TubeSync](https://github.com/meeb/tubesync) | ✅ | ![](https://img.shields.io/github/stars/meeb/tubesync?label=&style=flat-square&color=white) | yt-dlp | |
+| [YTPTube](https://github.com/arabcoders/ytptube) | ✅ | ![](https://img.shields.io/github/stars/arabcoders/ytptube?label=&style=flat-square&color=white) | yt-dlp | Essentially a web UI wrapper around yt-dlp |
+| [Youtarr](https://github.com/DialmasterOrg/Youtarr) | ✅ | ![](https://img.shields.io/github/stars/DialmasterOrg/Youtarr?label=&style=flat-square&color=white) | yt-dlp | |
+| [DireDireCrocs's Youtubarr](https://github.com/DireDireCrocs/Youtubarr) | ✅ | ![](https://img.shields.io/github/stars/DireDireCrocs/Youtubarr?label=&style=flat-square&color=white) | YouTube API | Focused on music videos & [Lidarr](https://lidarr.audio/) integration (also only recently created) |
+| [Subscribarr](https://github.com/jschaufuss/subscribarr) | ✅ | ![](https://img.shields.io/github/stars/jschaufuss/subscribarr?label=&style=flat-square&color=white) | RSS feeds | Includes YouTube playlists but is more generic *arr management (Sonarr & Radarr) |
+| [Tubarr](https://github.com/TubarrApp/Tubarr) | ✅ | ![](https://img.shields.io/github/stars/TubarrApp/Tubarr?label=&style=flat-square&color=white) | yt-dlp | No UI, “pre-pre-pre-alpha” status |
+| [MetaTube](https://github.com/JVT038/MetaTube) | ❌ | ![](https://img.shields.io/github/stars/JVT038/MetaTube?label=&style=flat-square&color=white) | N/A | Seems to only handle individual videos, not playlists |
+| [Ytmdl](https://github.com/deepjyoti30/ytmdl) | ❌ | ![](https://img.shields.io/github/stars/deepjyoti30/ytmdl?label=&style=flat-square&color=white) | youtube-dl | Also music-video specific |
 | [Tubarr (Capstone Project)](https://vc.bridgew.edu/cgi/viewcontent.cgi?article=1691&context=honors_proj) | ❌ | N/A | yt-dlp | Private (a student's capstone project) |
 
 
