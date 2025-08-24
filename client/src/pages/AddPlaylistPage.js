@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Thumbnail from '../components/Thumbnail';
-import { getErrorResponse } from '../utils/fetchUtils';
+import { getErrorResponse, showToast } from '../utils/utils';
 import LoadingIndicator from '../components/LoadingIndicator';
 
 function AddPlaylistPage() {
@@ -64,7 +64,7 @@ function AddPlaylistPage() {
     });
 
     if (res.ok) {
-      alert('Playlist added!'); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
+      showToast('Playlist added!', 'success');
       setPlaylistInput('');
 
       const data = await res.json();
@@ -72,7 +72,7 @@ function AddPlaylistPage() {
     }
     else {
       const addError = await getErrorResponse(res);
-      alert(`Error adding playlist: ${addError}`); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
+      showToast(`Error adding playlist: ${addError}`, 'error');
     }
   };
 

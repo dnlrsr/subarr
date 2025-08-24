@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink, useLocation, Link, useNavigate } from 'react-router-dom';
+import './App.css';
 import Markdown from 'react-markdown';
 import SubscriptionsPage from './pages/SubscriptionsPage';
-import AddPlaylistPage from './pages/AddPlaylistPage';
-import SettingsPage from './pages/SettingsPage';
 import PlaylistDetailsPage from './pages/PlaylistDetailsPage';
-import './App.css';
+import AddPlaylistPage from './pages/AddPlaylistPage';
 import ActivityPage from './pages/ActivityPage';
-import { formatDistance } from 'date-fns';
+import SettingsPage from './pages/SettingsPage';
 import DialogBase from './components/DialogBase';
 import SearchResults from './components/SearchResults';
+import { formatDistance } from 'date-fns';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function AppLayout() {
   const navigate = useNavigate();
@@ -158,6 +160,15 @@ function AppLayout() {
             </Markdown>
             <a style={{overflowWrap: 'anywhere'}} href={newVersionInfo?.html_url} target='_blank' rel='noreferrer'>{newVersionInfo?.html_url}</a>
         </DialogBase>
+        <ToastContainer // react-tostify isn't exactly the same as Sonarr's message system, but I think it looks a little better
+          position='bottom-right'
+          theme='dark'
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          pauseOnHover
+        />
       </div>
     </div>
   );

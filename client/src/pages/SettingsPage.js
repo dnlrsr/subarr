@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import PostProcessorDialog from '../components/PostProcessorDialog';
+import { showToast } from '../utils/utils';
 
 function SettingsPage() {
   const [ytsubsApiKey, setYtsubsApiKey] = useState('');
   const [excludeShorts, setExcludeShorts] = useState(false);
   const [postProcessors, setPostProcessors] = useState([]);
-  const [message, setMessage] = useState('');
 
   const [editingPostProcessor, setEditingPostProcessor] = useState(null);
 
@@ -54,14 +54,14 @@ function SettingsPage() {
       if (!res.ok)
         throw new Error('Failed to save settings');
       
-      setMessage('Saved settings'); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
-    } catch (err) {
+      showToast('Saved settings', 'success');
+    }
+    catch (err) {
       console.error(err);
-      setMessage('Error saving settings'); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
+      showToast('Error saving settings', 'error');
     }
   };
 
-  //Todo: something about this page has the *tiniest* scroll on mobile (like 2px)
   return (
     <div style={{height: '100%'}}>
       <div style={{ display: 'flex', alignItems: 'center', padding: '0px 20px', gap: 10, backgroundColor: '#262626', height: 60 }}>
@@ -122,11 +122,6 @@ function SettingsPage() {
           </div>
         </div>
         <br />
-        {message && (
-          <p style={{ marginTop: '10px', color: message.includes('Invalid') || message.includes('Error') ? 'red' : 'lightgreen' }}>
-            {message}
-          </p>
-        )}
         <PostProcessorDialog editingItem={editingPostProcessor} onClose={() => setEditingPostProcessor(null)} onRefreshPostProcessors={() => refreshPostProcessors()}/>
         <div style={{flexGrow: 1}}/>
         <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>

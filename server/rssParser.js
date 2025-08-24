@@ -4,7 +4,10 @@ const { insertVideo } = require('./dbQueries');
 const parser = new Parser({
   customFields: {
     feed: ['yt:channelId', 'yt:playlistId', ['author', 'author', { keepArray: false }]],
-    item: ['media:group', ['media:thumbnail', 'thumbnail', { keepArray: false }]],
+    item: ['media:group', 
+      ['media:thumbnail', 'thumbnail', { keepArray: false }],
+      ['media:statistics', 'statistics', { keepArray: false }],
+    ],
   }
 });
 
@@ -52,6 +55,13 @@ async function parseVideosFromFeed(playlistId, playlistInfoCallback, videoInfoCa
     const videoTitle = item.title || 'Untitled';
     const publishedAt = item.pubDate || null;
     const videoThumbnail = item?.['media:group']?.['media:thumbnail']?.[0]?.$?.url || null;
+    const videoViews = Number(item["media:group"]["media:community"][0]["media:statistics"][0].$.views);
+
+    if (videoViews === 0) { // Todo: test this
+      // Note: a video might also have 0 views if it's YouTube premium content
+      console.log(`Video ${videoId} has no views (likely it's a premier that hasn't "premiered" yet), so we'll skip it and pick it up when it has views`);
+      continue;
+    }
 
     let alreadyExists = false;
     if (videoId) {

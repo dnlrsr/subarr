@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import { getErrorResponse } from "../utils/fetchUtils";
+import { getErrorResponse, showToast } from "../utils/utils";
 import DialogBase from "./DialogBase";
 
 function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
@@ -132,13 +132,13 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
         throw new Error(await getErrorResponse(res));
       }
       
-      alert(`Deleted post processor '${postProcessor.name}'`); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
+      showToast(`Deleted post processor '${postProcessor.name}'`, 'success');
       onRefreshPostProcessors();
       onClose();
     }
     catch (err) {
       console.error(err);
-      alert(`Error deleting post processor: ${err}`); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
+      showToast(`Error deleting post processor: ${err}`, 'error'); 
     }
 
     onClose();
@@ -156,11 +156,11 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
         throw new Error(await getErrorResponse(res));
       }
       
-      alert('Test successful'); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
+      showToast('Test successful', 'success');
     }
     catch (err) {
       console.error(err);
-      alert(`Test failed: ${err}`); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
+      showToast(`Test failed: ${err}`, 'error');
     }
   };
 
@@ -201,13 +201,13 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
         throw new Error(await getErrorResponse(res));
       }
       
-      alert(`Saved post processor '${postProcessor.name}'`); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
+      showToast(`Saved post processor '${postProcessor.name}'`, 'success');
       onRefreshPostProcessors();
       onClose();
     }
     catch (err) {
       console.error(err);
-      alert(`Error saving post processor: ${err}`); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
+      showToast(`Error saving post processor: ${err}`, 'error');
     }
   };
 

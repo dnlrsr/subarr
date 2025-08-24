@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Thumbnail from '../components/Thumbnail';
+import { showToast } from '../utils/utils';
 
 function PlaylistDetailsPage() {
   const { id } = useParams();
@@ -37,34 +38,41 @@ function PlaylistDetailsPage() {
         }),
       });
   
-      if (!res.ok) throw new Error('Failed to save');
-      alert('Settings saved!'); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
-    } catch (err) {
+      if (!res.ok)
+        throw new Error('Failed to save');
+      
+      showToast('Settings saved!', 'success');
+    }
+    catch (err) {
       console.error(err);
-      alert('Error saving settings'); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
+      showToast('Error saving settings', 'error');
     }
   };  
 
   const handleDelete = async () => {
-    const confirmDelete = window.confirm('Are you sure you want to remove this playlist?');
-    if (!confirmDelete) return;
+    const confirmDelete = window.confirm('Are you sure you want to remove this playlist?'); // Todo: use DialogBase instead
+    if (!confirmDelete)
+      return;
   
     try {
       const res = await fetch(`/api/playlists/${id}`, {
         method: 'DELETE',
       });
   
-      if (!res.ok) throw new Error('Failed to delete'); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
-      alert('Playlist removed');
+      if (!res.ok)
+        throw new Error('Failed to delete');
+      
+      showToast('Playlist removed', 'success');
       navigate('/'); //Navigate back to homepage
     }
     catch (err) {
       console.error(err);
-      alert('Error deleting playlist'); //Todo: use a notification toast (or maybe something more sonarr-like) instead of alert
+      showToast('Error deleting playlist', 'error');
     }
   };  
 
-  if (!playlist) return <p>Loading...</p>;
+  if (!playlist)
+    return <p>Loading...</p>;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
