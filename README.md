@@ -13,6 +13,8 @@ Here are all the similar things I could find and how this is different:
 - [TubeSync](https://github.com/meeb/tubesync) active, but based on yt-dlp for indexing
 - [Pinchflat](https://github.com/kieraneglin/pinchflat) active, but based on yt-dlp for indexing
 - [Subscribarr](https://github.com/jschaufuss/subscribarr) active, but while it includes YouTube playlists, it seems to be generic *arr video management (includes Sonarr & Radarr). _However, I believe this is based on RSS feeds_
+- [Youtarr](https://github.com/DialmasterOrg/Youtarr) active, but based on yt-dlp for indexing
+- [YTPTube](https://github.com/arabcoders/ytptube) active, but seems to essentially be a web UI wrapper around yt-dlp
 - [MetaTube](https://github.com/JVT038/MetaTube) seemingly inactive? Also seems to just do videos, not playlists
 - [ytdl-sub](https://github.com/jmbannon/ytdl-sub) active, but no UI
 - [Tubarr](https://github.com/TubarrApp/Tubarr) active? but also no UI (also claims to be "pre-pre-pre-alpha" in the README)
