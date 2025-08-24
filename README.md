@@ -5,11 +5,11 @@
 
 ### Background
 
-This is an attempt to create a Sonarr-like application for YouTube videos.
+This is an attempt to create a Sonarr-like application for YouTube videos. A lot of inspiration has been taken from Sonarr (mostly the UI), but this has been written entirely from scratch.
 
 _Why not use one of the existing solutions?_
 
-So far, the only (active) existing solution I've found, [TubeSync](https://github.com/meeb/tubesync), seems to be based on [yt-dlp](https://github.com/yt-dlp/yt-dlp) for getting playlist information. This works fine if you want to index an _entire playlist_ (which a user may, very well, want to do) but it requires a LOT of polling activity.
+So far, the only (active) existing solution I've found, [TubeSync](https://github.com/meeb/tubesync), seems to be based on [yt-dlp](https://github.com/yt-dlp/yt-dlp) for getting playlist information. This works fine if you want to index an _entire playlist_ (which a user may, very well, want to do) but it can require a LOT of polling activity (particularly for large channels).
 
 Sonarr is based on RSS feeds - explicitly designed for this purpose of getting new updates from subscription-like sources. This is much lighter in processing requirements.
 
@@ -30,6 +30,11 @@ YouTube already provides RSS feeds for playlists (eg https://www.youtube.com/fee
 However, this works perfectly fine for mine (and maybe other people's) needs.
 
 
+### Notes
+
+**YouTubarr currently does not implement any sort of authetication. It is highly recommended that you do not expose your instance to the internet (or, at least, put it behind a form of authentication like nginx or Cloudflare)**
+
+
 ### Current features
 
 - Add playlists
@@ -42,6 +47,8 @@ However, this works perfectly fine for mine (and maybe other people's) needs.
 
 ### Future features
 
+- API key for authenticating calls to the server
+- It would be neat to have some sort of web socket or other real-time communication between the server & client that will do things like updating the "last checked" or video list on the UI
 - Native "url base" support like sonarr (for reverse proxies or cloudflare tunnels)
 - Backup & Restore functionality (_should_ be pretty easy by just giving a copy of the sqlite db?)
 - _Index more than 15 items initially? (this would require significant up-front processing power like TubeSync does - so...unlikely)_
