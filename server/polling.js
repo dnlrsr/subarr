@@ -60,7 +60,7 @@ async function updateYtSubsPlaylists() {
     for (const sub of fetchedSubs) {
       const channelInfo = await tryParseAdditionalChannelData(`https://www.youtube.com/channel/${sub.channel_id}`);
       sub.banner = channelInfo.banner;
-      insertPlaylist(sub, 'ytsubs.app', true); //Todo: we should make sure this doesn't overwrite the existing interval check (if a user changes a sub's interval to 1 hour but then ytsubs is synced again and changes it back to 15min)
+      insertPlaylist(sub, 'ytsubs.app', true);
       
       // Create a polling job for the new subscription
       if (!pollingJobs.has(sub.playlist_id)) {
