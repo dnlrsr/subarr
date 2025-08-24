@@ -16,7 +16,7 @@ Here are all the similar things I could find and how this is different:
 - [MetaTube](https://github.com/JVT038/MetaTube) seemingly inactive? Also seems to just do videos, not playlists
 - [ytdl-sub](https://github.com/jmbannon/ytdl-sub) active, but no UI
 - [Tube Archivist](https://github.com/tubearchivist/tubearchivist) active, but also seems to be based on yt-dlp
-- [DireDireCrocs's Youtubarr](https://github.com/DireDireCrocs/Youtubarr) uses the full YouTube API and is intended for music videos & [Lidarr](https://lidarr.audio/) integration
+- [DireDireCrocs's Youtubarr](https://github.com/DireDireCrocs/Youtubarr) active (only recently created), uses the full YouTube API and is intended for music videos & [Lidarr](https://lidarr.audio/) integration
 - [Ytmdl](https://github.com/deepjyoti30/ytmdl) seeimingly inactive? Also seems to rely on youtube-dl and be music video specific
 - [Tubarr](https://vc.bridgew.edu/cgi/viewcontent.cgi?article=1691&context=honors_proj) not public - a student's capstone project
 
