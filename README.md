@@ -11,6 +11,8 @@ _Why not use one of the existing solutions?_
 
 So far, the only (active) existing solution I've found, [TubeSync](https://github.com/meeb/tubesync), seems to be based on [yt-dlp](https://github.com/yt-dlp/yt-dlp) for getting playlist information. This works fine if you want to index an _entire playlist_ (which a user may, very well, want to do) but it can require a LOT of polling activity (particularly for large channels).
 
+_It's been brought to my attention that while I've been working on this for about 2 months, just last week there was another service called "YouTubarr" published: https://github.com/DireDireCrocs/Youtubarr . However, this seems to be specific to music (and connecting to [Lidarr](https://lidarr.audio/)) and also relies on the official YouTube API_
+
 Sonarr is based on RSS feeds - explicitly designed for this purpose of getting new updates from subscription-like sources. This is much lighter in processing requirements.
 
 _What are the limitations of the RSS feed approach?_
