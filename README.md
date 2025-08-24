@@ -10,18 +10,21 @@ This is an attempt to create a Sonarr-like application for YouTube videos. A lot
 _Why not use one of the existing solutions?_
 
 Here are all the similar things I could find and how this is different:
-- [TubeSync](https://github.com/meeb/tubesync) active, but based on yt-dlp for indexing
-- [Pinchflat](https://github.com/kieraneglin/pinchflat) active, but based on yt-dlp for indexing
-- [Subscribarr](https://github.com/jschaufuss/subscribarr) active, but while it includes YouTube playlists, it seems to be generic *arr video management (includes Sonarr & Radarr). _However, I believe this is based on RSS feeds_
-- [Youtarr](https://github.com/DialmasterOrg/Youtarr) active, but based on yt-dlp for indexing
-- [YTPTube](https://github.com/arabcoders/ytptube) active, but seems to essentially be a web UI wrapper around yt-dlp
-- [MetaTube](https://github.com/JVT038/MetaTube) seemingly inactive? Also seems to just do videos, not playlists
-- [ytdl-sub](https://github.com/jmbannon/ytdl-sub) active, but no UI
-- [Tubarr](https://github.com/TubarrApp/Tubarr) active? but also no UI (also claims to be "pre-pre-pre-alpha" in the README)
-- [Tube Archivist](https://github.com/tubearchivist/tubearchivist) active, but also seems to be based on yt-dlp
-- [DireDireCrocs's Youtubarr](https://github.com/DireDireCrocs/Youtubarr) active (only recently created), uses the full YouTube API and is intended for music videos & [Lidarr](https://lidarr.audio/) integration
-- [Ytmdl](https://github.com/deepjyoti30/ytmdl) seeimingly inactive? Also seems to rely on youtube-dl and be music video specific
-- [Tubarr](https://vc.bridgew.edu/cgi/viewcontent.cgi?article=1691&context=honors_proj) not public - a student's capstone project
+| Name | Active? | Stars | Indexer | Comment |
+|----------------------|---------|-------|---------|---------|
+| [Tube Archivist](https://github.com/tubearchivist/tubearchivist) | ✅ | 6.7k | yt-dlp | Based on yt-dlp |
+| [Pinchflat](https://github.com/kieraneglin/pinchflat) | ✅ | 3.6k | yt-dlp | |
+| [ytdl-sub](https://github.com/jmbannon/ytdl-sub) | ✅ | 2.5k | yt-dlp | No UI |
+| [TubeSync](https://github.com/meeb/tubesync) | ✅ | 2.4k | yt-dlp | |
+| [YTPTube](https://github.com/arabcoders/ytptube) | ✅ | 348 | yt-dlp | Essentially a web UI wrapper around yt-dlp |
+| [Youtarr](https://github.com/DialmasterOrg/Youtarr) | ✅ | 54 | yt-dlp | |
+| [DireDireCrocs's Youtubarr](https://github.com/DireDireCrocs/Youtubarr) | ✅ | 11 | YouTube API | Focused on music videos & [Lidarr](https://lidarr.audio/) integration (also only recently created) |
+| [Subscribarr](https://github.com/jschaufuss/subscribarr) | ✅ | 3 | RSS feeds | Includes YouTube playlists but is more generic *arr management (Sonarr & Radarr) |
+| [Tubarr](https://github.com/TubarrApp/Tubarr) | ✅ | 0 | yt-dlp | No UI, “pre-pre-pre-alpha” status |
+| [MetaTube](https://github.com/JVT038/MetaTube) | ❌ | 362 | N/A | Seems to only handle individual videos, not playlists |
+| [Ytmdl](https://github.com/deepjyoti30/ytmdl) | ❌ | 3.4k | youtube-dl | Also music-video specific |
+| [Tubarr (Capstone Project)](https://vc.bridgew.edu/cgi/viewcontent.cgi?article=1691&context=honors_proj) | ❌ | N/A | yt-dlp | Private (a student's capstone project) |
+
 
 As you can see, there's a few other solutions, but most are based on [yt-dlp](https://github.com/yt-dlp/yt-dlp) for getting playlist information. This works fine if you want to index an _entire playlist_ (which a user may, very well, want to do) but it can require a LOT of polling activity (particularly for large channels). _Tube Archivist above even calls out 2-4GB of memory dedicated to its functionality._ **This project is lightweight and can easily run on a raspberry pi or similar.** Additionally, none of the above services can automatically keep your actual subscriptions on YouTube in sync with the app.
 
