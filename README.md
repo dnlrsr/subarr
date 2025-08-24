@@ -15,6 +15,7 @@ Here are all the similar things I could find and how this is different:
 - [Subscribarr](https://github.com/jschaufuss/subscribarr) active, but while it includes YouTube playlists, it seems to be generic *arr video management (includes Sonarr & Radarr). _However, I believe this is based on RSS feeds_
 - [MetaTube](https://github.com/JVT038/MetaTube) seemingly inactive? Also seems to just do videos, not playlists
 - [ytdl-sub](https://github.com/jmbannon/ytdl-sub) active, but no UI
+- [Tubarr](https://github.com/TubarrApp/Tubarr) active? but also no UI (also claims to be "pre-pre-pre-alpha" in the README)
 - [Tube Archivist](https://github.com/tubearchivist/tubearchivist) active, but also seems to be based on yt-dlp
 - [DireDireCrocs's Youtubarr](https://github.com/DireDireCrocs/Youtubarr) active (only recently created), uses the full YouTube API and is intended for music videos & [Lidarr](https://lidarr.audio/) integration
 - [Ytmdl](https://github.com/deepjyoti30/ytmdl) seeimingly inactive? Also seems to rely on youtube-dl and be music video specific
@@ -44,6 +45,10 @@ However, this works perfectly fine for mine (and maybe other people's) needs.
 ### Notes
 
 ⚠️ **YouTubarr currently does not implement any sort of authetication. It is highly recommended that you do not expose your instance to the internet (or, at least, put it behind a form of authentication like nginx or Cloudflare)** ⚠️
+
+YouTubarr is NOT intended to do the following:
+- Index an entire channel/playlist or get "older" videos. YouTubarr's RSS approach is specifically for "subscriptions": new video is posted, take some action
+- Media management. Once YouTubarr kicks off the post-processor (like yt-dlp), its job is done. Use Plex/Jellyfin/etc or another one of the linked solutions above if you require more control over your media
 
 
 ### Current features
@@ -81,4 +86,4 @@ And if you'd like to set it to run at startup, put that last command into a .ser
 
 ### Plans for future maintenance
 
-I am currently just building this as a hobby project for myself and I already have about 10x the amount of hobby projects that I can handle 😆. So I'll probably build this out enough for _me_, then other people will have to add to it if they want to keep it alive.
+I am currently just building this as a hobby project for myself and I already have about 10x the amount of hobby projects that I can handle. I'll probably fix some bugs or maintenance issues as they arise, but I don't plan to work on any major features. If you'd like to contribute, please reach out!
