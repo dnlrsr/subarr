@@ -32,7 +32,7 @@ However, this works perfectly fine for mine (and maybe other people's) needs.
 
 ### Notes
 
-**YouTubarr currently does not implement any sort of authetication. It is highly recommended that you do not expose your instance to the internet (or, at least, put it behind a form of authentication like nginx or Cloudflare)**
+⚠️ **YouTubarr currently does not implement any sort of authetication. It is highly recommended that you do not expose your instance to the internet (or, at least, put it behind a form of authentication like nginx or Cloudflare)** ⚠️
 
 
 ### Current features
