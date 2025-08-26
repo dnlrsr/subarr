@@ -79,7 +79,7 @@ async function tryParseAdditionalChannelData(url) {
 function getMeta() {
   return {
     versions: {
-      youtubarr: 1.0,
+      subarr: 1.0,
       node: process.version,
     },
   };

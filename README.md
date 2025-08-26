@@ -1,4 +1,8 @@
-# YouTubarr
+# Subarr
+
+*After [a lot of feedback](https://reddit.com/r/selfhosted/comments/1myldh3/i_built_youtubarr_the_sonarr_for_youtube/nacw3am/), I've decided to rename this project from "YouTubarr" to "Subarr". The name "Subarr" also helps define the project a little clearer in how it's based on RSS subscriptions (intended to be a "subscribe to playlists/channels & take action on new uploads") rather than a full PVR & media management system. If you're looking for a more true "Sonarr for YouTube", I recommend checking out one of the solutions below.*
+
+Subarr is a **lightweight** YouTube channel/playlist/subscription follower that will take action on new uploads (actions can be a webhook - like Discord - or a process - like downloading through yt-dlp). "Lightweight" means it needs few resources and can run on something like a raspberry pi.
 
 <img width="1220" height="774" alt="image" src="https://github.com/user-attachments/assets/dd9b42d8-08e9-4d9a-a175-acf7219d059a" />
 
@@ -13,12 +17,12 @@ Here are all the similar things I could find and how this is different:
 | Name | Active? | Stars | Indexer | Comment |
 |----------------------|---------|-------|---------|---------|
 | [Tube Archivist](https://github.com/tubearchivist/tubearchivist) | ✅ | ![](https://img.shields.io/github/stars/tubearchivist/tubearchivist?label=&style=flat-square&color=white) | yt-dlp | Based on yt-dlp |
-| [Pinchflat](https://github.com/kieraneglin/pinchflat) | ✅ | ![](https://img.shields.io/github/stars/kieraneglin/pinchflat?label=&style=flat-square&color=white) | yt-dlp | |
+| [Pinchflat](https://github.com/kieraneglin/pinchflat) | ✅ | ![](https://img.shields.io/github/stars/kieraneglin/pinchflat?label=&style=flat-square&color=white) | yt-dlp (but can also do RSS for "fast-sync") | |
 | [ytdl-sub](https://github.com/jmbannon/ytdl-sub) | ✅ | ![](https://img.shields.io/github/stars/jmbannon/ytdl-sub?label=&style=flat-square&color=white) | yt-dlp | No UI |
 | [TubeSync](https://github.com/meeb/tubesync) | ✅ | ![](https://img.shields.io/github/stars/meeb/tubesync?label=&style=flat-square&color=white) | yt-dlp | |
 | [YTPTube](https://github.com/arabcoders/ytptube) | ✅ | ![](https://img.shields.io/github/stars/arabcoders/ytptube?label=&style=flat-square&color=white) | yt-dlp | Essentially a web UI wrapper around yt-dlp |
 | [Youtarr](https://github.com/DialmasterOrg/Youtarr) | ✅ | ![](https://img.shields.io/github/stars/DialmasterOrg/Youtarr?label=&style=flat-square&color=white) | yt-dlp | |
-| [DireDireCrocs's Youtubarr](https://github.com/DireDireCrocs/Youtubarr) | ✅ | ![](https://img.shields.io/github/stars/DireDireCrocs/Youtubarr?label=&style=flat-square&color=white) | YouTube API | Focused on music videos & [Lidarr](https://lidarr.audio/) integration (also only recently created) |
+| [Youtubarr](https://github.com/DireDireCrocs/Youtubarr) | ✅ | ![](https://img.shields.io/github/stars/DireDireCrocs/Youtubarr?label=&style=flat-square&color=white) | YouTube API | Focused on music videos & [Lidarr](https://lidarr.audio/) integration (also only recently created) |
 | [Subscribarr](https://github.com/jschaufuss/subscribarr) | ✅ | ![](https://img.shields.io/github/stars/jschaufuss/subscribarr?label=&style=flat-square&color=white) | RSS feeds | Includes YouTube playlists but is more generic *arr management (Sonarr & Radarr) |
 | [Tubarr](https://github.com/TubarrApp/Tubarr) | ✅ | ![](https://img.shields.io/github/stars/TubarrApp/Tubarr?label=&style=flat-square&color=white) | yt-dlp | No UI, “pre-pre-pre-alpha” status |
 | [MetaTube](https://github.com/JVT038/MetaTube) | ❌ | ![](https://img.shields.io/github/stars/JVT038/MetaTube?label=&style=flat-square&color=white) | N/A | Seems to only handle individual videos, not playlists |
@@ -35,8 +39,8 @@ _What are the limitations of the RSS feed approach?_
 YouTube already provides RSS feeds for playlists (eg https://www.youtube.com/feeds/videos.xml?playlist_id=PLopY4n17t8RDoFQPcjBKWDEblGH1sOH2h). However, they can be severly limited:
 
 - Feeds seem to be limited to only the last 15 items
-  - _However, YouTubarr will list more items as they are found because the internal database will be updated_
-  - Since the feed is limited to only the last 15 items, if (for some reason) YouTubarr is down for an extended period of time (or a large amount of videos are published to the playlist in a short period of time), YouTubarr may miss some videos entirely.
+  - _However, Subarr will list more items as they are found because the internal database will be updated_
+  - Since the feed is limited to only the last 15 items, if (for some reason) Subarr is down for an extended period of time (or a large amount of videos are published to the playlist in a short period of time), Subarr may miss some videos entirely.
 - YouTube RSS feed items are always in "playlist order", meaning a new video added outside of the first 15 items will not be seen as an update to the RSS feed
   - This means that, currently, RSS feeds _**will not work**_ in the following situations: (issue logged with YouTube: https://issuetracker.google.com/issues/429563457)
     - YouTube playlists greater than 15 items where items are added outside the "top 15" (regular playlists can be in _any order_ - as determined by the playlist owner - which means that "newly added items" aren't necessarily at the top. Some creators' playlists are ordered oldest -> newest)
@@ -49,11 +53,11 @@ However, this works perfectly fine for mine (and maybe other people's) needs.
 
 ### Notes
 
-⚠️ **YouTubarr currently does not implement any sort of authetication. It is highly recommended that you do not expose your instance to the internet (or, at least, put it behind a form of authentication like nginx or Cloudflare)** ⚠️
+⚠️ **Subarr currently does not implement any sort of authetication. It is highly recommended that you do not expose your instance to the internet (or, at least, put it behind a form of authentication like nginx or Cloudflare)** ⚠️
 
-YouTubarr is NOT intended to do the following:
-- Index an entire channel/playlist or get "older" videos. YouTubarr's RSS approach is specifically for "subscriptions": new video is posted, take some action
-- Media management. Once YouTubarr kicks off the post-processor (like yt-dlp), its job is done. Use Plex/Jellyfin/etc or another one of the linked solutions above if you require more control over your media
+Subarr is NOT intended to do the following:
+- Index an entire channel/playlist or get "older" videos. Subarr's RSS approach is specifically for "subscriptions": new video is posted, take some action
+- Media management. Once Subarr kicks off the post-processor (like yt-dlp), its job is done. Use Plex/Jellyfin/etc or another one of the linked solutions above if you require more control over your media
 
 
 ### Current features
@@ -80,8 +84,8 @@ YouTubarr is NOT intended to do the following:
 Make sure you have Node >= 18 installed, then run the following:
 
 ```
-git clone https://github.com/derekantrican/youtubarr.git
-cd youtubarr
+git clone https://github.com/derekantrican/subarr.git
+cd subarr
 npm install
 # optionally create server/.env with PORT=5000 or whatever
 npm run start-server # On Windows, use 'npm run start-server-win'

@@ -1,7 +1,11 @@
 const path = require('path');
 const Database = require('better-sqlite3');
 
-const dbPath = path.join(__dirname, 'youtubarr.db'); // Always use youtubarr.db from the server folder
+// Always use subarr.db from the server folder (and support youtubarr.db if it still exists from before the app rename)
+const dbPath = fs.existsSync(path.join(__dirname, 'youtubarr.db')) 
+  ? path.join(__dirname, 'youtubarr.db')
+  : path.join(__dirname, 'subarr.db');
+
 const db = new Database(dbPath);
 
 // Migration: migrate old db schemas

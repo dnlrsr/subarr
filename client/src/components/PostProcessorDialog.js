@@ -23,7 +23,7 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
           'Content-Type': 'application/json'
         },
         body: `{
-  "username": "YouTubarr",
+  "username": "Subarr",
   "embeds": [{
     "title": "New Video: [[video.title]]",
     "url": "https://www.youtube.com/watch?v=[[video.video_id]]",

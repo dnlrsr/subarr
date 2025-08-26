@@ -60,10 +60,10 @@ function AppLayout() {
   useEffect(() => {
     async function checkForUpdate() {
       const metaResponse = await fetch('/api/meta');
-      const currentVersionNumber = (await metaResponse.json()).versions.youtubarr;
+      const currentVersionNumber = (await metaResponse.json()).versions.subarr;
       setCurrentVersion(currentVersionNumber);
 
-      const githubResponse = await fetch('https://api.github.com/repos/derekantrican/youtubarr/releases');
+      const githubResponse = await fetch('https://api.github.com/repos/derekantrican/subarr/releases');
       const latestVersionInfo = (await githubResponse.json())[0];
       const latestVersionNumber = Number(latestVersionInfo.tag_name);
 
