@@ -51,9 +51,9 @@ function insertPlaylist(playlist, source, updateOnConflict = false) {
   );
 }
 
-function updatePlaylist(playlist_id, check_interval_minutes = undefined, regex_filter = undefined, last_checked = undefined) {
+function updatePlaylist(id, check_interval_minutes = undefined, regex_filter = undefined, last_checked = undefined) {
   const sets = [];
-  const params = { playlist_id };
+  const params = { id };
 
   if (check_interval_minutes !== undefined) {
     sets.push('check_interval_minutes = @check_interval_minutes');
@@ -71,7 +71,7 @@ function updatePlaylist(playlist_id, check_interval_minutes = undefined, regex_f
   if (sets.length === 0) 
     return; // nothing to update
 
-  const sql = `UPDATE playlists SET ${sets.join(', ')} WHERE playlist_id = @playlist_id`;
+  const sql = `UPDATE playlists SET ${sets.join(', ')} WHERE id = @id`;
   db.prepare(sql).run(params);
 }
 
