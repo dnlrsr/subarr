@@ -8,6 +8,11 @@ const { fetchWithRetry, runCommand } = require('./utils');
 */
 
 async function runPostProcessor(type, target, data, videoInfo) {
+  
+  if(getVideoState(videoInfo?.video.video_id) === 'present') {
+    throw new Error('Video already processed');
+  }
+
   if (type === 'webhook') {
     let { method = 'POST', headers = {}, body } = JSON.parse(data);
 
@@ -26,7 +31,7 @@ async function runPostProcessor(type, target, data, videoInfo) {
       throw new Error(text);
     }
 
-    setVideoState(videoInfo?.video.video_id, response.body.status ?? 'unknown');
+    setVideoState(videoInfo?.video.video_id, 'downloading');
     
     return text;
   }
