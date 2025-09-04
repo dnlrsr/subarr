@@ -3,9 +3,11 @@ const path = require('path');
 const Database = require('better-sqlite3');
 
 // Always use subarr.db from the server folder (and support youtubarr.db if it still exists from before the app rename)
-const dbPath = fs.existsSync(path.join(__dirname, 'youtubarr.db')) 
-  ? path.join(__dirname, 'youtubarr.db')
-  : path.join(__dirname, 'subarr.db');
+const dir = path.resolve("/data/db");
+
+const dbPath = fs.existsSync(path.join(dir, 'youtubarr.db')) 
+  ? path.join(dir, 'youtubarr.db')
+  : path.join(dir, 'subarr.db');
 
 const db = new Database(dbPath);
 
