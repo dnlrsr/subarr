@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const depug = require('debug');
+const logRequest = depug('server:request');
 const { parseVideosFromFeed } = require('./rssParser');
 const { schedulePolling, updateYtSubsPlaylists, removePolling, scheduleWatcher } = require('./polling');
 const { runPostProcessor } = require('./postProcessors');
@@ -39,6 +41,17 @@ setInterval(() => {
 updateYtSubsPlaylists(); // also run on startup
 
 const app = express();
+app.use((req, res, next) => {
+  const now = new Date().toISOString();
+  res.on('finish', () => {
+    // Colorize status code: green for 2xx, yellow for 4xx, red for 5xx
+    let color = '\x1b[32m'; // green
+    if (res.statusCode >= 500) color = '\x1b[31m'; // red
+    else if (res.statusCode >= 400) color = '\x1b[33m'; // yellow
+    logRequest(`[${now}] ${req.method} \x1b[0mStatus: ${color}${res.statusCode}\x1b[0m ${req.url}`);
+  });
+  next();
+});
 app.use(cors());
 app.use(express.json());
 
@@ -227,10 +240,7 @@ app.put('/api/postprocessors/:id', (req, res) => {
   if (!name || !type || !target || !data)
     return res.status(400).json({ error: 'Missing fields' });
 
-  const result = updatePostProcessor(name, type, target, data, req.params.id);
-
-  if (result.changes === 0)
-    return res.status(404).json({ error: 'Not found' });
+  updatePostProcessor(name, type, target, data, req.params.id);
   
   res.json({ success: true });
 });
