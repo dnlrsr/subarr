@@ -26,13 +26,6 @@ async function runPostProcessor(type, target, data, videoInfo) {
 
     return text;
   }
-  else if (type === 'process') {
-    let { args } = JSON.parse(data);
-
-    args = replaceVariables(args, videoInfo);
-
-    return await runCommand(target, args); // Currently we're awaiting the process. This can be good for testing the postprocessor, but we might not want it when running it
-  }
   else {
     throw new Error(`Unknown processor type: ${type}`);
   }

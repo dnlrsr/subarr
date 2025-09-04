@@ -9,7 +9,6 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
   const [isVariablesDialogOpen, setIsVariablesDialogOpen] = useState(false);
   const postProcessorTypes = [
     'webhook',
-    'process',
   ];
 
   const [selectedTemplate, setSelectedTemplate] = useState('');
@@ -54,13 +53,6 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
   "cover": "[[video.thumbnail]]",
   "type": "video"
 }`
-      },
-    },
-    'yt-dlp': {
-      type: 'process',
-      target: 'PATH_TO_YT-DLP',
-      data: {
-        args: `https://www.youtube.com/watch?v=[[video.video_id]] -o "[[playlist.title]]/%(title)s.%(ext)s"`,
       },
     },
     // More templates (eg Pushbullet, etc) can be added here as requested
@@ -285,7 +277,6 @@ function PostProcessorDataUI({ postProcessorData, type, updateData, showVariable
     return null;
 
   return (
-    type === 'webhook' ?
     <>
       <div className='setting flex-column-mobile'>
         <div style={{minWidth: 175}}>Method</div>
@@ -328,24 +319,6 @@ function PostProcessorDataUI({ postProcessorData, type, updateData, showVariable
           <button style={{fontFamily: '"Caveat", cursive', fontSize: 'large'}} onClick={() => showVariablesDialog()}>
             <div>f(x)</div>
           </button>
-        </div>
-      </div>
-    </>
-    : 
-    <>
-      <div>
-        {/* Todo: we probably also want to allow "environment variables" like "headers" above */}
-        <div className='setting flex-column-mobile'>
-          <div style={{minWidth: 175}}>Arguments</div>
-          <div style={{display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'end'}}>
-            <textarea style={{resize: 'vertical', width: 'calc(100% - 18px)', minHeight: 125}}
-              value={postProcessorData.args}
-              onChange={e => updateData({...postProcessorData, args: e.target.value})}
-            />
-            <button style={{fontFamily: '"Caveat", cursive', fontSize: 'large'}} onClick={() => showVariablesDialog()}>
-              <div>f(x)</div>
-            </button>
-          </div>
         </div>
       </div>
     </>
