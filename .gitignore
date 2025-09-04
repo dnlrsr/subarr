@@ -49,3 +49,5 @@ Thumbs.db
 **/*.crt
 **/*.key
 **/secrets.json
+
+data/*
