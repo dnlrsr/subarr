@@ -45,13 +45,13 @@ jobs:
           echo "No build step for server"
 
       - name: Upload client build artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: client-build
           path: client/build
 
       - name: Upload server artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: server
           path: server
