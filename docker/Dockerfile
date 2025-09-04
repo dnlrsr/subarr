@@ -1,5 +1,8 @@
 FROM node:latest
 
+# Set NODE_ENV to production
+ENV NODE_ENV=production
+
 WORKDIR /app
 # Copy server files
 COPY server/package.json server/package-lock.json ./server/
