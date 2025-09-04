@@ -26,6 +26,8 @@ WORKDIR /app/server
 # Rebuild native modules for the runtime environment
 RUN npm rebuild
 
+RUN mkdir -p /data/db && mkdir -p /data/config
+
 EXPOSE 3001
 CMD ["node", "index.js"]
 
