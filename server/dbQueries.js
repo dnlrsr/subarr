@@ -84,7 +84,7 @@ function getVideoStatePendings() {
 }
 
 function getVideoState(videoId) {
-  return db.prepare('SELECT status FROM videos WHERE video_id = ? LIMIT 1').get(videoId);
+  return db.prepare('SELECT state FROM videos WHERE video_id = ? LIMIT 1').get(videoId);
 }
 
 function setVideoState(videoId, state) {
@@ -93,6 +93,10 @@ function setVideoState(videoId, state) {
 
 function getVideosForPlaylist(playlistId) {
   return db.prepare('SELECT * FROM videos WHERE playlist_id = ? ORDER BY published_at DESC').all(playlistId);
+}
+
+function getVideoById(videoId) {
+  return db.prepare('SELECT * FROM videos WHERE video_id = ? LIMIT 1').get(videoId);
 }
 
 function insertVideo(playlistId, videoId, videoTitle, publishedAt, videoThumbnail) {
@@ -177,6 +181,7 @@ module.exports = {
   deletePlaylist,
   getVideoStatePendings,
   getVideoState,
+  getVideoById,
   setVideoState,
   getVideosForPlaylist,
   insertVideo,
