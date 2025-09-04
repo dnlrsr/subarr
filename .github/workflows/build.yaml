@@ -27,7 +27,9 @@ jobs:
         run: |
           cd client
           npm ci
-
+        cache:
+          paths:
+            - client/node_modules
       - name: Build client
         run: |
           cd client
