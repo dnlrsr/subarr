@@ -2,8 +2,15 @@ const fs = require('fs');
 const path = require('path');
 const Database = require('better-sqlite3');
 
+
 // Always use subarr.db from the server folder (and support youtubarr.db if it still exists from before the app rename)
-const dir = path.resolve("/data/db");
+let dir = path.resolve("/data/db");
+if (!fs.existsSync(dir)) {
+  dir = path.resolve(__dirname, '../data/db');
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+}
 
 const dbPath = fs.existsSync(path.join(dir, 'youtubarr.db')) 
   ? path.join(dir, 'youtubarr.db')
@@ -42,7 +49,7 @@ CREATE TABLE IF NOT EXISTS videos (
   title TEXT,
   published_at TEXT,
   thumbnail TEXT,
-  status TEXT NOT NULL,
+  state TEXT NOT NULL,
   UNIQUE (playlist_id, video_id)  -- Unique by both playlist_id & video_id (since the same video could exist on multiple playlists)
 );
 

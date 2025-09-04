@@ -1,3 +1,4 @@
+const { getVideoState, setVideoState } = require('./dbQueries');
 const { fetchWithRetry, runCommand } = require('./utils');
 
 /* Notes:
@@ -21,9 +22,12 @@ async function runPostProcessor(type, target, data, videoInfo) {
 
     const text = await response.text();
     if (!response.ok) {
+      setVideoState(videoInfo?.video.video_id, 'error');
       throw new Error(text);
     }
 
+    setVideoState(videoInfo?.video.video_id, response.body.status ?? 'unknown');
+    
     return text;
   }
   else {

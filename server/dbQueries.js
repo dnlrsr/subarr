@@ -79,13 +79,21 @@ function deletePlaylist(playlistId) {
   db.prepare('DELETE FROM playlists WHERE playlist_id = ?').run(playlistId);
 }
 
+function getVideoState(videoId) {
+  return db.prepare('SELECT status FROM videos WHERE video_id = ? LIMIT 1').get(videoId);
+}
+
+function setVideoState(videoId, state) {
+  return db.prepare('UPDATE videos SET state = ? WHERE video_id = ?').run(state, videoId);
+}
+
 function getVideosForPlaylist(playlistId) {
   return db.prepare('SELECT * FROM videos WHERE playlist_id = ? ORDER BY published_at DESC').all(playlistId);
 }
 
 function insertVideo(playlistId, videoId, videoTitle, publishedAt, videoThumbnail) {
   const insertVideo = db.prepare(`
-    INSERT OR IGNORE INTO videos (playlist_id, video_id, title, published_at, thumbnail, status)
+    INSERT OR IGNORE INTO videos (playlist_id, video_id, title, published_at, thumbnail, state)
     VALUES (?, ?, ?, ?, ?, ?)
   `); // "OR IGNORE" will ignore conflicts (we could also update the item on conflicts, but we'll handle that elsewhere)
   return insertVideo.run(playlistId, videoId, videoTitle, publishedAt, videoThumbnail, 'missing');
@@ -163,6 +171,8 @@ module.exports = {
   insertPlaylist,
   updatePlaylist,
   deletePlaylist,
+  getVideoState,
+  setVideoState,
   getVideosForPlaylist,
   insertVideo,
   deleteVideosForPlaylist,

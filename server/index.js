@@ -21,7 +21,8 @@ const {
   getPostProcessors,
   insertPostProcessor,
   deletePostProcessor,
-  getVideosForPlaylist
+  getVideosForPlaylist,
+  updatePostProcessor
 } = require('./dbQueries');
 
 const playlists = getPlaylists();
