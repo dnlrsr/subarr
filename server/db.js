@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS videos (
   title TEXT,
   published_at TEXT,
   thumbnail TEXT,
-  state TEXT NOT NULL,
+  state TEXT NOT NULL DEFAULT 'missing',
   UNIQUE (playlist_id, video_id)  -- Unique by both playlist_id & video_id (since the same video could exist on multiple playlists)
 );
 
