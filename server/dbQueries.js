@@ -85,10 +85,10 @@ function getVideosForPlaylist(playlistId) {
 
 function insertVideo(playlistId, videoId, videoTitle, publishedAt, videoThumbnail) {
   const insertVideo = db.prepare(`
-    INSERT OR IGNORE INTO videos (playlist_id, video_id, title, published_at, thumbnail)
-    VALUES (?, ?, ?, ?, ?)
+    INSERT OR IGNORE INTO videos (playlist_id, video_id, title, published_at, thumbnail, status)
+    VALUES (?, ?, ?, ?, ?, ?)
   `); // "OR IGNORE" will ignore conflicts (we could also update the item on conflicts, but we'll handle that elsewhere)
-  return insertVideo.run(playlistId, videoId, videoTitle, publishedAt, videoThumbnail);
+  return insertVideo.run(playlistId, videoId, videoTitle, publishedAt, videoThumbnail, 'missing');
 }
 
 function deleteVideosForPlaylist(playlistId) {
