@@ -113,9 +113,9 @@ docker run -p 3001:3001 subarr
 ### Mount a data directory for persistent storage
 
 ```bash
-docker run -p 3001:3001 -v /path/to/host/data:/data subarr
+docker run -p 3001:3001 -v /path/to/host/data:/data/db subarr
 ```
-This will store all database and downloaded files in `/path/to/host/data` on your host.
+This will store all database in `/path/to/host/data/data` on your host.
 
 ### Set environment variables
 
