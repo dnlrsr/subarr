@@ -1,9 +1,15 @@
 const { parseVideosFromFeed } = require('./rssParser');
 const { runPostProcessor } = require('./postProcessors');
 const { fetchWithRetry, tryParseAdditionalChannelData } = require('./utils');
-const { getPostProcessors, getSettings, insertActivity, insertPlaylist, getPlaylists, deletePlaylist, updatePlaylist } = require('./dbQueries');
+const { getPostProcessors, getSettings, insertActivity, insertPlaylist, getPlaylists, deletePlaylist, updatePlaylist, getVideoStatePendings } = require('./dbQueries');
 
 const pollingJobs = new Map(); // Map of playlistId -> { intervalId, intervalMinutes, regex }
+
+function scheduleWatcher() {
+  setInterval(() => {
+    watchStates();
+  }, 60 * 1000);
+}
 
 function schedulePolling(playlist) {
   const { playlist_id, title, check_interval_minutes, regex_filter } = playlist;
@@ -29,6 +35,15 @@ function schedulePolling(playlist) {
 function removePolling(playlist_id) {
   clearInterval(pollingJobs.get(playlist_id).intervalId);
   pollingJobs.delete(playlist_id);
+}
+
+function watchStates() {
+  const entities = getVideoStatePendings();
+
+  entities.forEach(entity => {
+    // Simulate processing the entity
+    console.log(entity);
+  });
 }
 
 async function updateYtSubsPlaylists() {
@@ -140,4 +155,4 @@ async function pollPlaylist(playlist, alertForNewVideos = true) {
   }
 }
 
-module.exports = { schedulePolling, removePolling, updateYtSubsPlaylists };
+module.exports = { schedulePolling, removePolling, updateYtSubsPlaylists, scheduleWatcher };

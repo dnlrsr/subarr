@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const { parseVideosFromFeed } = require('./rssParser');
-const { schedulePolling, updateYtSubsPlaylists, removePolling } = require('./polling');
+const { schedulePolling, updateYtSubsPlaylists, removePolling, scheduleWatcher } = require('./polling');
 const { runPostProcessor } = require('./postProcessors');
 const { tryParseAdditionalChannelData, getMeta } = require('./utils');
 const {
@@ -29,6 +29,8 @@ const playlists = getPlaylists();
 for (const playlist of playlists) {
   schedulePolling(playlist);
 }
+
+scheduleWatcher();
 
 // Schedule YTSubs.app polling
 setInterval(() => {

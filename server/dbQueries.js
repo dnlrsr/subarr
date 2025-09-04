@@ -79,6 +79,10 @@ function deletePlaylist(playlistId) {
   db.prepare('DELETE FROM playlists WHERE playlist_id = ?').run(playlistId);
 }
 
+function getVideoStatePendings() {
+  return db.prepare('SELECT video_id FROM videos WHERE state = ?').all('pending');
+}
+
 function getVideoState(videoId) {
   return db.prepare('SELECT status FROM videos WHERE video_id = ? LIMIT 1').get(videoId);
 }
@@ -171,6 +175,7 @@ module.exports = {
   insertPlaylist,
   updatePlaylist,
   deletePlaylist,
+  getVideoStatePendings,
   getVideoState,
   setVideoState,
   getVideosForPlaylist,
