@@ -10,7 +10,6 @@ COPY client/build ./client/build
 
 # Install server dependencies
 WORKDIR /app/server
-RUN npm ci
 
 # Expose port (change if your server uses a different port)
 EXPOSE 3001
