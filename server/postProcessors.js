@@ -60,7 +60,7 @@ function replaceVariables(text, videoInfo, urlsafe = false) {
     '[[video.thumbnail]]': data.video.thumbnail,
     '[[video.video_id]]': data.video.video_id,
     '[[video.published_at]]': data.video.published_at,
-    '[[playlist.title]]': data.playlist.title,
+    '[[playlist.title]]': data.playlist?.title ?? '',
   };
 
   let result = text;
