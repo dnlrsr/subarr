@@ -16,6 +16,7 @@ const {
   insertActivity,
   updatePlaylist,
   deletePlaylist,
+  getVideoById,
   deleteVideosForPlaylist,
   getActivitiesCount,
   getActivities,
@@ -265,6 +266,28 @@ app.post('/api/postprocessors/test', async (req, res) => {
   catch (e) {
     res.status(500).json({ error: e.message });
   }
+});
+
+app.post('/api/videos/:videoId/download', (req, res) => {
+  const videoId = req.params.videoId;
+  const videos = [];
+
+  const video = getVideoById(videoId);
+  if (!video) {
+    return res.status(404).json({ error: 'Video not found' });
+  }
+
+  const postProcessors = getPostProcessors().find((name) =>  name = 'yt-dlp-ap');
+
+  runPostProcessor(postProcessors.type, postProcessors.target, postProcessors.data, {video})
+    .then(response => {
+      insertActivity(video.playlist_id, video.title, `https://www.youtube.com/watch?v=${video.video_id}`, 'Video download started', 'cloud-download');
+      res.json({ success: true, status: response.status, response: `Post processor responded with: ${response}` });
+    })
+    .catch(err => {
+      console.error('Failed to run post processor:', err);
+      res.status(500).json({ error: 'Failed to run post processor' });
+    });
 });
 
 app.get('/api/meta', (req, res) => {
