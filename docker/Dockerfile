@@ -1,17 +1,18 @@
-FROM node:latest AS builder
+FROM node:alpine AS builder
 
 # Install build dependencies for native modules
-RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache python3 make g++ py3-pip
 
 WORKDIR /app
 COPY server/package.json ./server/
 WORKDIR /app/server
 RUN npm install && npm rebuild
 
-FROM node:latest AS runtime
+FROM node:alpine AS runtime
 
-# Install build dependencies for native modules
-RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
+# Install build dependencies for native modules and yt-dlp
+RUN apk add --no-cache python3 make g++ py3-pip && \
+    python3 -m pip install --break-system-packages -U "yt-dlp[default]"
 
 ENV NODE_ENV=production
 WORKDIR /app
