@@ -96,6 +96,7 @@ And if you'd like to set it to run at startup, put that last command into a .ser
 ---
 
 ## Docker Usage
+> Do not mount nfs storage! The application uses sqllite.
 
 ### Build the Docker image
 
