@@ -11,8 +11,7 @@ RUN npm install && npm rebuild
 FROM node:alpine AS runtime
 
 # Install build dependencies for native modules and yt-dlp
-RUN apk add --no-cache python3 make g++ py3-pip && \
-    python3 -m pip install --break-system-packages -U "yt-dlp[default]"
+RUN apk add --no-cache python3 make g++
 
 ENV NODE_ENV=production
 WORKDIR /app
