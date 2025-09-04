@@ -98,6 +98,8 @@ And if you'd like to set it to run at startup, put that last command into a .ser
 ## Docker Usage
 > Do not mount nfs storage! The application uses sqllite.
 
+
+
 ### Build the Docker image
 
 ```bash
@@ -129,6 +131,38 @@ Or with a custom `.env` file:
 ```bash
 docker run -p 3001:3001 -v /path/to/host/data:/data --env-file /path/to/.env subarr
 ```
+
+---
+
+### Docker Compose Example
+
+Create a `docker-compose.yml` file in your project directory:
+
+```yaml
+services:
+  subarr:
+    image: ghcr.io/dnlrsr/subarr/subarr:latest # Todo: Change after merge
+    ports:
+      - "3001:3001"
+    volumes:
+      - db-data:/data/db
+    env_file:
+      - .env
+
+db-data:
+  driver: local # Or what ever
+```
+
+Then start with:
+```bash
+docker compose up --build
+```
+
+This will:
+- Build and run the Subarr container
+- Mount the local `./data` folder to `/data` in the container for persistence
+- Load environment variables from `.env`
+- Expose port 3001
 
 ---
 
