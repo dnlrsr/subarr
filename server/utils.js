@@ -1,6 +1,8 @@
 const fetch = require('node-fetch');
 const { spawn } = require('node:child_process');
+const { setApiKey, getApiKey } = require('./dbQueries');
 const parseArgs = require('string-argv').default;
+const crypto = require('crypto');
 
 async function fetchWithRetry(url, options = {}, retries = 3) {
   for (let attempt = 0; attempt < retries; attempt++) {
@@ -85,4 +87,15 @@ function getMeta() {
   };
 }
 
-module.exports = { fetchWithRetry, runCommand, tryParseAdditionalChannelData, getMeta }
+function createApiKey(recreate = false) {
+  const token = crypto.randomBytes(32).toString('hex');
+
+  if(getApiKey() && !recreate) {
+    console.log('API key already exists, not overwriting existing key');
+    return;
+  }
+  console.log(`Generated Bearer token: ${token}`);
+  setApiKey(token);
+}
+
+module.exports = { fetchWithRetry, runCommand, tryParseAdditionalChannelData, getMeta, createApiKey }

@@ -173,6 +173,16 @@ function insertActivity(playlistId, title, url, message, icon) {
   .run(new Date().toISOString(), playlistId, title, url, message, icon);
 }
 
+function setApiKey(key) {
+  db.prepare('DELETE FROM api_key').run(); // Only allow one key at a time
+  db.prepare('INSERT INTO api_key (key) VALUES (?)').run(key);
+}
+
+function getApiKey() {
+  const row = db.prepare('SELECT key FROM api_key LIMIT 1').get();
+  return row ? row.key : null;
+}
+
 module.exports = { 
   getPlaylists,
   getPlaylist,
@@ -195,4 +205,6 @@ module.exports = {
   getActivitiesCount,
   getActivities,
   insertActivity,
+  setApiKey,
+  getApiKey
 };

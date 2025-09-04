@@ -75,6 +75,11 @@ CREATE TABLE IF NOT EXISTS post_processors (
   target TEXT NOT NULL,
   data TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS api_key (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  key TEXT NOT NULL
+);
 `);
 
 module.exports = db;

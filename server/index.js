@@ -7,7 +7,7 @@ const logRequest = depug('server:request');
 const { parseVideosFromFeed } = require('./rssParser');
 const { schedulePolling, updateYtSubsPlaylists, removePolling, scheduleWatcher } = require('./polling');
 const { runPostProcessor } = require('./postProcessors');
-const { tryParseAdditionalChannelData, getMeta } = require('./utils');
+const { tryParseAdditionalChannelData, getMeta, createApiKey } = require('./utils');
 const {
   getPlaylists,
   getSettings,
@@ -25,7 +25,8 @@ const {
   insertPostProcessor,
   deletePostProcessor,
   getVideosForPlaylist,
-  updatePostProcessor
+  updatePostProcessor,
+  setupApiKey
 } = require('./dbQueries');
 
 const playlists = getPlaylists();
@@ -55,6 +56,11 @@ app.use((req, res, next) => {
 });
 app.use(cors());
 app.use(express.json());
+
+createApiKey();
+
+// Init done.
+// Todo: Refactore init and make more SOLID.
 
 app.get('/api/playlists', (req, res) => {
   res.json(getPlaylists());
