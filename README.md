@@ -93,6 +93,44 @@ npm run start-server # On Windows, use 'npm run start-server-win'
 
 And if you'd like to set it to run at startup, put that last command into a .service file (Linux) or your Startup folder (Windows).
 
+---
+
+## Docker Usage
+
+### Build the Docker image
+
+```bash
+docker build -t subarr -f docker/Dockerfile .
+```
+
+### Run the container
+
+```bash
+docker run -p 3001:3001 subarr
+```
+
+### Mount a data directory for persistent storage
+
+```bash
+docker run -p 3001:3001 -v /path/to/host/data:/data subarr
+```
+This will store all database and downloaded files in `/path/to/host/data` on your host.
+
+### Set environment variables
+
+You can pass environment variables (such as API keys, config, etc) using the `-e` flag or a `.env` file:
+
+```bash
+docker run -p 3001:3001 -v /path/to/host/data:/data -e NODE_ENV=production subarr
+```
+
+Or with a custom `.env` file:
+```bash
+docker run -p 3001:3001 -v /path/to/host/data:/data --env-file /path/to/.env subarr
+```
+
+---
+
 ### Plans for future maintenance
 
 I am currently just building this as a hobby project for myself and I already have about 10x the amount of hobby projects that I can handle. I'll probably fix some bugs or maintenance issues as they arise, but I don't plan to work on any major features. If you'd like to contribute, please reach out!
