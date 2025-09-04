@@ -31,7 +31,7 @@ jobs:
         run: |
           docker save subarr:${{ inputs.tag }} | gzip > subarr-image.tar.gz
       - name: Upload Docker image artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: subarr-docker-image
           path: subarr-image.tar.gz
