@@ -28,6 +28,8 @@ RUN npm rebuild
 
 RUN mkdir -p /data/db && mkdir -p /data/config
 
+USER 1000:1000
+
 EXPOSE 3001
 CMD ["node", "index.js"]
 
