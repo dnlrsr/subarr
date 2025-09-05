@@ -4,7 +4,7 @@
 
 **A lightweight YouTube channel/playlist subscription manager**
 
-[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](ghcr.io/dnlrsr/subarr/subarr:latest) 🔄 Set Environment Variables
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://github.com/dnlrsr/subarr/pkgs/container/subarr%2Fsubarr) 🔄 Set Environment Variables
 
 Using the `-e` flag:
 ```bash
