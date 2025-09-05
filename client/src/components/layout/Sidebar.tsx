@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Nav } from '../ui';
 
@@ -8,6 +9,7 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen: _, onItemClick }) => {
+  const { t } = useTranslation();
   const location = useLocation();
 
   return (
@@ -32,7 +34,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen: _, onItemClick }) => {
             onClick={onItemClick}
           >
             <i className="bi bi-play-fill me-2"></i>
-            Playlists
+            {t('sidebar.playlists')}
           </Nav.Link>
           <Nav.Link 
             as={NavLink}
@@ -41,7 +43,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen: _, onItemClick }) => {
             style={{ color: '#cccccc' }}
             onClick={onItemClick}
           >
-            Add New
+            {t('sidebar.addNew')}
           </Nav.Link>
         </div>
         
@@ -55,7 +57,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen: _, onItemClick }) => {
           onClick={onItemClick}
         >
           <i className="bi bi-clock me-2"></i>
-          Activity
+          {t('sidebar.activity')}
         </Nav.Link>
         
         <Nav.Link 
@@ -68,7 +70,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen: _, onItemClick }) => {
           onClick={onItemClick}
         >
           <i className="bi bi-gear-fill me-2"></i>
-          Settings
+          {t('sidebar.settings')}
         </Nav.Link>
       </Nav>
     </div>

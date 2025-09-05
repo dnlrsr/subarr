@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Card, Container, Input, Thumbnail } from '../components/ui';
 import { Playlist, VideoInfo } from '../types';
@@ -11,6 +12,7 @@ interface PlaylistDetailsData {
 }
 
 const PlaylistDetailsPage: React.FC = () => {
+  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
@@ -127,20 +129,20 @@ const PlaylistDetailsPage: React.FC = () => {
   };
 
   if (!playlist) {
-    return <p>Loading...</p>;
+    return <p>{t('common.loading')}</p>;
   }
 
   return (
     <Container fluid style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <Card>
         <Card.Header semantic="toolbar">
-          <Button semantic="toolbar" variant="success" onClick={handleSave} title="Save Settings">
+          <Button semantic="toolbar" variant="success" onClick={handleSave} title={t('playlistDetailsPage.saveSettings')}>
             <i className="bi bi-floppy-fill"></i>
-            <span style={{ fontSize: 'small', marginLeft: 5 }}>Save</span>
+            <span style={{ fontSize: 'small', marginLeft: 5 }}>{t('common.save')}</span>
           </Button>
-          <Button semantic="toolbar" variant="danger" onClick={handleDelete} title="Delete Playlist">
+          <Button semantic="toolbar" variant="danger" onClick={handleDelete} title={t('playlistDetailsPage.deletePlaylist')}>
             <i className="bi bi-trash-fill"></i>
-            <span style={{ fontSize: 'small', marginLeft: 5 }}>Delete</span>
+            <span style={{ fontSize: 'small', marginLeft: 5 }}>{t('common.delete')}</span>
           </Button>
         </Card.Header>
       </Card>
@@ -181,11 +183,11 @@ const PlaylistDetailsPage: React.FC = () => {
             </div>
             {!playlist.playlist_id.startsWith('UU') && playlist.author_name && (
               <div style={{ fontStyle: 'italic', marginBottom: 10 }}>
-                By {playlist.author_name}
+                {t('common.by')} {playlist.author_name}
               </div>
             )}
             <div className="setting flex-column-mobile">
-              <div style={{ minWidth: 190 }}>Check Interval (minutes):</div>
+              <div style={{ minWidth: 190 }}>{t('playlistDetailsPage.checkInterval')}</div>
               <Input
                 semantic="small"
                 type="number"
@@ -195,7 +197,7 @@ const PlaylistDetailsPage: React.FC = () => {
               />
             </div>
             <div className="setting flex-column-mobile">
-              <div style={{ minWidth: 190 }}>Regex Filter (optional):</div>
+              <div style={{ minWidth: 190 }}>{t('playlistDetailsPage.regexFilter')}</div>
               <div
                 style={{
                   display: 'flex',
@@ -215,7 +217,7 @@ const PlaylistDetailsPage: React.FC = () => {
                   variant={testingRegex ? "danger" : "primary"}
                   onClick={() => setTestingRegex(!testingRegex)}
                 >
-                  {testingRegex ? 'Stop Test' : 'Test'}
+                  {testingRegex ? t('playlistDetailsPage.stopTestButton') : t('playlistDetailsPage.testButton')}
                 </Button>
               </div>
             </div>
@@ -297,7 +299,7 @@ const PlaylistDetailsPage: React.FC = () => {
                       semantic="icon-small"
                       variant="outline-success"
                       disabled={false} // Note: video.state is not available in VideoInfo type
-                      title="Download video"
+                      title={t('playlistDetailsPage.downloadVideo')}
                       onClick={() => handleDownload(video.video_id)}
                     >
                       <i className="bi bi-download"></i> Download

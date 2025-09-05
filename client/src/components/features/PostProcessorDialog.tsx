@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { PostProcessor } from '../../types';
 import { getErrorResponse, showToast } from '../../utils/utils';
 import { Button, DialogBase, Input, Select } from '../ui';
@@ -100,6 +101,8 @@ const PostProcessorDataUI: React.FC<PostProcessorDataUIProps> = ({
   updateData, 
   showVariablesDialog 
 }) => {
+  const { t } = useTranslation();
+  
   if (!postProcessorData) {
     return null;
   }
@@ -107,7 +110,7 @@ const PostProcessorDataUI: React.FC<PostProcessorDataUIProps> = ({
   return (
     <>
       <div className='setting flex-column-mobile'>
-        <div style={{ minWidth: 175 }}>Method</div>
+        <div style={{ minWidth: 175 }}>{t('common.method')}</div>
         <Select
           value={postProcessorData.method || 'GET'}
           onChange={e => updateData({ ...postProcessorData, method: e.target.value })}
@@ -115,7 +118,7 @@ const PostProcessorDataUI: React.FC<PostProcessorDataUIProps> = ({
         />
       </div>
       <div className='setting flex-column-mobile'>
-        <div style={{ minWidth: 175 }}>Headers</div>
+        <div style={{ minWidth: 175 }}>{t('common.headers')}</div>
         <div style={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'end' }}>
           {postProcessorData.headers?.map((header, index) =>
             <div className='pairedInput' key={index} style={{ display: 'flex', width: '100%' }}>
@@ -168,7 +171,7 @@ const PostProcessorDataUI: React.FC<PostProcessorDataUIProps> = ({
         </div>
       </div>
       <div className='setting flex-column-mobile'>
-        <div style={{ minWidth: 175 }}>Body</div>
+        <div style={{ minWidth: 175 }}>{t('common.body')}</div>
         <div style={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'end' }}>
           <textarea 
             style={{ resize: 'vertical', width: 'calc(100% - 18px)', minHeight: 125 }}
@@ -190,12 +193,13 @@ const PostProcessorDataUI: React.FC<PostProcessorDataUIProps> = ({
 };
 
 const VariablesDialog: React.FC<VariablesDialogProps> = ({ isOpen, onClose }) => {
+  const { t } = useTranslation();
   const possibleVariables: Array<[string, string]> = [
-    ['[[video.title]]', 'Video title'],
-    ['[[video.thumbnail]]', 'Video thumbnail url'],
-    ['[[video.video_id]]', 'Video YouTube id'],
-    ['[[video.published_at]]', 'Video published timestamp (ISO 8601)'],
-    ['[[playlist.title]]', 'Title of source playlist'],
+    ['[[video.title]]', t('postProcessorDialog.variables.videoTitle')],
+    ['[[video.thumbnail]]', t('postProcessorDialog.variables.videoThumbnail')],
+    ['[[video.video_id]]', t('postProcessorDialog.variables.videoId')],
+    ['[[video.published_at]]', t('postProcessorDialog.variables.videoPublishedAt')],
+    ['[[playlist.title]]', t('postProcessorDialog.variables.playlistTitle')],
   ];
 
   return (
@@ -204,10 +208,10 @@ const VariablesDialog: React.FC<VariablesDialogProps> = ({ isOpen, onClose }) =>
       childrenStyle={{ padding: 10 }} 
       isOpen={isOpen} 
       onClose={onClose} 
-      title='Variables'
+      title={t('postProcessorDialog.variables.title')}
     >
       <p style={{ fontStyle: 'italic' }}>
-        You can use the following variables in the url, path, args, and body of your post-processor to include information about the new video
+        {t('postProcessorDialog.variables.description')}
       </p>
       <div style={{ display: 'grid', gridTemplateColumns: 'auto auto', columnGap: 30 }}>
         {possibleVariables.map((pair, i) =>
@@ -226,6 +230,7 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
   onClose,
   onRefreshPostProcessors
 }) => {
+  const { t } = useTranslation();
   const [postProcessor, setPostProcessor] = useState<PostProcessor | null>(null);
   const [postProcessorData, setPostProcessorData] = useState<PostProcessorData | null>(null);
   const [message, setMessage] = useState<string | null>(null);
@@ -417,25 +422,25 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
                 variant="success"
                 onClick={() => handleSave()} 
               >
-                Save
+                {t('common.save')}
               </Button>
             </div>
           </>
         }
       >
         <div className='setting flex-column-mobile'>
-          <div style={{ minWidth: 175 }}>Name</div>
+          <div style={{ minWidth: 175 }}>{t('common.name')}</div>
           <Input 
             type="text"
             value={postProcessor?.name || ''}
             onChange={e => setPostProcessor(prev => prev ? { ...prev, name: e.target.value } : null)}
             disabled={postProcessor?.name === 'yt-dlp-api'} // Prevent renaming the built-in yt-dlp-api processor
           />
-          {postProcessor?.name === 'yt-dlp-api' && <p>Immutable</p>}
+          {postProcessor?.name === 'yt-dlp-api' && <p>{t('common.immutable')}</p>}
           <p></p>
         </div>
         <div className='setting flex-column-mobile'>
-          <div style={{ minWidth: 175 }}>Apply template</div>
+          <div style={{ minWidth: 175 }}>{t('postProcessorDialog.applyTemplate')}</div>
           <div style={{ display: 'flex', width: '100%' }}>
             <div style={{ marginTop: 0, flex: 1 }}>
               <Select
@@ -458,7 +463,7 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
           </div>
         </div>
         <div className='setting flex-column-mobile'>
-          <div style={{ minWidth: 175 }}>Type</div>
+          <div style={{ minWidth: 175 }}>{t('common.type')}</div>
           <Select
             value={postProcessor?.type || 'webhook'}
             onChange={e => setPostProcessor(prev => prev ? { ...prev, type: e.target.value as 'webhook' | 'process' } : null)}
@@ -467,7 +472,7 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
         </div>
         <div className='setting flex-column-mobile'>
           <div style={{ minWidth: 175 }}>
-            {postProcessor?.type === 'webhook' ? 'URL' : 'File path'}
+            {postProcessor?.type === 'webhook' ? t('postProcessorDialog.url') : t('postProcessorDialog.filePath')}
           </div>
           <Input 
             type="text"

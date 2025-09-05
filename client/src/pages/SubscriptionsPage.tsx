@@ -1,5 +1,6 @@
 import { addMinutes, formatDistance } from 'date-fns';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Button, Card, Checkbox, Container, DialogBase, Thumbnail } from '../components/ui';
 import { apiService } from '../services/api';
@@ -12,6 +13,7 @@ interface SubscriptionsPageProps {
 type FilterType = 'All' | 'Active' | 'Manually added' | 'YTSubs';
 
 const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
+  const { t } = useTranslation();
   const [optionsDialogOpen, setOptionsDialogOpen] = useState<boolean>(false);
   const [filterOptionsOpen, setFilterOptionsOpen] = useState<boolean>(false);
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
@@ -71,7 +73,7 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
             title="Options"
           >
             <i className="bi bi-grid-3x3"></i>
-            <span style={{ fontSize: 'small', marginLeft: 5 }}>Options</span>
+            <span style={{ fontSize: 'small', marginLeft: 5 }}>{t('common.options')}</span>
           </Button>
           <Button
             semantic="toolbar"
@@ -80,7 +82,7 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
             title="Filter"
           >
             <i className="bi bi-funnel-fill"></i>
-            <span style={{ fontSize: 'small', marginLeft: 5 }}>Filter</span>
+            <span style={{ fontSize: 'small', marginLeft: 5 }}>{t('common.filter')}</span>
           </Button>
         </Card.Header>
       </Card>
@@ -134,7 +136,7 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
                         margin: 0,
                       }}
                     >
-                      Interval: every {playlist.check_interval_minutes} minutes
+                      {t('subscriptionsPage.playlist.interval', { minutes: playlist.check_interval_minutes })}
                     </p>
                   )}
                   <p
@@ -144,12 +146,11 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
                       margin: 0,
                     }}
                   >
-                    Last checked:{' '}
-                    {playlist.last_checked
+                    {t('subscriptionsPage.playlist.lastChecked', { time: playlist.last_checked
                       ? formatDistance(new Date(playlist.last_checked), new Date(), {
                           addSuffix: true,
                         })
-                      : 'Unknown'}
+                      : t('common.unknown') })}
                   </p>
                   {showNextCheck && (
                     <p
@@ -159,8 +160,7 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
                         margin: 0,
                       }}
                     >
-                      Next check:{' '}
-                      {playlist.last_checked
+                      {t('subscriptionsPage.playlist.nextCheck', { time: playlist.last_checked
                         ? formatDistance(
                             addMinutes(
                               new Date(playlist.last_checked),
@@ -169,7 +169,7 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
                             new Date(),
                             { addSuffix: true }
                           )
-                        : 'Unknown'}
+                        : t('common.unknown') })}
                     </p>
                   )}
                   </div>
@@ -185,19 +185,19 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
         title="Options"
       >
         <div className="setting flex-column-mobile">
-          <div style={{ minWidth: 175 }}>Show check interval</div>
+          <div style={{ minWidth: 175 }}>{t('subscriptionsPage.options.showCheckInterval')}</div>
           <Checkbox
             checked={showCheckInterval}
             onChange={(e) => setShowCheckInterval(e.target.checked)}
-            label="Show check interval under playlist thumbnail"
+            label={t('subscriptionsPage.options.showCheckIntervalLabel')}
           />
         </div>
         <div className="setting flex-column-mobile">
-          <div style={{ minWidth: 175 }}>Show next check</div>
+          <div style={{ minWidth: 175 }}>{t('subscriptionsPage.options.showNextCheck')}</div>
           <Checkbox
             checked={showNextCheck}
             onChange={(e) => setShowNextCheck(e.target.checked)}
-            label="Show countdown to next check"
+            label={t('subscriptionsPage.options.showNextCheckLabel')}
           />
         </div>
       </DialogBase>
@@ -210,28 +210,28 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
               variant="outline-secondary"
               onClick={() => applyFilter('All')}
             >
-              All
+              {t('subscriptionsPage.filter.all')}
             </Button>
             <Button
               semantic="filter"
               variant="outline-secondary"
               onClick={() => applyFilter('Active')}
             >
-              Active
+              {t('subscriptionsPage.filter.active')}
             </Button>
             <Button
               semantic="filter"
               variant="outline-secondary"
               onClick={() => applyFilter('Manually added')}
             >
-              Manually added
+              {t('subscriptionsPage.filter.manuallyAdded')}
             </Button>
             <Button
               semantic="filter"
               variant="outline-secondary"
               onClick={() => applyFilter('YTSubs')}
             >
-              YTSubs
+              {t('subscriptionsPage.filter.ytSubs')}
             </Button>
           </Card.Body>
         </Card>

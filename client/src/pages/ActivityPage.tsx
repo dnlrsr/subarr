@@ -1,10 +1,12 @@
 import { formatDistance } from 'date-fns';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Button, Card, Container, LoadingIndicator } from '../components/ui';
 import { Activity, PaginatedResponse } from '../types';
 
 const ActivityPage: React.FC = () => {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [activities, setActivities] = useState<Activity[]>([]);
   const [page, setPage] = useState<number>(1);
@@ -49,7 +51,7 @@ const ActivityPage: React.FC = () => {
             title="Refresh Activity"
           >
             <i className="bi bi-arrow-clockwise" />
-            <span style={{ fontSize: 'small', marginLeft: 5 }}>Refresh</span>
+            <span style={{ fontSize: 'small', marginLeft: 5 }}>{t('common.refresh')}</span>
           </Button>
         </Card.Header>
         <Card.Body semantic="scroll">
@@ -57,10 +59,10 @@ const ActivityPage: React.FC = () => {
             <thead>
               <tr>
                 <th></th>
-                <th>Playlist</th>
-                <th>Title</th>
-                <th>Message</th>
-                <th>Date</th>
+                <th>{t('activityPage.tableHeaders.playlist')}</th>
+                <th>{t('activityPage.tableHeaders.title')}</th>
+                <th>{t('activityPage.tableHeaders.message')}</th>
+                <th>{t('activityPage.tableHeaders.date')}</th>
               </tr>
             </thead>
             <tbody>
@@ -80,7 +82,7 @@ const ActivityPage: React.FC = () => {
                         {activity.playlist_title}
                       </Link>
                     ) : (
-                      <div style={{ fontStyle: 'italic' }}>Playlist deleted</div>
+                      <div style={{ fontStyle: 'italic' }}>{t('common.playlistDeleted')}</div>
                     )}
                   </td>
                   <td className="fixed">
@@ -114,7 +116,7 @@ const ActivityPage: React.FC = () => {
           variant="outline-secondary"
           disabled={page === 1}
           onClick={() => handlePageChange(1)}
-          title="First page"
+          title={t('activityPage.firstPage')}
         >
           <i className="bi bi-skip-start-fill"></i>
         </Button>
@@ -123,7 +125,7 @@ const ActivityPage: React.FC = () => {
           variant="outline-secondary"
           disabled={page === 1}
           onClick={() => handlePageChange(page - 1)}
-          title="Previous page"
+          title={t('activityPage.previousPage')}
         >
           <i className="bi bi-rewind-fill"></i>
         </Button>
@@ -135,7 +137,7 @@ const ActivityPage: React.FC = () => {
           variant="outline-secondary"
           disabled={page === totalPages}
           onClick={() => handlePageChange(page + 1)}
-          title="Next page"
+          title={t('activityPage.nextPage')}
         >
           <i className="bi bi-fast-forward-fill"></i>
         </Button>
@@ -144,7 +146,7 @@ const ActivityPage: React.FC = () => {
           variant="outline-secondary"
           disabled={page === totalPages}
           onClick={() => handlePageChange(totalPages)}
-          title="Last page"
+          title={t('activityPage.lastPage')}
         >
           <i className="bi bi-skip-end-fill"></i>
         </Button>

@@ -1,0 +1,143 @@
+{
+    "common": {
+        "search": "Search",
+        "add": "Add",
+        "save": "Save",
+        "test": "Test",
+        "stopTest": "Stop Test",
+        "options": "Options",
+        "filter": "Filter",
+        "cancel": "Cancel",
+        "close": "Close",
+        "delete": "Delete",
+        "edit": "Edit",
+        "loading": "Loading...",
+        "refresh": "Refresh",
+        "error": "Error",
+        "success": "Success",
+        "warning": "Warning",
+        "name": "Name",
+        "title": "Title",
+        "body": "Body",
+        "method": "Method",
+        "headers": "Headers",
+        "type": "Type",
+        "immutable": "Immutable",
+        "unknown": "Unknown",
+        "all": "All",
+        "by": "By",
+        "playlistDeleted": "Playlist deleted"
+    },
+    "header": {
+        "appName": "Subarr",
+        "searchPlaceholder": "Search"
+    },
+    "sidebar": {
+        "playlists": "Playlists",
+        "addNew": "Add New",
+        "activity": "Activity",
+        "settings": "Settings"
+    },
+    "searchResults": {
+        "noResults": "No Results"
+    },
+    "subscriptionsPage": {
+        "filter": {
+            "all": "All",
+            "active": "Active",
+            "manuallyAdded": "Manually added",
+            "ytSubs": "YTSubs"
+        },
+        "options": {
+            "title": "Options",
+            "showCheckInterval": "Show check interval",
+            "showCheckIntervalLabel": "Show check interval under playlist thumbnail",
+            "showNextCheck": "Show next check",
+            "showNextCheckLabel": "Show countdown to next check"
+        },
+        "playlist": {
+            "interval": "Interval: every {{minutes}} minutes",
+            "lastChecked": "Last checked: {{time}}",
+            "nextCheck": "Next check: {{time}}"
+        }
+    },
+    "addPlaylistPage": {
+        "title": "Add New Playlist",
+        "searchPlaceholder": "Enter a youtube channel url (eg youtube.com/@MrBeast) or playlist id/url (eg UU..., PL..., etc)",
+        "addButton": "Add",
+        "validValues": "Valid values are:",
+        "channelUrls": "YouTube channel urls (eg youtube.com/@MrBeast or https://www.youtube.com/channel/UCY1kMZp36IQSyNx_9h4mpCg)",
+        "playlistUrls": "YouTube playlist urls or ids (eg UUuAXFkgsw1L7xaCfnd5JJOw or https://www.youtube.com/playlist?list=PLopY4n17t8RCqmupsW66yOsR5eDPRUN_y)",
+        "playlistWarning": "Warning: YouTube playlist RSS feeds only return the top 15 items, so if this playlist is not ordered Newest → Oldest, Subarr may never see new videos on this playlist (see https://issuetracker.google.com/issues/429563457). If this is the case, you may want to use the channel's uploads playlist and a regex filter."
+    },
+    "settingsPage": {
+        "title": "Settings",
+        "ytsubsApiKey": "YTSubs.app API key",
+        "ytsubsApiKeyPlaceholder": "Enter your YTSubs.app API key",
+        "excludeShorts": "Exclude shorts",
+        "excludeShortsLabel": "Whether to exclude shorts videos from playlists",
+        "postProcessors": "Post Processors",
+        "saveSettings": "Save Settings",
+        "savedSettings": "Saved settings",
+        "errorSavingSettings": "Error saving settings"
+    },
+    "playlistDetailsPage": {
+        "testButton": "Test",
+        "stopTestButton": "Stop Test",
+        "checkInterval": "Check Interval (minutes):",
+        "regexFilter": "Regex Filter (optional):",
+        "saveSettings": "Save Settings",
+        "deletePlaylist": "Delete Playlist",
+        "downloadVideo": "Download video",
+        "tableHeaders": {
+            "playlist": "Playlist",
+            "title": "Title",
+            "message": "Message",
+            "date": "Date"
+        }
+    },
+    "activityPage": {
+        "refreshActivity": "Refresh Activity",
+        "firstPage": "First page",
+        "previousPage": "Previous page",
+        "nextPage": "Next page",
+        "lastPage": "Last page",
+        "tableHeaders": {
+            "playlist": "Playlist",
+            "title": "Title",
+            "message": "Message",
+            "date": "Date"
+        }
+    },
+    "postProcessorDialog": {
+        "variables": {
+            "title": "Variables",
+            "description": "You can use the following variables in the url, path, args, and body of your post-processor to include information about the new video",
+            "videoTitle": "Video title",
+            "videoThumbnail": "Video thumbnail url",
+            "videoId": "Video YouTube id",
+            "videoDescription": "Video description",
+            "videoPublishedAt": "Video published timestamp (ISO 8601)",
+            "playlistTitle": "Title of source playlist"
+        },
+        "applyTemplate": "Apply template",
+        "url": "URL",
+        "filePath": "File path",
+        "templates": {
+            "discord": "Discord",
+            "slack": "Slack",
+            "pushover": "Pushover",
+            "gotify": "Gotify",
+            "webhook": "Webhook"
+        }
+    },
+    "updateDialog": {
+        "title": "Update available!",
+        "released": "Released:",
+        "currentToNew": "{{current}} → {{new}}"
+    },
+    "toast": {
+        "playlistAdded": "Playlist added!",
+        "errorAddingPlaylist": "Error adding playlist: {{error}}"
+    }
+}

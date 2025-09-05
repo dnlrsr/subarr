@@ -1,5 +1,6 @@
 import { formatDistance } from 'date-fns';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Markdown from 'react-markdown';
 import { GitHubRelease } from '../../types';
 import { DialogBase } from '../ui';
@@ -17,14 +18,16 @@ const UpdateDialog: React.FC<UpdateDialogProps> = ({
   currentVersion,
   newVersionInfo,
 }) => {
+  const { t } = useTranslation();
+  
   return (
-    <DialogBase isOpen={isOpen} onClose={onClose} title="Update available!">
+    <DialogBase isOpen={isOpen} onClose={onClose} title={t('updateDialog.title')}>
       <div style={{ display: 'flex' }}>
         <div style={{ minWidth: 80 }}>
           {currentVersion} → {newVersionInfo?.tag_name}
         </div>
         <div style={{ marginLeft: 20, fontStyle: 'italic' }}>
-          (Released:{' '}
+          ({t('updateDialog.released')}{' '}
           {newVersionInfo
             ? formatDistance(new Date(newVersionInfo.published_at), new Date(), {
                 addSuffix: true,

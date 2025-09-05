@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { PostProcessorDialog } from '../components/features';
 import { Button, Card, Checkbox, Container, Input } from '../components/ui';
 import { PostProcessor, Settings } from '../types';
@@ -6,6 +7,7 @@ import { showToast } from '../utils/utils';
 import './SettingsPage.css';
 
 const SettingsPage: React.FC = () => {
+  const { t } = useTranslation();
   const [ytsubsApiKey, setYtsubsApiKey] = useState<string>('');
   const [excludeShorts, setExcludeShorts] = useState<boolean>(false);
   const [postProcessors, setPostProcessors] = useState<PostProcessor[]>([]);
@@ -60,10 +62,10 @@ const SettingsPage: React.FC = () => {
         throw new Error('Failed to save settings');
       }
 
-      showToast('Saved settings', 'success');
+      showToast(t('settingsPage.savedSettings'), 'success');
     } catch (err) {
       console.error(err);
-      showToast('Error saving settings', 'error');
+      showToast(t('settingsPage.errorSavingSettings'), 'error');
     }
   };
 
@@ -85,7 +87,7 @@ const SettingsPage: React.FC = () => {
         <Card.Header semantic="toolbar">
           <Button semantic="toolbar" variant="success" onClick={handleSave} title="Save Settings">
             <i className="bi bi-floppy-fill" />
-            <span style={{ fontSize: 'small', marginLeft: 5 }}>Save</span>
+            <span style={{ fontSize: 'small', marginLeft: 5 }}>{t('common.save')}</span>
           </Button>
         </Card.Header>
         <Card.Body>
@@ -95,29 +97,29 @@ const SettingsPage: React.FC = () => {
             height: 'calc(100% - 120px)',
             padding: 30,
           }}>
-            <div style={{ fontWeight: 'bold', fontSize: 'xx-large' }}>Settings</div>
+            <div style={{ fontWeight: 'bold', fontSize: 'xx-large' }}>{t('settingsPage.title')}</div>
           
           <div className="setting flex-column-mobile">
-            <div style={{ minWidth: 175 }}>YTSubs.app API key</div>
+            <div style={{ minWidth: 175 }}>{t('settingsPage.ytsubsApiKey')}</div>
             <Input
               type="text"
               value={ytsubsApiKey}
               onChange={(e) => setYtsubsApiKey(e.target.value)}
-              placeholder="Enter your YTSubs.app API key"
+              placeholder={t('settingsPage.ytsubsApiKeyPlaceholder')}
             />
           </div>
           
           <div className="setting flex-column-mobile">
-            <div style={{ minWidth: 175 }}>Exclude shorts</div>
+            <div style={{ minWidth: 175 }}>{t('settingsPage.excludeShorts')}</div>
             <Checkbox
               checked={excludeShorts}
               onChange={(e) => setExcludeShorts(e.target.checked)}
-              label="Whether to exclude shorts videos from playlists"
+              label={t('settingsPage.excludeShortsLabel')}
             />
           </div>
 
           <div style={{ marginTop: 50, fontWeight: 'bold', fontSize: 'xx-large' }}>
-            Post Processors
+            {t('settingsPage.postProcessors')}
           </div>
           
           <div

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Button, Form, InputGroup, Nav, Navbar } from '../ui';
 
@@ -15,6 +16,8 @@ const Header: React.FC<HeaderProps> = ({
   onSearchKeyDown,
   onToggleSidebar,
 }) => {
+  const { t } = useTranslation();
+  
   return (
     <Navbar 
       variant="dark" 
@@ -35,7 +38,7 @@ const Header: React.FC<HeaderProps> = ({
           height="30"
           className="me-2"
         />
-        Subarr
+        {t('header.appName')}
       </Navbar.Brand>
       
       <Button
@@ -55,7 +58,7 @@ const Header: React.FC<HeaderProps> = ({
             </InputGroup.Text>
             <Form.Control
               type="text"
-              placeholder="Search"
+              placeholder={t('header.searchPlaceholder')}
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
               onKeyDown={onSearchKeyDown}

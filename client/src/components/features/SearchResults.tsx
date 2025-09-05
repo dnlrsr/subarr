@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { SearchResultsProps } from '../../types';
 import { Card, Thumbnail } from '../ui';
@@ -10,6 +11,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   highlightedSearchResult,
   onClose,
 }) => {
+  const { t } = useTranslation();
   const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
   useEffect(() => {
@@ -71,7 +73,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
             </Link>
           ))
         ) : (
-          <div style={{ fontSize: 'small', padding: '10px' }}>No Results</div>
+          <div style={{ fontSize: 'small', padding: '10px' }}>{t('searchResults.noResults')}</div>
         )}
           </div>
         </Card.Body>

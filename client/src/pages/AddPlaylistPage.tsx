@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Button, Container, Form, FormControl, InputGroup, InputGroupText, LoadingIndicator, Thumbnail } from '../components/ui';
 import { Playlist, PlaylistInfo } from '../types';
 import { getErrorResponse, showToast } from '../utils/utils';
 
 const AddPlaylistPage: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const [playlistInput, setPlaylistInput] = useState<string>('');
@@ -65,14 +67,14 @@ const AddPlaylistPage: React.FC = () => {
     });
 
     if (res.ok) {
-      showToast('Playlist added!', 'success');
+      showToast(t('toast.playlistAdded'), 'success');
       setPlaylistInput('');
 
       const data: Playlist = await res.json();
       navigate(`/playlist/${data.id}`);
     } else {
       const addError = await getErrorResponse(res);
-      showToast(`Error adding playlist: ${addError}`, 'error');
+      showToast(t('toast.errorAddingPlaylist', { error: addError }), 'error');
     }
   };
 
@@ -93,7 +95,7 @@ const AddPlaylistPage: React.FC = () => {
 
   return (
     <Container>
-      <h2 className="mb-4">Add New Playlist</h2>
+      <h2 className="mb-4">{t('addPlaylistPage.title')}</h2>
       
       <Form>
         <InputGroup className="mb-3">
@@ -102,7 +104,7 @@ const AddPlaylistPage: React.FC = () => {
           </InputGroupText>
           <FormControl
             type="text"
-            placeholder="Enter a youtube channel url (eg youtube.com/@MrBeast) or playlist id/url (eg UU..., PL..., etc)"
+            placeholder={t('addPlaylistPage.searchPlaceholder')}
             value={playlistInput}
             onChange={(e) => setPlaylistInput(e.target.value)}
           />
@@ -157,7 +159,7 @@ const AddPlaylistPage: React.FC = () => {
               }}
               onClick={handleSubmit}
             >
-              Add
+              {t('addPlaylistPage.addButton')}
             </button>
           </div>
         </div>
@@ -179,17 +181,13 @@ const AddPlaylistPage: React.FC = () => {
           }}
         >
           <div style={{ fontSize: 'x-large', textAlign: 'center' }}>{error}</div>
-          <p style={{ marginBottom: 0 }}>Valid values are:</p>
+          <p style={{ marginBottom: 0 }}>{t('addPlaylistPage.validValues')}</p>
           <ol>
             <li style={{ overflowWrap: 'anywhere' }}>
-              YouTube channel urls (eg youtube.com/@MrBeast or
-              <br />
-              https://www.youtube.com/channel/UCY1kMZp36IQSyNx_9h4mpCg)
+              {t('addPlaylistPage.channelUrls')}
             </li>
             <li style={{ overflowWrap: 'anywhere' }}>
-              YouTube playlist urls or ids (eg UUuAXFkgsw1L7xaCfnd5JJOw or
-              <br />
-              https://www.youtube.com/playlist?list=PLopY4n17t8RCqmupsW66yOsR5eDPRUN_y)
+              {t('addPlaylistPage.playlistUrls')}
             </li>
           </ol>
         </div>
@@ -203,17 +201,7 @@ const AddPlaylistPage: React.FC = () => {
             textAlign: 'center',
           }}
         >
-          Warning: YouTube playlist RSS feeds only return the top 15 items, so if this playlist is
-          not ordered Newest → Oldest, Subarr may never see new videos on this playlist (see{' '}
-          <a
-            href="https://issuetracker.google.com/issues/429563457"
-            target="_blank"
-            rel="noreferrer"
-          >
-            https://issuetracker.google.com/issues/429563457
-          </a>
-          ). If this is the case, you may want to use the channel's uploads playlist and a regex
-          filter.
+          {t('addPlaylistPage.playlistWarning')}
         </p>
       )}
     </Container>
