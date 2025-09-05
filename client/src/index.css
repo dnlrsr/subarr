@@ -103,8 +103,8 @@
   --menuItemColor: #e1e2e3;
   --menuItemHoverColor: #00A65B;
   --menuItemHoverBackgroundColor: #606060;
-  --toobarButtonHoverColor: #00A65B;
-  --toobarButtonSelectedColor: #00A65B;
+  --toolbarButtonHoverColor: #00A65B;
+  --toolbarButtonSelectedColor: #00A65B;
 
   /* Misc UI */
   --scrollbarBackgroundColor: #707070;
