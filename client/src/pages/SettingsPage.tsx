@@ -152,9 +152,7 @@ const SettingsPage: React.FC = () => {
                   >
                     <i
                       style={{ fontSize: 'medium' }}
-                      className={`bi bi-${
-                        postProcessor.type === 'webhook' ? 'broadcast' : 'cpu-fill'
-                      }`}
+                      className="bi bi-broadcast"
                     />
                     <div style={{ fontSize: 'small' }}>{postProcessor.type}</div>
                   </div>

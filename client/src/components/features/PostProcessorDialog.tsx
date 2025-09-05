@@ -11,7 +11,7 @@ interface PostProcessorData {
 }
 
 interface Template {
-  type: 'webhook' | 'process';
+  type: 'webhook';
   target: string;
   data: {
     method: string;
@@ -237,7 +237,7 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
   const [isVariablesDialogOpen, setIsVariablesDialogOpen] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState('');
   
-  const postProcessorTypes: Array<'webhook' | 'process'> = ['webhook'];
+  const postProcessorTypes: Array<'webhook'> = ['webhook'];
 
   useEffect(() => {
     if (editingItem) {
@@ -466,13 +466,13 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
           <div style={{ minWidth: 175 }}>{t('common.type')}</div>
           <Select
             value={postProcessor?.type || 'webhook'}
-            onChange={e => setPostProcessor(prev => prev ? { ...prev, type: e.target.value as 'webhook' | 'process' } : null)}
+            onChange={e => setPostProcessor(prev => prev ? { ...prev, type: e.target.value as 'webhook' } : null)}
             options={postProcessorTypes.map(type => ({ value: type, label: type }))}
           />
         </div>
         <div className='setting flex-column-mobile'>
           <div style={{ minWidth: 175 }}>
-            {postProcessor?.type === 'webhook' ? t('postProcessorDialog.url') : t('postProcessorDialog.filePath')}
+            {t('postProcessorDialog.url')}
           </div>
           <Input 
             type="text"

@@ -43,7 +43,7 @@ export interface Settings {
 export interface PostProcessor {
     id?: number;
     name: string;
-    type: 'webhook' | 'process';
+    type: 'webhook';
     target: string;
     data: string;
 }
