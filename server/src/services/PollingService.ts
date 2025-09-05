@@ -51,6 +51,21 @@ export class PollingService {
         console.log(`Scheduled polling for playlist '${title}' every ${check_interval_minutes} minutes`);
     }
 
+    public scheduleWatcher(): void {
+        setInterval(() => {
+            this.watchStates();
+        }, 60 * 1000); // Every minute
+    }
+
+    private watchStates(): void {
+        const entities = this.databaseService.getVideoStatePendings();
+
+        entities.forEach(entity => {
+            // Simulate processing the entity
+            console.log('Pending video state:', entity);
+        });
+    }
+
     public removePolling(playlistId: string): void {
         const job = this.pollingJobs.get(playlistId);
         if (job) {
@@ -207,12 +222,14 @@ export class PollingService {
                 }
             );
 
-            this.databaseService.updatePlaylist(
-                playlist.playlist_id,
-                undefined,
-                undefined,
-                new Date().toISOString()
-            );
+            if (typeof playlist.id === 'number') {
+                this.databaseService.updatePlaylist(
+                    playlist.id,
+                    undefined,
+                    undefined,
+                    new Date().toISOString()
+                );
+            }
         } catch (err) {
             console.error(`Failed to poll ${playlist.title}:`, err);
         }

@@ -70,7 +70,8 @@ export class RssParserService {
                     video_id: videoId,
                     title: videoTitle,
                     published_at: publishedAt,
-                    thumbnail: videoThumbnail
+                    thumbnail: videoThumbnail,
+                    state: 'missing'
                 });
                 alreadyExists = result.changes === 0;
             }
