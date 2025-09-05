@@ -1,0 +1,61 @@
+// Sidebar container styles
+.sidebar {
+  height: 100%;
+  overflow: auto;
+  background-color: var(--sidebarBackgroundColor);
+}
+
+.nav {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.item {
+  margin: 0;
+  padding: 0;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  color: #e0e0e0;
+  text-decoration: none;
+  font-size: 16px;
+  border-radius: 6px;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+.link:hover,
+.link:focus {
+  background: #232526;
+  color: #fff;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  color: #bdbdbd;
+}
+
+// Active link styling (add logic in TSX if needed)
+.active {
+  background: #232526;
+  color: #fff;
+}
+.container {
+  background-color: var(--sidebarBackgroundColor);
+}
