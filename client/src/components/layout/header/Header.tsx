@@ -1,12 +1,17 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Button, Form, InputGroup, Nav, Navbar } from '../ui';
+import { Button, Form, InputGroup, Nav, Navbar } from '../../ui';
+import styles from './Header.module.scss';
 
 interface HeaderProps {
   searchTerm: string;
   onSearchChange: (value: string) => void;
-  onSearchKeyDown: (event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+  onSearchKeyDown: (
+    event: React.KeyboardEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => void;
   onToggleSidebar: () => void;
 }
 
@@ -14,38 +19,17 @@ const Header: React.FC<HeaderProps> = ({
   searchTerm,
   onSearchChange,
   onSearchKeyDown,
-  onToggleSidebar,
 }) => {
   const { t } = useTranslation();
-  
-  return (
-    <Navbar 
-      variant="dark" 
-      expand="lg" 
-      
-    >
-      <Navbar.Brand as={Link} to="/" >
-        <img
-          src="/logo192.png"
-          alt="App Icon"
-          width="30"
-          height="30"
-          
-        />
-        {t('header.appName')}
-      </Navbar.Brand>
-      
-      <Button
-        variant="outline-light"
-        size="sm"
-        onClick={onToggleSidebar}
-        
-      >
-        ☰
-      </Button>
 
-      <Nav >
-        <Form >
+  return (
+    <Navbar className={styles.container}>
+      <Navbar.Brand as={Link} to="/">
+        <img src="/logo192.png" alt="App Icon" width="45" height="45" />
+      </Navbar.Brand>
+
+      <Nav>
+        <Form>
           <InputGroup>
             <InputGroup.Text>
               <i />
@@ -54,9 +38,8 @@ const Header: React.FC<HeaderProps> = ({
               type="text"
               placeholder={t('header.searchPlaceholder')}
               value={searchTerm}
-              onChange={(e) => onSearchChange(e.target.value)}
+              onChange={e => onSearchChange(e.target.value)}
               onKeyDown={onSearchKeyDown}
-              
             />
             {searchTerm && (
               <Button
