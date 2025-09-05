@@ -1,6 +1,6 @@
 import React from 'react';
-import { Nav } from 'react-bootstrap';
 import { NavLink, useLocation } from 'react-router-dom';
+import { Nav } from '../ui';
 
 interface SidebarProps {
   isOpen: boolean;

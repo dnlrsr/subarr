@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
+import './Checkbox.css';
 
 export interface CheckboxProps {
   checked?: boolean;

@@ -3,6 +3,7 @@ import { PostProcessorDialog } from '../components/features';
 import { Button, Card, Checkbox, Container, Input } from '../components/ui';
 import { PostProcessor, Settings } from '../types';
 import { showToast } from '../utils/utils';
+import './SettingsPage.css';
 
 const SettingsPage: React.FC = () => {
   const [ytsubsApiKey, setYtsubsApiKey] = useState<string>('');

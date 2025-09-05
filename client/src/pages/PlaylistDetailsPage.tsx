@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Card, Container, Input, Thumbnail } from '../components/ui';
 import { Playlist, VideoInfo } from '../types';
 import { showToast } from '../utils/utils';
+import './PlaylistDetailsPage.css';
 
 interface PlaylistDetailsData {
   playlist: Playlist;

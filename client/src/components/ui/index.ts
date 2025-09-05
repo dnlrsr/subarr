@@ -4,6 +4,7 @@ export { default as Checkbox } from './Checkbox';
 export { default as DialogBase } from './DialogBase';
 export { default as Input } from './Input';
 export { default as LoadingIndicator } from './LoadingIndicator';
+export { Nav, default as Navbar, NavbarBrand, NavLink } from './Navbar';
 export { default as Select } from './Select';
 export { default as Thumbnail } from './Thumbnail';
 
@@ -20,5 +21,6 @@ export type { CheckboxProps } from './Checkbox';
 export type { FormControlProps, FormGroupProps, FormLabelProps, FormProps, InputGroupProps, InputGroupTextProps } from './Form';
 export type { InputProps } from './Input';
 export type { ColProps, ContainerProps, RowProps } from './Layout';
+export type { NavbarBrandProps, NavbarProps, NavLinkProps, NavProps } from './Navbar';
 export type { SelectOption, SelectProps } from './Select';
 

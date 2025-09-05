@@ -1,11 +1,11 @@
 import React from 'react';
-import { Button, Form, InputGroup, Nav, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { Button, Form, InputGroup, Nav, Navbar } from '../ui';
 
 interface HeaderProps {
   searchTerm: string;
   onSearchChange: (value: string) => void;
-  onSearchKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  onSearchKeyDown: (event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
   onToggleSidebar: () => void;
 }
 

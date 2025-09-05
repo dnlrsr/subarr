@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { SearchResultsProps } from '../../types';
 import { Card, Thumbnail } from '../ui';
+import './SearchResults.css';
 
 const SearchResults: React.FC<SearchResultsProps> = ({
   isOpen,

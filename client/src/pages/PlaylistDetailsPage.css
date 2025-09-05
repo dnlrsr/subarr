@@ -1,0 +1,55 @@
+/* PlaylistDetailsPage component styles */
+.playlistDetails-recentUploads {
+  overflow: auto;
+}
+
+/* Table styles for playlist details */
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+td.fixed {
+  white-space: nowrap;
+}
+
+td.expand {
+  width: 100%;
+}
+
+tbody td {
+  font-size: 14px;
+  border-top: 1px solid gray;
+}
+
+tbody a {
+  text-decoration: none;
+}
+
+/* Utility classes for hover effects */
+.hover-blue:hover i {
+  color: cornflowerblue;
+}
+
+.hover-danger:hover i {
+  color: var(--danger-color);
+}
+
+/* Mobile responsive playlist details */
+@media (max-width: 768px) {
+  .playlistDetails-poster {
+    display: none;
+  }
+
+  .playlistDetails-recentUploads {
+    overflow: visible; /* This switches the scroll from just the "recent uploads" list to almost the whole page */
+  }
+
+  .small-padding-mobile {
+    padding: 5px !important; /* Using !important to allow inline style to define the padding, but might want to avoid */
+  }
+
+  .flex-column-mobile {
+    flex-direction: column;
+  }
+}

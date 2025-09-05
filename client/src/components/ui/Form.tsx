@@ -23,12 +23,14 @@ export interface FormControlProps {
   type?: string;
   value?: string | number;
   onChange?: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
   placeholder?: string;
   disabled?: boolean;
   required?: boolean;
   className?: string;
   as?: 'input' | 'textarea' | 'select';
   rows?: number;
+  style?: React.CSSProperties;
 }
 
 export interface InputGroupProps {
@@ -70,16 +72,18 @@ Form.Label = ({ children, htmlFor, className = '' }) => (
   </BootstrapForm.Label>
 );
 
-Form.Control = ({ type = 'text', value, onChange, placeholder, disabled = false, required = false, className = '', as = 'input', rows }) => {
+Form.Control = ({ type = 'text', value, onChange, onKeyDown, placeholder, disabled = false, required = false, className = '', as = 'input', rows, style }) => {
   const props: any = {
     type,
     value,
     onChange,
+    onKeyDown,
     placeholder,
     disabled,
     required,
     className,
-    as
+    as,
+    style
   };
 
   if (as === 'textarea' && rows) {
@@ -96,7 +100,7 @@ export const FormGroup: React.FC<FormGroupProps> = Form.Group;
 export const FormLabel: React.FC<FormLabelProps> = Form.Label;
 export const FormControl: React.FC<FormControlProps> = Form.Control;
 
-export const InputGroup: React.FC<InputGroupProps> = ({
+const InputGroupComponent: React.FC<InputGroupProps> = ({
   children,
   className = ''
 }) => {
@@ -117,3 +121,14 @@ export const InputGroupText: React.FC<InputGroupTextProps> = ({
     </BootstrapInputGroup.Text>
   );
 };
+
+// Attach Text to InputGroup for dot notation access
+type InputGroupWithText = typeof InputGroupComponent & {
+  Text: typeof InputGroupText;
+};
+
+const InputGroup = InputGroupComponent as InputGroupWithText;
+InputGroup.Text = InputGroupText;
+
+// Export the enhanced InputGroup
+export { InputGroup };

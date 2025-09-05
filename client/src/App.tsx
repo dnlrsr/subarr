@@ -45,8 +45,8 @@ const AppLayout: React.FC = () => {
     setSidebarOpen(!sidebarOpen);
   };
 
-  const handleSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    handleKeyDown(event, (playlistId: string) => {
+  const handleSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    handleKeyDown(event as React.KeyboardEvent<HTMLInputElement>, (playlistId: string) => {
       navigate(`/playlist/${playlistId}`);
     });
   };
