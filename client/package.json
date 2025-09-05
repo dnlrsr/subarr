@@ -1,6 +1,9 @@
 {
   "name": "client",
   "version": "0.1.0",
+  "description": "Subarr client - A lightweight YouTube channel/playlist subscription manager",
+  "license": "MIT",
+  "author": "dnlrsr",
   "private": true,
   "proxy": "http://localhost:3001",
   "dependencies": {

@@ -1,4 +1,9 @@
 {
+  "name": "subarr",
+  "version": "1.0.0",
+  "description": "A lightweight YouTube channel/playlist subscription manager",
+  "license": "MIT",
+  "author": "dnlrsr",
   "private": true,
   "workspaces": [
     "client",
