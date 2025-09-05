@@ -4,14 +4,10 @@ import { Col as BootstrapCol, Container as BootstrapContainer, Row as BootstrapR
 export interface ContainerProps {
   children: React.ReactNode;
   fluid?: boolean;
-  className?: string;
-  style?: React.CSSProperties;
 }
 
 export interface RowProps {
   children: React.ReactNode;
-  className?: string;
-  style?: React.CSSProperties;
 }
 
 export interface ColProps {
@@ -21,30 +17,24 @@ export interface ColProps {
   md?: number | 'auto';
   lg?: number | 'auto';
   xl?: number | 'auto';
-  className?: string;
-  style?: React.CSSProperties;
 }
 
 export const Container: React.FC<ContainerProps> = ({
   children,
-  fluid = false,
-  className = '',
-  style
+  fluid = false
 }) => {
   return (
-    <BootstrapContainer fluid={fluid} className={className} style={style}>
+    <BootstrapContainer fluid={fluid}>
       {children}
     </BootstrapContainer>
   );
 };
 
 export const Row: React.FC<RowProps> = ({
-  children,
-  className = '',
-  style
+  children
 }) => {
   return (
-    <BootstrapRow className={className} style={style}>
+    <BootstrapRow>
       {children}
     </BootstrapRow>
   );
@@ -56,9 +46,7 @@ export const Col: React.FC<ColProps> = ({
   sm,
   md,
   lg,
-  xl,
-  className = '',
-  style
+  xl
 }) => {
   return (
     <BootstrapCol 
@@ -66,9 +54,7 @@ export const Col: React.FC<ColProps> = ({
       sm={sm} 
       md={md} 
       lg={lg} 
-      xl={xl} 
-      className={className} 
-      style={style}
+      xl={xl}
     >
       {children}
     </BootstrapCol>

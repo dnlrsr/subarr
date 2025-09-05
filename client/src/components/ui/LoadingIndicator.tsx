@@ -1,25 +1,14 @@
 import React from 'react';
+import { Spinner } from 'react-bootstrap';
 import { LoadingIndicatorProps } from '../../types';
 
 const LoadingIndicator: React.FC<LoadingIndicatorProps> = ({ 
-  size = 'medium', 
-  color 
+  size = 'medium'
 }) => {
-  const sizeClasses = {
-    small: 'w-4 h-4',
-    medium: 'w-8 h-8',
-    large: 'w-12 h-12',
-  };
+  const spinnerSize = size === 'small' ? 'sm' : undefined;
 
   return (
-    <div 
-      className={`ripple-loader ${sizeClasses[size]}`}
-      style={color ? { color } : undefined}
-    >
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
+    <Spinner animation="border" size={spinnerSize} />
   );
 };
 

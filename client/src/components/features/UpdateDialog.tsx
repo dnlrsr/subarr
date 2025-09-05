@@ -22,11 +22,11 @@ const UpdateDialog: React.FC<UpdateDialogProps> = ({
   
   return (
     <DialogBase isOpen={isOpen} onClose={onClose} title={t('updateDialog.title')}>
-      <div style={{ display: 'flex' }}>
-        <div style={{ minWidth: 80 }}>
+      <div >
+        <div >
           {currentVersion} → {newVersionInfo?.tag_name}
         </div>
-        <div style={{ marginLeft: 20, fontStyle: 'italic' }}>
+        <div >
           ({t('updateDialog.released')}{' '}
           {newVersionInfo
             ? formatDistance(new Date(newVersionInfo.published_at), new Date(), {
@@ -39,15 +39,10 @@ const UpdateDialog: React.FC<UpdateDialogProps> = ({
       <Markdown
         components={{
           p: ({ node, ...props }) => (
-            <p style={{ overflowWrap: 'anywhere' }} {...props} />
+            <p {...props} />
           ),
           code: ({ node, ...props }) => (
             <code
-              style={{
-                backgroundColor: 'lightgray',
-                color: 'black',
-                padding: '2px 5px',
-              }}
               {...props}
             />
           ),
@@ -56,7 +51,7 @@ const UpdateDialog: React.FC<UpdateDialogProps> = ({
         {newVersionInfo?.body}
       </Markdown>
       <a
-        style={{ overflowWrap: 'anywhere' }}
+        
         href={newVersionInfo?.html_url}
         target="_blank"
         rel="noreferrer"

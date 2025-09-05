@@ -38,11 +38,11 @@ const Select: React.FC<SelectProps> = ({
   const combinedClassName = `select-app ${className}`.trim();
 
   return (
-    <Form.Group className="mb-3">
+    <Form.Group >
       {label && (
         <Form.Label htmlFor={selectId}>
           {label}
-          {required && <span className="text-danger"> *</span>}
+          {required && <span > *</span>}
         </Form.Label>
       )}
       <Form.Select
@@ -68,7 +68,7 @@ const Select: React.FC<SelectProps> = ({
       </Form.Select>
       {error && <Form.Control.Feedback type="invalid">{error}</Form.Control.Feedback>}
       {helperText && !error && (
-        <Form.Text className="text-muted">{helperText}</Form.Text>
+        <Form.Text >{helperText}</Form.Text>
       )}
     </Form.Group>
   );

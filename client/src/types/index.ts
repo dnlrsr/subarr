@@ -132,8 +132,6 @@ export interface DialogBaseProps {
     title: string;
     children: React.ReactNode;
     buttons?: React.ReactNode;
-    dialogStyle?: React.CSSProperties;
-    childrenStyle?: React.CSSProperties;
 }
 
 export interface ThumbnailProps {
@@ -141,12 +139,10 @@ export interface ThumbnailProps {
     alt: string;
     width?: number;
     height?: number;
-    className?: string;
 }
 
 export interface LoadingIndicatorProps {
     size?: 'small' | 'medium' | 'large';
-    color?: string;
 }
 
 export interface GitHubRelease {

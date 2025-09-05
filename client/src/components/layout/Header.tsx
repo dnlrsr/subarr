@@ -22,21 +22,15 @@ const Header: React.FC<HeaderProps> = ({
     <Navbar 
       variant="dark" 
       expand="lg" 
-      className="px-3"
-      style={{ 
-        width: '100%',
-        minHeight: '56px', // Ensure consistent height
-        backgroundColor: '#2a2a2a',
-        borderBottom: '1px solid #333'
-      }}
+      
     >
-      <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
+      <Navbar.Brand as={Link} to="/" >
         <img
           src="/logo192.png"
           alt="App Icon"
           width="30"
           height="30"
-          className="me-2"
+          
         />
         {t('header.appName')}
       </Navbar.Brand>
@@ -45,16 +39,16 @@ const Header: React.FC<HeaderProps> = ({
         variant="outline-light"
         size="sm"
         onClick={onToggleSidebar}
-        className="d-lg-none"
+        
       >
         ☰
       </Button>
 
-      <Nav className="ms-auto">
-        <Form className="d-flex">
+      <Nav >
+        <Form >
           <InputGroup>
             <InputGroup.Text>
-              <i className="bi bi-search" />
+              <i />
             </InputGroup.Text>
             <Form.Control
               type="text"
@@ -62,14 +56,14 @@ const Header: React.FC<HeaderProps> = ({
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
               onKeyDown={onSearchKeyDown}
-              style={{ minWidth: '200px' }}
+              
             />
             {searchTerm && (
               <Button
                 variant="outline-secondary"
                 onClick={() => onSearchChange('')}
               >
-                <i className="bi bi-x-lg" />
+                <i />
               </Button>
             )}
           </InputGroup>

@@ -10,7 +10,6 @@ export interface FormProps {
 export interface FormGroupProps {
   children: React.ReactNode;
   className?: string;
-  style?: React.CSSProperties;
 }
 
 export interface FormLabelProps {
@@ -60,8 +59,8 @@ const Form: React.FC<FormProps> & {
   );
 };
 
-Form.Group = ({ children, className = '', style }) => (
-  <BootstrapForm.Group className={className} style={style}>
+Form.Group = ({ children, className = '' }) => (
+  <BootstrapForm.Group className={className}>
     {children}
   </BootstrapForm.Group>
 );

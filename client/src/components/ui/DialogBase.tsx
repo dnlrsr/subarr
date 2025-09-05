@@ -7,16 +7,14 @@ const DialogBase: React.FC<DialogBaseProps> = ({
   onClose,
   title,
   children,
-  buttons,
-  dialogStyle: _, // Note: dialogStyle not used in Bootstrap Modal implementation
-  childrenStyle
+  buttons
 }) => {
   return (
     <Modal show={isOpen} onHide={onClose} size="lg" centered>
       <Modal.Header closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
-      <Modal.Body style={childrenStyle}>
+      <Modal.Body>
         {children}
       </Modal.Body>
       {buttons && (

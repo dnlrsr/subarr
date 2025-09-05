@@ -43,19 +43,19 @@ const ActivityPage: React.FC = () => {
   return (
     <Container fluid>
       <Card>
-        <Card.Header semantic="toolbar">
+        <Card.Header >
           <Button
-            semantic="toolbar"
+            
             variant="outline-primary"
             onClick={() => refreshActivity(page)}
             title="Refresh Activity"
           >
-            <i className="bi bi-arrow-clockwise" />
-            <span style={{ fontSize: 'small', marginLeft: 5 }}>{t('common.refresh')}</span>
+            <i />
+            <span >{t('common.refresh')}</span>
           </Button>
         </Card.Header>
-        <Card.Body semantic="scroll">
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <Card.Body >
+          <table >
             <thead>
               <tr>
                 <th></th>
@@ -71,9 +71,6 @@ const ActivityPage: React.FC = () => {
                   <td>
                     <i 
                       className={`bi bi-${activity.icon}`} 
-                      style={{ 
-                        color: activity.icon === 'camera-video-fill' ? 'var(--accent-color)' : 'inherit' 
-                      }} 
                     />
                   </td>
                   <td className="fixed">
@@ -82,7 +79,7 @@ const ActivityPage: React.FC = () => {
                         {activity.playlist_title}
                       </Link>
                     ) : (
-                      <div style={{ fontStyle: 'italic' }}>{t('common.playlistDeleted')}</div>
+                      <div >{t('common.playlistDeleted')}</div>
                     )}
                   </td>
                   <td className="fixed">
@@ -103,52 +100,52 @@ const ActivityPage: React.FC = () => {
             </tbody>
           </table>
           {isLoading && (
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
+            <div >
               <LoadingIndicator />
             </div>
           )}
         </Card.Body>
       </Card>
       
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 20, gap: 10 }}>
+      <div >
         <Button
-          semantic="pagination"
+          
           variant="outline-secondary"
           disabled={page === 1}
           onClick={() => handlePageChange(1)}
           title={t('activityPage.firstPage')}
         >
-          <i className="bi bi-skip-start-fill"></i>
+          <i ></i>
         </Button>
         <Button
-          semantic="pagination"
+          
           variant="outline-secondary"
           disabled={page === 1}
           onClick={() => handlePageChange(page - 1)}
           title={t('activityPage.previousPage')}
         >
-          <i className="bi bi-rewind-fill"></i>
+          <i ></i>
         </Button>
-        <div style={{ display: 'flex', alignItems: 'center', margin: '0px 10px' }}>
+        <div >
           {page} / {totalPages}
         </div>
         <Button
-          semantic="pagination"
+          
           variant="outline-secondary"
           disabled={page === totalPages}
           onClick={() => handlePageChange(page + 1)}
           title={t('activityPage.nextPage')}
         >
-          <i className="bi bi-fast-forward-fill"></i>
+          <i ></i>
         </Button>
         <Button
-          semantic="pagination"
+          
           variant="outline-secondary"
           disabled={page === totalPages}
           onClick={() => handlePageChange(totalPages)}
           title={t('activityPage.lastPage')}
         >
-          <i className="bi bi-skip-end-fill"></i>
+          <i ></i>
         </Button>
       </div>
     </Container>

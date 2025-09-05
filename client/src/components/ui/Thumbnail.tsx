@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { ThumbnailProps } from '../../types';
 
 const Thumbnail: React.FC<ThumbnailProps> = ({ 
-  className, 
   src, 
   alt, 
   width = 160, 
@@ -40,13 +39,11 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
 
   return (
     <img
-      className={className}
       src={currentSrc}
       alt={alt}
       width={width}
       height={height}
       loading="lazy"
-      style={{ objectFit: 'cover', maxWidth: '100%' }}
     />
   );
 };

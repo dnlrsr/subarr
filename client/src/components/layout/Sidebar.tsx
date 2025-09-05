@@ -14,15 +14,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen: _, onItemClick }) => {
 
   return (
     <div 
-      style={{ 
-        height: '100%',
-        overflow: 'auto',
-        backgroundColor: '#2a2a2a',
-        boxShadow: '2px 0 5px #0000004d'
-      }}
     >
-      <Nav className="flex-column p-3" style={{ height: '100%' }}>
-        <div className="mb-3">
+      <Nav >
+        <div >
           <Nav.Link 
             as={NavLink}
             to="/" 
@@ -30,17 +24,17 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen: _, onItemClick }) => {
               location.pathname === '/' || location.pathname.startsWith('/playlist') 
                 ? 'active' : ''
             }`}
-            style={{ color: '#ffffff' }}
+            
             onClick={onItemClick}
           >
-            <i className="bi bi-play-fill me-2"></i>
+            <i ></i>
             {t('sidebar.playlists')}
           </Nav.Link>
           <Nav.Link 
             as={NavLink}
             to="/add" 
-            className="ps-4"
-            style={{ color: '#cccccc' }}
+            
+            
             onClick={onItemClick}
           >
             {t('sidebar.addNew')}
@@ -53,10 +47,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen: _, onItemClick }) => {
           className={`d-flex align-items-center ${
             location.pathname === '/activity' ? 'active' : ''
           }`}
-          style={{ color: '#ffffff' }}
+          
           onClick={onItemClick}
         >
-          <i className="bi bi-clock me-2"></i>
+          <i ></i>
           {t('sidebar.activity')}
         </Nav.Link>
         
@@ -66,10 +60,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen: _, onItemClick }) => {
           className={`d-flex align-items-center ${
             location.pathname === '/settings' ? 'active' : ''
           }`}
-          style={{ color: '#ffffff' }}
+          
           onClick={onItemClick}
         >
-          <i className="bi bi-gear-fill me-2"></i>
+          <i ></i>
           {t('sidebar.settings')}
         </Nav.Link>
       </Nav>

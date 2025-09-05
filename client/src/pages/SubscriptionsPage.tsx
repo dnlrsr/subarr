@@ -63,88 +63,64 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
   };
 
   return (
-    <Container fluid style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <Container fluid >
       <Card>
-        <Card.Header semantic="toolbar">
+        <Card.Header >
           <Button
-            semantic="toolbar"
+            
             variant="outline-primary"
             onClick={() => setOptionsDialogOpen(true)}
             title="Options"
           >
-            <i className="bi bi-grid-3x3"></i>
-            <span style={{ fontSize: 'small', marginLeft: 5 }}>{t('common.options')}</span>
+            <i ></i>
+            <span >{t('common.options')}</span>
           </Button>
           <Button
-            semantic="toolbar"
+            
             variant="outline-primary"
             onClick={() => setFilterOptionsOpen(true)}
             title="Filter"
           >
-            <i className="bi bi-funnel-fill"></i>
-            <span style={{ fontSize: 'small', marginLeft: 5 }}>{t('common.filter')}</span>
+            <i ></i>
+            <span >{t('common.filter')}</span>
           </Button>
         </Card.Header>
       </Card>
       
       <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '20px',
-          padding: '10px',
-          overflowY: 'auto',
-        }}
       >
         {filteredPlaylists
           .sort((a, b) => a.title.localeCompare(b.title))
           .map((playlist) => (
             <Card
               key={playlist.id}
-              semantic="playlist"
+              
             >
               <Link
                 to={`/playlist/${playlist.id}`}
-                style={{ textDecoration: 'none', color: 'inherit' }}
+                
               >
                 {playlist.source === 'ytsubs.app' && (
                   <img
-                    style={{ position: 'absolute', left: 3, width: 24, height: 24 }}
+                    
                     src="https://static.ytsubs.app/logo.png"
                     alt="YTSubs.app"
                   />
                 )}
                 <Thumbnail src={playlist.thumbnail} alt={playlist.title} />
                 <Card.Body>
-                  <div style={{ padding: '10px' }}>
+                  <div >
                   <h3
-                    style={{
-                      fontSize: '1em',
-                      margin: '0 0 5px 0',
-                      whiteSpace: 'nowrap',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                    }}
                   >
                     {playlist.title}
                   </h3>
                   {showCheckInterval && (
                     <p
-                      style={{
-                        fontSize: '0.75em',
-                        color: '#aaa',
-                        margin: 0,
-                      }}
                     >
                       {t('subscriptionsPage.playlist.interval', { minutes: playlist.check_interval_minutes })}
                     </p>
                   )}
                   <p
-                    style={{
-                      fontSize: '0.75em',
-                      color: '#aaa',
-                      margin: 0,
-                    }}
                   >
                     {t('subscriptionsPage.playlist.lastChecked', { time: playlist.last_checked
                       ? formatDistance(new Date(playlist.last_checked), new Date(), {
@@ -154,11 +130,6 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
                   </p>
                   {showNextCheck && (
                     <p
-                      style={{
-                        fontSize: '0.75em',
-                        color: '#aaa',
-                        margin: 0,
-                      }}
                     >
                       {t('subscriptionsPage.playlist.nextCheck', { time: playlist.last_checked
                         ? formatDistance(
@@ -184,16 +155,16 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
         onClose={() => setOptionsDialogOpen(false)}
         title="Options"
       >
-        <div className="setting flex-column-mobile">
-          <div style={{ minWidth: 175 }}>{t('subscriptionsPage.options.showCheckInterval')}</div>
+        <div >
+          <div >{t('subscriptionsPage.options.showCheckInterval')}</div>
           <Checkbox
             checked={showCheckInterval}
             onChange={(e) => setShowCheckInterval(e.target.checked)}
             label={t('subscriptionsPage.options.showCheckIntervalLabel')}
           />
         </div>
-        <div className="setting flex-column-mobile">
-          <div style={{ minWidth: 175 }}>{t('subscriptionsPage.options.showNextCheck')}</div>
+        <div >
+          <div >{t('subscriptionsPage.options.showNextCheck')}</div>
           <Checkbox
             checked={showNextCheck}
             onChange={(e) => setShowNextCheck(e.target.checked)}
@@ -203,31 +174,31 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
       </DialogBase>
       
       {filterOptionsOpen && (
-        <Card semantic="search-results">
-          <Card.Body semantic="filter">
+        <Card >
+          <Card.Body >
             <Button
-              semantic="filter"
+              
               variant="outline-secondary"
               onClick={() => applyFilter('All')}
             >
               {t('subscriptionsPage.filter.all')}
             </Button>
             <Button
-              semantic="filter"
+              
               variant="outline-secondary"
               onClick={() => applyFilter('Active')}
             >
               {t('subscriptionsPage.filter.active')}
             </Button>
             <Button
-              semantic="filter"
+              
               variant="outline-secondary"
               onClick={() => applyFilter('Manually added')}
             >
               {t('subscriptionsPage.filter.manuallyAdded')}
             </Button>
             <Button
-              semantic="filter"
+              
               variant="outline-secondary"
               onClick={() => applyFilter('YTSubs')}
             >

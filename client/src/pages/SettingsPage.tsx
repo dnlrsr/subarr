@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PostProcessorDialog } from '../components/features';
-import { Button, Card, Checkbox, Container, Input } from '../components/ui';
+import { Button, Card, Checkbox, Col, Container, Input, Row } from '../components/ui';
 import { PostProcessor, Settings } from '../types';
 import { showToast } from '../utils/utils';
 
@@ -81,25 +81,22 @@ const SettingsPage: React.FC = () => {
   };
 
   return (
-    <Container fluid style={{ height: '100%' }}>
+        <Container fluid>
       <Card>
-        <Card.Header semantic="toolbar">
-          <Button semantic="toolbar" variant="success" onClick={handleSave} title="Save Settings">
+        <Card.Header>
+          <Button variant="success" onClick={handleSave} title="Save Settings">
             <i className="bi bi-floppy-fill" />
-            <span style={{ fontSize: 'small', marginLeft: 5 }}>{t('common.save')}</span>
+            <span>{t('common.save')}</span>
           </Button>
         </Card.Header>
-        <Card.Body>
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            height: 'calc(100% - 120px)',
-            padding: 30,
-          }}>
-            <div style={{ fontWeight: 'bold', fontSize: 'xx-large' }}>{t('settingsPage.title')}</div>
+      </Card>
+      <Row>
+        <Col md={8}>
+          <div>
+            <div>{t('settingsPage.title')}</div>
           
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '20px' }} className="flex-column-mobile">
-            <div style={{ minWidth: 175 }}>{t('settingsPage.ytsubsApiKey')}</div>
+          <div>
+            <div>{t('settingsPage.ytsubsApiKey')}</div>
             <Input
               type="text"
               value={ytsubsApiKey}
@@ -108,8 +105,8 @@ const SettingsPage: React.FC = () => {
             />
           </div>
           
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '20px' }} className="flex-column-mobile">
-            <div style={{ minWidth: 175 }}>{t('settingsPage.excludeShorts')}</div>
+          <div>
+            <div>{t('settingsPage.excludeShorts')}</div>
             <Checkbox
               checked={excludeShorts}
               onChange={(e) => setExcludeShorts(e.target.checked)}
@@ -117,55 +114,35 @@ const SettingsPage: React.FC = () => {
             />
           </div>
 
-          <div style={{ marginTop: 50, fontWeight: 'bold', fontSize: 'xx-large' }}>
+          <div>
             {t('settingsPage.postProcessors')}
           </div>
           
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
-            gap: '20px',
-            marginTop: '20px'
-          }}>
+          <div>
             {postProcessors.map((postProcessor) => (
               <Card 
                 key={postProcessor.id} 
-                semantic="postprocessor"
                 onClick={() => handlePostProcessorClick(postProcessor)}
               >
                 <Card.Body>
-                  <h3 style={{ fontSize: 'x-large', margin: '0 0 5px 0' }}>
+                  <h3>
                     {postProcessor.name}
                   </h3>
-                  <div style={{
-                    display: 'flex',
-                    backgroundColor: 'var(--accent-color)',
-                    padding: '5px',
-                    margin: '10px 0',
-                    gap: '5px',
-                    borderRadius: '2px',
-                    alignItems: 'center'
-                  }}>
+                  <div>
                     <i
                       className="bi bi-broadcast"
-                      style={{ fontSize: 'medium' }}
                     />
-                    <div style={{ fontSize: 'small' }}>{postProcessor.type}</div>
+                    <div>{postProcessor.type}</div>
                   </div>
                 </Card.Body>
               </Card>
             ))}
             <Card
-              semantic="postprocessor"
               onClick={handleAddPostProcessor}
             >
               <Card.Body>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                  <i className="bi bi-plus-square" style={{ fontSize: 'xx-large', color: '#666' }} />
+                <div>
+                  <i className="bi bi-plus-square" />
                 </div>
               </Card.Body>
             </Card>
@@ -179,8 +156,8 @@ const SettingsPage: React.FC = () => {
             onRefreshPostProcessors={refreshPostProcessors}
           />
         </div>
-        </Card.Body>
-      </Card>
+        </Col>
+      </Row>
     </Container>
   );
 };

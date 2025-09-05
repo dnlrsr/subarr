@@ -5,7 +5,6 @@ export interface NavbarProps {
   variant?: 'light' | 'dark';
   expand?: boolean | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
   className?: string;
-  style?: React.CSSProperties;
   children: React.ReactNode;
 }
 
@@ -18,7 +17,6 @@ export interface NavbarBrandProps {
 
 export interface NavProps {
   className?: string;
-  style?: React.CSSProperties;
   children: React.ReactNode;
 }
 
@@ -26,7 +24,6 @@ export interface NavLinkProps {
   as?: React.ElementType;
   to?: string;
   className?: string;
-  style?: React.CSSProperties;
   onClick?: () => void;
   children: React.ReactNode;
 }
@@ -35,7 +32,6 @@ const NavbarComponent: React.FC<NavbarProps> = ({
   variant,
   expand,
   className,
-  style,
   children,
   ...props
 }) => {
@@ -44,7 +40,6 @@ const NavbarComponent: React.FC<NavbarProps> = ({
       variant={variant}
       expand={expand}
       className={className}
-      style={style}
       {...props}
     >
       {children}
@@ -73,14 +68,12 @@ const NavbarBrandComponent: React.FC<NavbarBrandProps> = ({
 
 const NavComponent: React.FC<NavProps> = ({
   className,
-  style,
   children,
   ...props
 }) => {
   return (
     <BootstrapNav
       className={className}
-      style={style}
       {...props}
     >
       {children}
@@ -92,7 +85,6 @@ const NavLinkComponent: React.FC<NavLinkProps> = ({
   as,
   to,
   className,
-  style,
   onClick,
   children,
   ...props
@@ -102,7 +94,6 @@ const NavLinkComponent: React.FC<NavLinkProps> = ({
       as={as}
       to={to}
       className={className}
-      style={style}
       onClick={onClick}
       {...props}
     >

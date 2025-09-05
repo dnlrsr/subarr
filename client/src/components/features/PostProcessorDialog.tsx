@@ -109,19 +109,19 @@ const PostProcessorDataUI: React.FC<PostProcessorDataUIProps> = ({
 
   return (
     <>
-      <div className='setting flex-column-mobile'>
-        <div style={{ minWidth: 175 }}>{t('common.method')}</div>
+      <div>
+        <div>{t('common.method')}</div>
         <Select
           value={postProcessorData.method || 'GET'}
           onChange={e => updateData({ ...postProcessorData, method: e.target.value })}
           options={['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].map(method => ({ value: method, label: method }))}
         />
       </div>
-      <div className='setting flex-column-mobile'>
-        <div style={{ minWidth: 175 }}>{t('common.headers')}</div>
-        <div style={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'end' }}>
+      <div>
+        <div>{t('common.headers')}</div>
+        <div>
           {postProcessorData.headers?.map((header, index) =>
-            <div className='pairedInput' key={index} style={{ display: 'flex', width: '100%' }}>
+            <div key={index}>
               <input 
                 type='text' 
                 value={header.name || ''}
@@ -142,7 +142,7 @@ const PostProcessorDataUI: React.FC<PostProcessorDataUIProps> = ({
                   ) || []
                 })}
               />
-              <div style={{ width: 40, margin: '5px 0px 5px 5px' }}>
+              <div>
                 <Button 
                   variant="danger"
                   size="sm"
@@ -151,12 +151,12 @@ const PostProcessorDataUI: React.FC<PostProcessorDataUIProps> = ({
                     headers: postProcessorData.headers?.filter((_, i) => i !== index) || []
                   })}
                 >
-                  <i style={{ fontSize: 'x-large' }} className="bi bi-dash" />
+                  <i />
                 </Button>
               </div>
             </div>
           )}
-          <div style={{ width: 40 }}>
+          <div>
             <Button 
               variant="primary"
               size="sm"
@@ -165,20 +165,19 @@ const PostProcessorDataUI: React.FC<PostProcessorDataUIProps> = ({
                 headers: [...(postProcessorData.headers ?? []), { name: '', value: '' }]
               })}
             >
-              <i style={{ fontSize: 'x-large' }} className="bi bi-plus" />
+              <i />
             </Button>
           </div>
         </div>
       </div>
-      <div className='setting flex-column-mobile'>
-        <div style={{ minWidth: 175 }}>{t('common.body')}</div>
-        <div style={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'end' }}>
+      <div>
+        <div>{t('common.body')}</div>
+        <div>
           <textarea 
-            style={{ resize: 'vertical', width: 'calc(100% - 18px)', minHeight: 125 }}
             value={postProcessorData.body || ''}
             onChange={e => updateData({ ...postProcessorData, body: e.target.value })}
           />
-          <div style={{ fontFamily: '"Caveat", cursive', fontSize: 'large' }}>
+          <div>
             <Button 
               variant="secondary"
               onClick={() => showVariablesDialog()}
@@ -204,20 +203,18 @@ const VariablesDialog: React.FC<VariablesDialogProps> = ({ isOpen, onClose }) =>
 
   return (
     <DialogBase 
-      dialogStyle={{ width: 400 }} 
-      childrenStyle={{ padding: 10 }} 
       isOpen={isOpen} 
       onClose={onClose} 
       title={t('postProcessorDialog.variables.title')}
     >
-      <p style={{ fontStyle: 'italic' }}>
+      <p>
         {t('postProcessorDialog.variables.description')}
       </p>
-      <div style={{ display: 'grid', gridTemplateColumns: 'auto auto', columnGap: 30 }}>
+      <div>
         {possibleVariables.map((pair, i) =>
           <Fragment key={i}>
-            <p style={{ margin: '10px 0px' }}>{pair[0]}</p>
-            <p style={{ margin: '10px 0px' }}>{pair[1]}</p>
+            <p>{pair[0]}</p>
+            <p>{pair[1]}</p>
           </Fragment>
         )}
       </div>
@@ -393,7 +390,7 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
         title={`Edit Post Processor: ${postProcessor?.name || 'New'}`}
         buttons={
           <>
-            <div style={{ marginRight: 'auto' }}>
+            <div >
               <Button 
                 variant="danger"
                 onClick={() => handleDelete()} 
@@ -401,7 +398,7 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
                 Delete
               </Button>
             </div>
-            <div style={{ marginLeft: 10 }}>
+            <div >
               <Button 
                 variant="secondary"
                 onClick={() => handleTest()} 
@@ -409,7 +406,7 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
                 Test
               </Button>
             </div>
-            <div style={{ marginLeft: 10 }}>
+            <div >
               <Button 
                 variant="secondary"
                 onClick={() => handleCancel()} 
@@ -417,7 +414,7 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
                 Cancel
               </Button>
             </div>
-            <div style={{ marginLeft: 10 }}>
+            <div >
               <Button 
                 variant="success"
                 onClick={() => handleSave()} 
@@ -428,8 +425,8 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
           </>
         }
       >
-        <div className='setting flex-column-mobile'>
-          <div style={{ minWidth: 175 }}>{t('common.name')}</div>
+        <div>
+          <div>{t('common.name')}</div>
           <Input 
             type="text"
             value={postProcessor?.name || ''}
@@ -439,10 +436,10 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
           {postProcessor?.name === 'yt-dlp-api' && <p>{t('common.immutable')}</p>}
           <p></p>
         </div>
-        <div className='setting flex-column-mobile'>
-          <div style={{ minWidth: 175 }}>{t('postProcessorDialog.applyTemplate')}</div>
-          <div style={{ display: 'flex', width: '100%' }}>
-            <div style={{ marginTop: 0, flex: 1 }}>
+        <div>
+          <div>{t('postProcessorDialog.applyTemplate')}</div>
+          <div>
+            <div>
               <Select
                 value={selectedTemplate}
                 onChange={e => setSelectedTemplate(e.target.value)}
@@ -452,26 +449,26 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
                 }))}
               />
             </div>
-            <div style={{ marginLeft: 10, borderRadius: 5, width: 40 }}>
+            <div>
               <Button 
                 variant="primary"
                 onClick={() => applyTemplate(selectedTemplate)}
               >
-                <i style={{ fontSize: 'x-large' }} className="bi bi-check" />
+                <i />
               </Button>
             </div>
           </div>
         </div>
-        <div className='setting flex-column-mobile'>
-          <div style={{ minWidth: 175 }}>{t('common.type')}</div>
+        <div>
+          <div>{t('common.type')}</div>
           <Select
             value={postProcessor?.type || 'webhook'}
             onChange={e => setPostProcessor(prev => prev ? { ...prev, type: e.target.value as 'webhook' } : null)}
             options={postProcessorTypes.map(type => ({ value: type, label: type }))}
           />
         </div>
-        <div className='setting flex-column-mobile'>
-          <div style={{ minWidth: 175 }}>
+        <div>
+          <div>
             {t('postProcessorDialog.url')}
           </div>
           <Input 
@@ -486,7 +483,7 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
           showVariablesDialog={() => setIsVariablesDialogOpen(true)}
         />
         {message && (
-          <p style={{ marginTop: 10, marginBottom: 0, color: 'var(--danger-color)' }}>
+          <p >
             {message}
           </p>
         )}

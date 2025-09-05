@@ -119,101 +119,66 @@ const PlaylistDetailsPage: React.FC = () => {
     }
   };
 
-  const isVideoMatchingRegex = (videoTitle: string): boolean => {
-    if (!regex || !testingRegex) return true;
-    try {
-      return new RegExp(regex, 'i').test(videoTitle);
-    } catch {
-      return false;
-    }
-  };
-
   if (!playlist) {
     return <p>{t('common.loading')}</p>;
   }
 
   return (
-    <Container fluid style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <Container fluid>
       <Card>
-        <Card.Header semantic="toolbar">
-          <Button semantic="toolbar" variant="success" onClick={handleSave} title={t('playlistDetailsPage.saveSettings')}>
-            <i className="bi bi-floppy-fill"></i>
-            <span style={{ fontSize: 'small', marginLeft: 5 }}>{t('common.save')}</span>
+        <Card.Header>
+          <Button variant="success" onClick={handleSave} title={t('playlistDetailsPage.saveSettings')}>
+            <i ></i>
+            <span>{t('common.save')}</span>
           </Button>
-          <Button semantic="toolbar" variant="danger" onClick={handleDelete} title={t('playlistDetailsPage.deletePlaylist')}>
-            <i className="bi bi-trash-fill"></i>
-            <span style={{ fontSize: 'small', marginLeft: 5 }}>{t('common.delete')}</span>
+          <Button variant="danger" onClick={handleDelete} title={t('playlistDetailsPage.deletePlaylist')}>
+            <i ></i>
+            <span>{t('common.delete')}</span>
           </Button>
         </Card.Header>
       </Card>
 
-      <div
-        style={{
-          height: 425,
-          width: '100%',
-          backgroundImage: playlist.banner
-            ? `url(https://wsrv.nl/?url=${playlist.banner})`
-            : '',
-          backgroundColor: 'rgb(0, 0, 0, 0.7)',
-          backgroundSize: 'cover',
-          backgroundBlendMode: 'darken',
-        }}
-      >
-        <div
-          style={{
-            height: 'calc(100% - 60px)',
-            padding: 30,
-            display: 'flex',
-            gap: 40,
-          }}
-        >
+      <div>
+        <div>
           <Thumbnail
-            className="playlistDetails-poster"
             height={350}
             width={350}
             src={playlist.thumbnail}
             alt={playlist.title}
           />
-          <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+          <div>
             <div
-              style={{ fontSize: 'xxx-large', overflowWrap: 'anywhere' }}
               title={playlist.playlist_id}
             >
               {playlist.title}
             </div>
             {!playlist.playlist_id.startsWith('UU') && playlist.author_name && (
-              <div style={{ fontStyle: 'italic', marginBottom: 10 }}>
+              <div >
                 {t('common.by')} {playlist.author_name}
               </div>
             )}
-            <div className="setting flex-column-mobile">
-              <div style={{ minWidth: 190 }}>{t('playlistDetailsPage.checkInterval')}</div>
+            <div >
+              <div >{t('playlistDetailsPage.checkInterval')}</div>
               <Input
-                semantic="small"
+                
                 type="number"
                 value={interval}
                 min={5}
                 onChange={(e) => setInterval(Number(e.target.value))}
               />
             </div>
-            <div className="setting flex-column-mobile">
-              <div style={{ minWidth: 190 }}>{t('playlistDetailsPage.regexFilter')}</div>
+            <div >
+              <div >{t('playlistDetailsPage.regexFilter')}</div>
               <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  width: '100%',
-                  marginTop: 5,
-                }}
               >
                 <Input
-                  semantic="filter"
+                  
                   type="text"
                   value={regex}
                   onChange={(e) => setRegex(e.target.value)}
                 />
                 <Button
-                  semantic="action"
+                  
                   variant={testingRegex ? "danger" : "primary"}
                   onClick={() => setTestingRegex(!testingRegex)}
                 >
@@ -226,34 +191,21 @@ const PlaylistDetailsPage: React.FC = () => {
       </div>
 
       <div
-        className="small-padding-mobile"
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          flex: 1,
-          padding: 30,
-          minHeight: 0,
-        }}
+        
       >
-        <div className="playlistDetails-recentUploads">
+        <div >
           <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '10px',
-              paddingRight: '5px',
-            }}
           >
             {videos.map((video) => (
               <Card
                 key={video.video_id}
-                semantic="video"
+                
               >
                 <a
                   href={`https://www.youtube.com/watch?v=${video.video_id}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ flexShrink: 0 }}
+                  
                 >
                   <Thumbnail
                     src={video.thumbnail}
@@ -262,47 +214,33 @@ const PlaylistDetailsPage: React.FC = () => {
                     height={90}
                   />
                 </a>
-                <div style={{ display: 'flex', flexDirection: 'column', padding: '10px' }}>
+                <div >
                   <div
-                    style={{
-                      fontSize: '1em',
-                      fontWeight: 'bold',
-                      color: testingRegex
-                        ? isVideoMatchingRegex(video.title)
-                          ? 'var(--success-color)'
-                          : 'var(--danger-color)'
-                        : 'inherit',
-                      display: '-webkit-box',
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: 'vertical',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                    }}
                   >
                     {video.title}
                   </div>
-                  <div style={{ flex: 1 }} />
-                  <div style={{ fontSize: '0.75em', color: '#aaa', marginTop: '4px' }}>
+                  <div />
+                  <div >
                     {video.published_at
                       ? new Date(video.published_at).toLocaleString()
                       : 'Unknown date'}
                   </div>
-                  <div style={{ display: 'flex', gap: '8px' }}>
+                  <div >
                     <Button
-                      semantic="icon-small"
+                      
                       variant="outline-primary"
                       onClick={() => handleCopyUrl(video.video_id)}
                     >
-                      <i className="bi bi-link-45deg"></i> Copy URL
+                      <i ></i> Copy URL
                     </Button>
                     <Button
-                      semantic="icon-small"
+                      
                       variant="outline-success"
                       disabled={false} // Note: video.state is not available in VideoInfo type
                       title={t('playlistDetailsPage.downloadVideo')}
                       onClick={() => handleDownload(video.video_id)}
                     >
-                      <i className="bi bi-download"></i> Download
+                      <i ></i> Download
                     </Button>
                   </div>
                 </div>

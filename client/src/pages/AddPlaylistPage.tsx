@@ -95,12 +95,12 @@ const AddPlaylistPage: React.FC = () => {
 
   return (
     <Container>
-      <h2 className="mb-4">{t('addPlaylistPage.title')}</h2>
+      <h2 >{t('addPlaylistPage.title')}</h2>
       
       <Form>
-        <InputGroup className="mb-3">
+        <InputGroup >
           <InputGroupText>
-            <i className="bi bi-search" />
+            <i />
           </InputGroupText>
           <FormControl
             type="text"
@@ -109,54 +109,26 @@ const AddPlaylistPage: React.FC = () => {
             onChange={(e) => setPlaylistInput(e.target.value)}
           />
           <Button variant="outline-secondary" onClick={handleClearInput}>
-            <i className="bi bi-x-lg" />
+            <i />
           </Button>
         </InputGroup>
       </Form>
 
       {playlistInfo && (
         <div
-          className="flex-column-mobile"
-          style={{
-            display: 'flex',
-            marginTop: 20,
-            padding: 20,
-            gap: 20,
-            backgroundImage: playlistInfo.banner ? `url(${playlistInfo.banner})` : '',
-            backgroundColor: playlistInfo.banner ? 'rgb(0, 0, 0, 0.7)' : '#2a2a2a',
-            backgroundSize: 'cover',
-            backgroundBlendMode: 'darken',
-          }}
+          
         >
           <Thumbnail height={180} width={320} src={playlistInfo.thumbnail} alt={playlistInfo.title} />
-          <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-            <div style={{ display: 'flex', marginBottom: 20 }}>
-              <div style={{ fontSize: 'xx-large' }}>{playlistInfo.title}</div>
+          <div >
+            <div >
+              <div >{playlistInfo.title}</div>
               <button
-                style={{
-                  marginLeft: 'auto',
-                  backgroundColor: 'transparent',
-                  border: 'none',
-                  color: 'inherit',
-                  cursor: 'pointer',
-                }}
                 onClick={handleOpenPlaylist}
               >
-                <i className="bi bi-box-arrow-up-right" style={{ fontSize: 'x-large' }} />
+                <i />
               </button>
             </div>
             <button
-              style={{
-                marginTop: 'auto',
-                marginLeft: 'auto',
-                backgroundColor: 'var(--success-color)',
-                padding: '6px 16px',
-                borderRadius: 4,
-                fontSize: 'medium',
-                border: 'none',
-                color: 'white',
-                cursor: 'pointer',
-              }}
               onClick={handleSubmit}
             >
               {t('addPlaylistPage.addButton')}
@@ -166,27 +138,21 @@ const AddPlaylistPage: React.FC = () => {
       )}
 
       {isSearching && (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div >
           <LoadingIndicator />
         </div>
       )}
 
       {error && (
         <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            marginTop: 20,
-          }}
         >
-          <div style={{ fontSize: 'x-large', textAlign: 'center' }}>{error}</div>
-          <p style={{ marginBottom: 0 }}>{t('addPlaylistPage.validValues')}</p>
+          <div >{error}</div>
+          <p >{t('addPlaylistPage.validValues')}</p>
           <ol>
-            <li style={{ overflowWrap: 'anywhere' }}>
+            <li >
               {t('addPlaylistPage.channelUrls')}
             </li>
-            <li style={{ overflowWrap: 'anywhere' }}>
+            <li >
               {t('addPlaylistPage.playlistUrls')}
             </li>
           </ol>
@@ -195,11 +161,6 @@ const AddPlaylistPage: React.FC = () => {
 
       {isPlaylistWarning && (
         <p
-          style={{
-            color: 'var(--warning-color)',
-            overflowWrap: 'anywhere',
-            textAlign: 'center',
-          }}
         >
           {t('addPlaylistPage.playlistWarning')}
         </p>
