@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { SearchResultsProps } from '../../types';
 import { Card, Thumbnail } from '../ui';
-import styles from './SearchResults.module.css';
 
 const SearchResults: React.FC<SearchResultsProps> = ({
   isOpen,
@@ -39,15 +38,21 @@ const SearchResults: React.FC<SearchResultsProps> = ({
               ref={(el: HTMLAnchorElement | null) => {
                 itemRefs.current[index] = el;
               }}
-              className={`${styles.searchResult} ${
-                highlightedSearchResult === index ? styles.highlighted : ''
-              }`}
               style={{
                 color: 'inherit',
                 textDecoration: 'none',
-                padding: '10px',
+                padding: '12px 16px',
                 display: 'block',
-                borderBottom: index < searchResults.length - 1 ? '1px solid #444' : 'none',
+                borderBottom: index < searchResults.length - 1 ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
+                backgroundColor: highlightedSearchResult === index ? '#595959' : 'transparent',
+                transition: 'background-color 0.2s ease',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#595959';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = highlightedSearchResult === index ? '#595959' : 'transparent';
               }}
               to={`/playlist/${playlist.id}`}
               onClick={onClose}

@@ -4,7 +4,6 @@ import { PostProcessorDialog } from '../components/features';
 import { Button, Card, Checkbox, Container, Input } from '../components/ui';
 import { PostProcessor, Settings } from '../types';
 import { showToast } from '../utils/utils';
-import styles from './SettingsPage.module.css';
 
 const SettingsPage: React.FC = () => {
   const { t } = useTranslation();
@@ -99,7 +98,7 @@ const SettingsPage: React.FC = () => {
           }}>
             <div style={{ fontWeight: 'bold', fontSize: 'xx-large' }}>{t('settingsPage.title')}</div>
           
-          <div className={`${styles.setting} flex-column-mobile`}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '20px' }} className="flex-column-mobile">
             <div style={{ minWidth: 175 }}>{t('settingsPage.ytsubsApiKey')}</div>
             <Input
               type="text"
@@ -109,7 +108,7 @@ const SettingsPage: React.FC = () => {
             />
           </div>
           
-          <div className={`${styles.setting} flex-column-mobile`}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '20px' }} className="flex-column-mobile">
             <div style={{ minWidth: 175 }}>{t('settingsPage.excludeShorts')}</div>
             <Checkbox
               checked={excludeShorts}
@@ -122,23 +121,36 @@ const SettingsPage: React.FC = () => {
             {t('settingsPage.postProcessors')}
           </div>
           
-          <div className={styles.postProcessorGrid}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
+            gap: '20px',
+            marginTop: '20px'
+          }}>
             {postProcessors.map((postProcessor) => (
               <Card 
                 key={postProcessor.id} 
                 semantic="postprocessor"
                 onClick={() => handlePostProcessorClick(postProcessor)}
-                className={styles.postProcessorCard}
               >
                 <Card.Body>
-                  <h3 className={styles.postProcessorTitle}>
+                  <h3 style={{ fontSize: 'x-large', margin: '0 0 5px 0' }}>
                     {postProcessor.name}
                   </h3>
-                  <div className={styles.postProcessorType}>
+                  <div style={{
+                    display: 'flex',
+                    backgroundColor: 'var(--accent-color)',
+                    padding: '5px',
+                    margin: '10px 0',
+                    gap: '5px',
+                    borderRadius: '2px',
+                    alignItems: 'center'
+                  }}>
                     <i
-                      className={`bi bi-broadcast ${styles.postProcessorTypeIcon}`}
+                      className="bi bi-broadcast"
+                      style={{ fontSize: 'medium' }}
                     />
-                    <div className={styles.postProcessorTypeText}>{postProcessor.type}</div>
+                    <div style={{ fontSize: 'small' }}>{postProcessor.type}</div>
                   </div>
                 </Card.Body>
               </Card>
@@ -146,7 +158,6 @@ const SettingsPage: React.FC = () => {
             <Card
               semantic="postprocessor"
               onClick={handleAddPostProcessor}
-              className={styles.addPostProcessorCard}
             >
               <Card.Body>
                 <div style={{
@@ -154,7 +165,7 @@ const SettingsPage: React.FC = () => {
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
-                  <i className={`bi bi-plus-square ${styles.addIcon}`} />
+                  <i className="bi bi-plus-square" style={{ fontSize: 'xx-large', color: '#666' }} />
                 </div>
               </Card.Body>
             </Card>
