@@ -133,11 +133,11 @@ export class PlaylistController {
     public updatePlaylistSettings = (req: Request, res: Response): void => {
         try {
             const { check_interval_minutes, regex_filter } = req.body;
-            const playlistId = parseInt(req.params.id);
+            const id = parseInt(req.params.id);
 
-            this.databaseService.updatePlaylist(playlistId.toString(), check_interval_minutes, regex_filter);
+            this.databaseService.updatePlaylist(id, check_interval_minutes, regex_filter);
 
-            const updatedPlaylist = this.databaseService.getPlaylist(playlistId);
+            const updatedPlaylist = this.databaseService.getPlaylist(id);
             if (updatedPlaylist) {
                 this.pollingService.schedulePolling(updatedPlaylist);
             }

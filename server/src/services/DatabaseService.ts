@@ -12,7 +12,14 @@ export class DatabaseService {
     }
 
     private initializeDatabase(): Database.Database {
-        const dir = path.resolve("/data/db");
+        // Always use subarr.db from the server folder (and support youtubarr.db if it still exists from before the app rename)
+        let dir = path.resolve("/data/db");
+        if (!fs.existsSync(dir)) {
+            dir = path.resolve(__dirname, '../../../data/db');
+            if (!fs.existsSync(dir)) {
+                fs.mkdirSync(dir, { recursive: true });
+            }
+        }
 
         const dbPath = fs.existsSync(path.join(dir, 'youtubarr.db'))
             ? path.join(dir, 'youtubarr.db')
@@ -127,13 +134,13 @@ export class DatabaseService {
     }
 
     public updatePlaylist(
-        playlistId: string,
+        id: number,
         checkIntervalMinutes?: number,
         regexFilter?: string,
         lastChecked?: string
     ): void {
         const sets: string[] = [];
-        const params: Record<string, any> = { playlist_id: playlistId };
+        const params: Record<string, any> = { id: id };
 
         if (checkIntervalMinutes !== undefined) {
             sets.push('check_interval_minutes = @check_interval_minutes');
@@ -150,7 +157,7 @@ export class DatabaseService {
 
         if (sets.length === 0) return;
 
-        const sql = `UPDATE playlists SET ${sets.join(', ')} WHERE playlist_id = @playlist_id`;
+        const sql = `UPDATE playlists SET ${sets.join(', ')} WHERE id = @id`;
         this.db.prepare(sql).run(params);
     }
 

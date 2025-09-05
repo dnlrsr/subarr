@@ -222,12 +222,14 @@ export class PollingService {
                 }
             );
 
-            this.databaseService.updatePlaylist(
-                playlist.playlist_id,
-                undefined,
-                undefined,
-                new Date().toISOString()
-            );
+            if (typeof playlist.id === 'number') {
+                this.databaseService.updatePlaylist(
+                    playlist.id,
+                    undefined,
+                    undefined,
+                    new Date().toISOString()
+                );
+            }
         } catch (err) {
             console.error(`Failed to poll ${playlist.title}:`, err);
         }
