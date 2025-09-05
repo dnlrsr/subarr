@@ -14,5 +14,8 @@
     "start-server": "npm run build && NODE_ENV=production npm --workspace server start",
     "start-server-win": "npm run build && SET NODE_ENV=production && npm --workspace server start",
     "dev-server": "npm --workspace server run dev"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2"
   }
 }
