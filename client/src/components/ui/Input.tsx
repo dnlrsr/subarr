@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
+import './Input.css';
 
 export interface InputProps {
   label?: string;
@@ -12,7 +13,7 @@ export interface InputProps {
   disabled?: boolean;
   required?: boolean;
   className?: string;
-  style?: React.CSSProperties;
+  semantic?: 'small' | 'search' | 'filter';
   id?: string;
   min?: number;
 }
@@ -28,12 +29,14 @@ const Input: React.FC<InputProps> = ({
   disabled = false,
   required = false,
   className = '',
-  style,
+  semantic,
   id,
   min,
   ...props
 }) => {
   const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
+  const semanticClass = semantic ? `input-app-${semantic}` : '';
+  const combinedClassName = `input-app ${semanticClass} ${className}`.trim();
 
   return (
     <Form.Group className="mb-3">
@@ -52,8 +55,7 @@ const Input: React.FC<InputProps> = ({
         disabled={disabled}
         required={required}
         isInvalid={!!error}
-        className={className}
-        style={style}
+        className={combinedClassName}
         min={min}
         {...props}
       />

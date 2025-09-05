@@ -63,16 +63,9 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
   return (
     <Container fluid style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <Card>
-        <Card.Header style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'end',
-          padding: '0px 20px',
-          gap: 10,
-          backgroundColor: '#262626',
-          minHeight: 60,
-        }}>
+        <Card.Header semantic="toolbar">
           <Button
+            semantic="toolbar"
             variant="outline-primary"
             onClick={() => setOptionsDialogOpen(true)}
             title="Options"
@@ -81,6 +74,7 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
             <span style={{ fontSize: 'small', marginLeft: 5 }}>Options</span>
           </Button>
           <Button
+            semantic="toolbar"
             variant="outline-primary"
             onClick={() => setFilterOptionsOpen(true)}
             title="Filter"
@@ -105,7 +99,7 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
           .map((playlist) => (
             <Card
               key={playlist.id}
-              style={{ position: 'relative', textDecoration: 'none' }}
+              semantic="playlist"
             >
               <Link
                 to={`/playlist/${playlist.id}`}
@@ -119,7 +113,8 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
                   />
                 )}
                 <Thumbnail src={playlist.thumbnail} alt={playlist.title} />
-                <Card.Body style={{ padding: '10px' }}>
+                <Card.Body>
+                  <div style={{ padding: '10px' }}>
                   <h3
                     style={{
                       fontSize: '1em',
@@ -177,6 +172,7 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
                         : 'Unknown'}
                     </p>
                   )}
+                  </div>
                 </Card.Body>
               </Link>
             </Card>
@@ -207,66 +203,32 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
       </DialogBase>
       
       {filterOptionsOpen && (
-        <Card
-          style={{
-            position: 'fixed',
-            top: 120,
-            right: 20,
-            backgroundColor: '#333',
-            display: 'flex',
-            flexDirection: 'column',
-            zIndex: 1000,
-          }}
-        >
-          <Card.Body style={{ padding: 0 }}>
+        <Card semantic="search-results">
+          <Card.Body semantic="filter">
             <Button
+              semantic="filter"
               variant="outline-secondary"
-              style={{
-                fontSize: 'medium',
-                width: '100%',
-                padding: '10px 20px',
-                textAlign: 'start',
-                justifyContent: 'flex-start',
-              }}
               onClick={() => applyFilter('All')}
             >
               All
             </Button>
             <Button
+              semantic="filter"
               variant="outline-secondary"
-              style={{
-                fontSize: 'medium',
-                width: '100%',
-                padding: '10px 20px',
-                textAlign: 'start',
-                justifyContent: 'flex-start',
-              }}
               onClick={() => applyFilter('Active')}
             >
               Active
             </Button>
             <Button
+              semantic="filter"
               variant="outline-secondary"
-              style={{
-                fontSize: 'medium',
-                width: '100%',
-                padding: '10px 20px',
-                textAlign: 'start',
-                justifyContent: 'flex-start',
-              }}
               onClick={() => applyFilter('Manually added')}
             >
               Manually added
             </Button>
             <Button
+              semantic="filter"
               variant="outline-secondary"
-              style={{
-                fontSize: 'medium',
-                width: '100%',
-                padding: '10px 20px',
-                textAlign: 'start',
-                justifyContent: 'flex-start',
-              }}
               onClick={() => applyFilter('YTSubs')}
             >
               YTSubs

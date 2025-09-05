@@ -139,30 +139,32 @@ const PostProcessorDataUI: React.FC<PostProcessorDataUIProps> = ({
                   ) || []
                 })}
               />
-              <Button 
-                variant="danger"
-                size="sm"
-                style={{ width: 40, margin: '5px 0px 5px 5px' }}
-                onClick={() => updateData({
-                  ...postProcessorData, 
-                  headers: postProcessorData.headers?.filter((_, i) => i !== index) || []
-                })}
-              >
-                <i style={{ fontSize: 'x-large' }} className="bi bi-dash" />
-              </Button>
+              <div style={{ width: 40, margin: '5px 0px 5px 5px' }}>
+                <Button 
+                  variant="danger"
+                  size="sm"
+                  onClick={() => updateData({
+                    ...postProcessorData, 
+                    headers: postProcessorData.headers?.filter((_, i) => i !== index) || []
+                  })}
+                >
+                  <i style={{ fontSize: 'x-large' }} className="bi bi-dash" />
+                </Button>
+              </div>
             </div>
           )}
-          <Button 
-            variant="primary"
-            size="sm"
-            style={{ width: 40 }}
-            onClick={() => updateData({
-              ...postProcessorData, 
-              headers: [...(postProcessorData.headers ?? []), { name: '', value: '' }]
-            })}
-          >
-            <i style={{ fontSize: 'x-large' }} className="bi bi-plus" />
-          </Button>
+          <div style={{ width: 40 }}>
+            <Button 
+              variant="primary"
+              size="sm"
+              onClick={() => updateData({
+                ...postProcessorData, 
+                headers: [...(postProcessorData.headers ?? []), { name: '', value: '' }]
+              })}
+            >
+              <i style={{ fontSize: 'x-large' }} className="bi bi-plus" />
+            </Button>
+          </div>
         </div>
       </div>
       <div className='setting flex-column-mobile'>
@@ -173,13 +175,14 @@ const PostProcessorDataUI: React.FC<PostProcessorDataUIProps> = ({
             value={postProcessorData.body || ''}
             onChange={e => updateData({ ...postProcessorData, body: e.target.value })}
           />
-          <Button 
-            variant="secondary"
-            style={{ fontFamily: '"Caveat", cursive', fontSize: 'large' }} 
-            onClick={() => showVariablesDialog()}
-          >
-            f(x)
-          </Button>
+          <div style={{ fontFamily: '"Caveat", cursive', fontSize: 'large' }}>
+            <Button 
+              variant="secondary"
+              onClick={() => showVariablesDialog()}
+            >
+              f(x)
+            </Button>
+          </div>
         </div>
       </div>
     </>
@@ -385,34 +388,38 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
         title={`Edit Post Processor: ${postProcessor?.name || 'New'}`}
         buttons={
           <>
-            <Button 
-              variant="danger"
-              onClick={() => handleDelete()} 
-              style={{ marginRight: 'auto' }}
-            >
-              Delete
-            </Button>
-            <Button 
-              variant="secondary"
-              onClick={() => handleTest()} 
-              style={{ marginLeft: 10 }}
-            >
-              Test
-            </Button>
-            <Button 
-              variant="secondary"
-              onClick={() => handleCancel()} 
-              style={{ marginLeft: 10 }}
-            >
-              Cancel
-            </Button>
-            <Button 
-              variant="success"
-              onClick={() => handleSave()} 
-              style={{ marginLeft: 10 }}
-            >
-              Save
-            </Button>
+            <div style={{ marginRight: 'auto' }}>
+              <Button 
+                variant="danger"
+                onClick={() => handleDelete()} 
+              >
+                Delete
+              </Button>
+            </div>
+            <div style={{ marginLeft: 10 }}>
+              <Button 
+                variant="secondary"
+                onClick={() => handleTest()} 
+              >
+                Test
+              </Button>
+            </div>
+            <div style={{ marginLeft: 10 }}>
+              <Button 
+                variant="secondary"
+                onClick={() => handleCancel()} 
+              >
+                Cancel
+              </Button>
+            </div>
+            <div style={{ marginLeft: 10 }}>
+              <Button 
+                variant="success"
+                onClick={() => handleSave()} 
+              >
+                Save
+              </Button>
+            </div>
           </>
         }
       >
@@ -430,22 +437,24 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
         <div className='setting flex-column-mobile'>
           <div style={{ minWidth: 175 }}>Apply template</div>
           <div style={{ display: 'flex', width: '100%' }}>
-            <Select
-              style={{ marginTop: 0 }}
-              value={selectedTemplate}
-              onChange={e => setSelectedTemplate(e.target.value)}
-              options={[''].concat(Object.keys(templates)).map(template => ({ 
-                value: template, 
-                label: template || 'Select template...' 
-              }))}
-            />
-            <Button 
-              variant="primary"
-              style={{ marginLeft: 10, borderRadius: 5, width: 40 }}
-              onClick={() => applyTemplate(selectedTemplate)}
-            >
-              <i style={{ fontSize: 'x-large' }} className="bi bi-check" />
-            </Button>
+            <div style={{ marginTop: 0, flex: 1 }}>
+              <Select
+                value={selectedTemplate}
+                onChange={e => setSelectedTemplate(e.target.value)}
+                options={[''].concat(Object.keys(templates)).map(template => ({ 
+                  value: template, 
+                  label: template || 'Select template...' 
+                }))}
+              />
+            </div>
+            <div style={{ marginLeft: 10, borderRadius: 5, width: 40 }}>
+              <Button 
+                variant="primary"
+                onClick={() => applyTemplate(selectedTemplate)}
+              >
+                <i style={{ fontSize: 'x-large' }} className="bi bi-check" />
+              </Button>
+            </div>
           </div>
         </div>
         <div className='setting flex-column-mobile'>

@@ -25,8 +25,10 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   }
 
   return (
-    <Card style={{ position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 1000 }}>
-      <Card.Body style={{ padding: 0 }}>
+    <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 1000 }}>
+      <Card>
+        <Card.Body>
+          <div style={{ padding: 0 }}>
         {searchResults.length > 0 ? (
           searchResults.map((playlist, index) => (
             <Link
@@ -70,8 +72,10 @@ const SearchResults: React.FC<SearchResultsProps> = ({
         ) : (
           <div style={{ fontSize: 'small', padding: '10px' }}>No Results</div>
         )}
-      </Card.Body>
-    </Card>
+          </div>
+        </Card.Body>
+      </Card>
+    </div>
   );
 };
 

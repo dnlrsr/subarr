@@ -41,15 +41,9 @@ const ActivityPage: React.FC = () => {
   return (
     <Container fluid>
       <Card>
-        <Card.Header style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          padding: '0px 20px', 
-          gap: 10, 
-          backgroundColor: '#262626', 
-          height: 60 
-        }}>
+        <Card.Header semantic="toolbar">
           <Button
+            semantic="toolbar"
             variant="outline-primary"
             onClick={() => refreshActivity(page)}
             title="Refresh Activity"
@@ -58,7 +52,7 @@ const ActivityPage: React.FC = () => {
             <span style={{ fontSize: 'small', marginLeft: 5 }}>Refresh</span>
           </Button>
         </Card.Header>
-        <Card.Body style={{ padding: 20, overflowX: 'auto' }}>
+        <Card.Body semantic="scroll">
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr>
@@ -116,6 +110,7 @@ const ActivityPage: React.FC = () => {
       
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: 20, gap: 10 }}>
         <Button
+          semantic="pagination"
           variant="outline-secondary"
           disabled={page === 1}
           onClick={() => handlePageChange(1)}
@@ -124,6 +119,7 @@ const ActivityPage: React.FC = () => {
           <i className="bi bi-skip-start-fill"></i>
         </Button>
         <Button
+          semantic="pagination"
           variant="outline-secondary"
           disabled={page === 1}
           onClick={() => handlePageChange(page - 1)}
@@ -135,6 +131,7 @@ const ActivityPage: React.FC = () => {
           {page} / {totalPages}
         </div>
         <Button
+          semantic="pagination"
           variant="outline-secondary"
           disabled={page === totalPages}
           onClick={() => handlePageChange(page + 1)}
@@ -143,6 +140,7 @@ const ActivityPage: React.FC = () => {
           <i className="bi bi-fast-forward-fill"></i>
         </Button>
         <Button
+          semantic="pagination"
           variant="outline-secondary"
           disabled={page === totalPages}
           onClick={() => handlePageChange(totalPages)}

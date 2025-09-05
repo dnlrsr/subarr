@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
+import './Input.css'; // Reuse input styles
 
 export interface SelectOption {
   value: string | number;
@@ -16,7 +17,6 @@ export interface SelectProps {
   disabled?: boolean;
   required?: boolean;
   className?: string;
-  style?: React.CSSProperties;
   id?: string;
   options: SelectOption[];
 }
@@ -31,12 +31,12 @@ const Select: React.FC<SelectProps> = ({
   disabled = false,
   required = false,
   className = '',
-  style,
   id,
   options,
   ...props
 }) => {
   const selectId = id || `select-${Math.random().toString(36).substr(2, 9)}`;
+  const combinedClassName = `select-app ${className}`.trim();
 
   return (
     <Form.Group className="mb-3">
@@ -53,8 +53,7 @@ const Select: React.FC<SelectProps> = ({
         disabled={disabled}
         required={required}
         isInvalid={!!error}
-        className={className}
-        style={style}
+        className={combinedClassName}
         {...props}
       >
         {placeholder && (

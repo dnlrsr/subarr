@@ -81,26 +81,20 @@ const SettingsPage: React.FC = () => {
   return (
     <Container fluid style={{ height: '100%' }}>
       <Card>
-        <Card.Header style={{
-          display: 'flex',
-          alignItems: 'center',
-          padding: '0px 20px',
-          gap: 10,
-          backgroundColor: '#262626',
-          height: 60,
-        }}>
-          <Button variant="success" onClick={handleSave} title="Save Settings">
+        <Card.Header semantic="toolbar">
+          <Button semantic="toolbar" variant="success" onClick={handleSave} title="Save Settings">
             <i className="bi bi-floppy-fill" />
             <span style={{ fontSize: 'small', marginLeft: 5 }}>Save</span>
           </Button>
         </Card.Header>
-        <Card.Body style={{
-          display: 'flex',
-          flexDirection: 'column',
-          height: 'calc(100% - 120px)',
-          padding: 30,
-        }}>
-          <div style={{ fontWeight: 'bold', fontSize: 'xx-large' }}>Settings</div>
+        <Card.Body>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: 'calc(100% - 120px)',
+            padding: 30,
+          }}>
+            <div style={{ fontWeight: 'bold', fontSize: 'xx-large' }}>Settings</div>
           
           <div className="setting flex-column-mobile">
             <div style={{ minWidth: 175 }}>YTSubs.app API key</div>
@@ -136,16 +130,10 @@ const SettingsPage: React.FC = () => {
             {postProcessors.map((postProcessor) => (
               <Card 
                 key={postProcessor.id} 
-                style={{ padding: 10, cursor: 'pointer' }}
+                semantic="postprocessor"
                 onClick={() => handlePostProcessorClick(postProcessor)}
               >
-                <Card.Body style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'start',
-                  width: '100%',
-                  height: '100%',
-                }}>
+                <Card.Body>
                   <h3 style={{ fontSize: 'x-large', margin: '0 0 5px 0' }}>
                     {postProcessor.name}
                   </h3>
@@ -171,27 +159,17 @@ const SettingsPage: React.FC = () => {
               </Card>
             ))}
             <Card
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: 10,
-                cursor: 'pointer',
-              }}
+              semantic="postprocessor"
               onClick={handleAddPostProcessor}
             >
-              <Card.Body style={{
-                width: '100%',
-                height: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                background: 'none',
-                border: 'none',
-                color: 'inherit',
-                cursor: 'pointer',
-              }}>
-                <i style={{ fontSize: 'xx-large' }} className="bi bi-plus-square" />
+              <Card.Body>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                  <i style={{ fontSize: 'xx-large' }} className="bi bi-plus-square" />
+                </div>
               </Card.Body>
             </Card>
           </div>
@@ -243,6 +221,7 @@ const SettingsPage: React.FC = () => {
               />
             </a>
           </div>
+        </div>
         </Card.Body>
       </Card>
     </Container>

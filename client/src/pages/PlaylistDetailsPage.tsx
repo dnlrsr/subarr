@@ -132,19 +132,12 @@ const PlaylistDetailsPage: React.FC = () => {
   return (
     <Container fluid style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <Card>
-        <Card.Header style={{
-          display: 'flex',
-          alignItems: 'center',
-          padding: '0px 20px',
-          gap: 10,
-          backgroundColor: '#262626',
-          height: 60,
-        }}>
-          <Button variant="success" onClick={handleSave} title="Save Settings">
+        <Card.Header semantic="toolbar">
+          <Button semantic="toolbar" variant="success" onClick={handleSave} title="Save Settings">
             <i className="bi bi-floppy-fill"></i>
             <span style={{ fontSize: 'small', marginLeft: 5 }}>Save</span>
           </Button>
-          <Button variant="danger" onClick={handleDelete} title="Delete Playlist">
+          <Button semantic="toolbar" variant="danger" onClick={handleDelete} title="Delete Playlist">
             <i className="bi bi-trash-fill"></i>
             <span style={{ fontSize: 'small', marginLeft: 5 }}>Delete</span>
           </Button>
@@ -193,11 +186,11 @@ const PlaylistDetailsPage: React.FC = () => {
             <div className="setting flex-column-mobile">
               <div style={{ minWidth: 190 }}>Check Interval (minutes):</div>
               <Input
+                semantic="small"
                 type="number"
                 value={interval}
                 min={5}
                 onChange={(e) => setInterval(Number(e.target.value))}
-                style={{ width: 80 }}
               />
             </div>
             <div className="setting flex-column-mobile">
@@ -211,14 +204,14 @@ const PlaylistDetailsPage: React.FC = () => {
                 }}
               >
                 <Input
+                  semantic="filter"
                   type="text"
                   value={regex}
                   onChange={(e) => setRegex(e.target.value)}
-                  style={{ width: 300, marginTop: 0 }}
                 />
                 <Button
+                  semantic="action"
                   variant={testingRegex ? "danger" : "primary"}
-                  style={{ marginLeft: 5, height: 38 }}
                   onClick={() => setTestingRegex(!testingRegex)}
                 >
                   {testingRegex ? 'Stop Test' : 'Test'}
@@ -251,13 +244,7 @@ const PlaylistDetailsPage: React.FC = () => {
             {videos.map((video) => (
               <Card
                 key={video.video_id}
-                style={{
-                  display: 'flex',
-                  height: '90px',
-                  borderRadius: '6px',
-                  overflow: 'hidden',
-                  boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
-                }}
+                semantic="video"
               >
                 <a
                   href={`https://www.youtube.com/watch?v=${video.video_id}`}
@@ -299,15 +286,15 @@ const PlaylistDetailsPage: React.FC = () => {
                   </div>
                   <div style={{ display: 'flex', gap: '8px' }}>
                     <Button
+                      semantic="icon-small"
                       variant="outline-primary"
-                      size="sm"
                       onClick={() => handleCopyUrl(video.video_id)}
                     >
                       <i className="bi bi-link-45deg"></i> Copy URL
                     </Button>
                     <Button
+                      semantic="icon-small"
                       variant="outline-success"
-                      size="sm"
                       disabled={false} // Note: video.state is not available in VideoInfo type
                       title="Download video"
                       onClick={() => handleDownload(video.video_id)}
