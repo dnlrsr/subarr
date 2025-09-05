@@ -12,7 +12,13 @@ export class DatabaseService {
     }
 
     private initializeDatabase(): Database.Database {
-        const dir = path.resolve("/data/db");
+        let dir = path.resolve("/data/db");
+        if (!fs.existsSync(dir)) {
+            dir = path.resolve(__dirname, '../../../data/db');
+            if (!fs.existsSync(dir)) {
+                fs.mkdirSync(dir, { recursive: true });
+            }
+        }
 
         const dbPath = fs.existsSync(path.join(dir, 'youtubarr.db'))
             ? path.join(dir, 'youtubarr.db')
