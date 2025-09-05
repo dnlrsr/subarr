@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button, Form, InputGroup, Nav, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 interface HeaderProps {
@@ -15,49 +16,53 @@ const Header: React.FC<HeaderProps> = ({
   onToggleSidebar,
 }) => {
   return (
-    <header className="app-header">
-      <Link className="app-icon" to="/">
-        <img className="header-icon" src="/logo192.png" alt="App Icon" />
-      </Link>
-      <button className="sidebar-toggle" onClick={onToggleSidebar}>
-        ☰
-      </button>
-      <div style={{ display: 'flex' }}>
-        <i className="bi bi-search" style={{ fontSize: 'medium' }} />
-        <input
-          style={{
-            backgroundColor: 'transparent',
-            border: 'none',
-            borderBottom: 'solid 1px white',
-            marginLeft: 8,
-            width: 200,
-            color: 'inherit',
-            fontSize: 'medium',
-            outline: 'none',
-          }}
-          placeholder="Search"
-          type="text"
-          value={searchTerm}
-          onChange={(e) => onSearchChange(e.target.value)}
-          onKeyDown={onSearchKeyDown}
+    <Navbar bg="dark" variant="dark" expand="lg" className="px-3">
+      <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
+        <img
+          src="/logo192.png"
+          alt="App Icon"
+          width="30"
+          height="30"
+          className="me-2"
         />
-        {searchTerm && (
-          <button
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              borderBottom: 'solid 1px white',
-              background: 'none',
-              border: 'none',
-              color: 'inherit',
-            }}
-            onClick={() => onSearchChange('')}
-          >
-            <i className="bi bi-x-lg" style={{ fontSize: 'medium' }} />
-          </button>
-        )}
-      </div>
-    </header>
+        Subarr
+      </Navbar.Brand>
+      
+      <Button
+        variant="outline-light"
+        size="sm"
+        onClick={onToggleSidebar}
+        className="d-lg-none"
+      >
+        ☰
+      </Button>
+
+      <Nav className="ms-auto">
+        <Form className="d-flex">
+          <InputGroup>
+            <InputGroup.Text>
+              <i className="bi bi-search" />
+            </InputGroup.Text>
+            <Form.Control
+              type="text"
+              placeholder="Search"
+              value={searchTerm}
+              onChange={(e) => onSearchChange(e.target.value)}
+              onKeyDown={onSearchKeyDown}
+              style={{ minWidth: '200px' }}
+            />
+            {searchTerm && (
+              <Button
+                variant="outline-secondary"
+                onClick={() => onSearchChange('')}
+              >
+                <i className="bi bi-x-lg" />
+              </Button>
+            )}
+          </InputGroup>
+        </Form>
+      </Nav>
+    </Navbar>
   );
 };
 

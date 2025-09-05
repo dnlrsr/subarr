@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { PostProcessor } from '../../types';
 import { getErrorResponse, showToast } from '../../utils/utils';
-import { DialogBase } from '../ui';
+import { Button, DialogBase, Input, Select } from '../ui';
 
 interface PostProcessorData {
   method?: string;
@@ -108,14 +108,11 @@ const PostProcessorDataUI: React.FC<PostProcessorDataUIProps> = ({
     <>
       <div className='setting flex-column-mobile'>
         <div style={{ minWidth: 175 }}>Method</div>
-        <select
+        <Select
           value={postProcessorData.method || 'GET'}
           onChange={e => updateData({ ...postProcessorData, method: e.target.value })}
-        >
-          {['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].map(method =>
-            <option key={method} value={method}>{method}</option>
-          )}
-        </select>
+          options={['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].map(method => ({ value: method, label: method }))}
+        />
       </div>
       <div className='setting flex-column-mobile'>
         <div style={{ minWidth: 175 }}>Headers</div>
@@ -142,26 +139,30 @@ const PostProcessorDataUI: React.FC<PostProcessorDataUIProps> = ({
                   ) || []
                 })}
               />
-              <button 
-                style={{ backgroundColor: 'var(--danger-color)', borderRadius: 5, width: 40, margin: '5px 0px 5px 5px' }}
+              <Button 
+                variant="danger"
+                size="sm"
+                style={{ width: 40, margin: '5px 0px 5px 5px' }}
                 onClick={() => updateData({
                   ...postProcessorData, 
                   headers: postProcessorData.headers?.filter((_, i) => i !== index) || []
                 })}
               >
                 <i style={{ fontSize: 'x-large' }} className="bi bi-dash" />
-              </button>
+              </Button>
             </div>
           )}
-          <button 
-            style={{ backgroundColor: 'cornflowerblue', borderRadius: 5, width: 40 }}
+          <Button 
+            variant="primary"
+            size="sm"
+            style={{ width: 40 }}
             onClick={() => updateData({
               ...postProcessorData, 
               headers: [...(postProcessorData.headers ?? []), { name: '', value: '' }]
             })}
           >
             <i style={{ fontSize: 'x-large' }} className="bi bi-plus" />
-          </button>
+          </Button>
         </div>
       </div>
       <div className='setting flex-column-mobile'>
@@ -172,12 +173,13 @@ const PostProcessorDataUI: React.FC<PostProcessorDataUIProps> = ({
             value={postProcessorData.body || ''}
             onChange={e => updateData({ ...postProcessorData, body: e.target.value })}
           />
-          <button 
+          <Button 
+            variant="secondary"
             style={{ fontFamily: '"Caveat", cursive', fontSize: 'large' }} 
             onClick={() => showVariablesDialog()}
           >
-            <div>f(x)</div>
-          </button>
+            f(x)
+          </Button>
         </div>
       </div>
     </>
@@ -383,60 +385,40 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
         title={`Edit Post Processor: ${postProcessor?.name || 'New'}`}
         buttons={
           <>
-            <button 
+            <Button 
+              variant="danger"
               onClick={() => handleDelete()} 
-              style={{
-                backgroundColor: 'var(--danger-color)', 
-                fontSize: 'medium', 
-                padding: '6px 16px',
-                borderRadius: 4, 
-                marginRight: 'auto'
-              }}
+              style={{ marginRight: 'auto' }}
             >
               Delete
-            </button>
-            <button 
+            </Button>
+            <Button 
+              variant="secondary"
               onClick={() => handleTest()} 
-              style={{
-                backgroundColor: '#393f45', 
-                fontSize: 'medium', 
-                padding: '6px 16px', 
-                borderRadius: 4, 
-                marginLeft: 10
-              }}
+              style={{ marginLeft: 10 }}
             >
               Test
-            </button>
-            <button 
+            </Button>
+            <Button 
+              variant="secondary"
               onClick={() => handleCancel()} 
-              style={{
-                backgroundColor: '#393f45', 
-                fontSize: 'medium', 
-                padding: '6px 16px', 
-                borderRadius: 4, 
-                marginLeft: 10
-              }}
+              style={{ marginLeft: 10 }}
             >
               Cancel
-            </button>
-            <button 
+            </Button>
+            <Button 
+              variant="success"
               onClick={() => handleSave()} 
-              style={{
-                backgroundColor: 'var(--success-color)', 
-                fontSize: 'medium', 
-                padding: '6px 16px', 
-                borderRadius: 4, 
-                marginLeft: 10
-              }}
+              style={{ marginLeft: 10 }}
             >
               Save
-            </button>
+            </Button>
           </>
         }
       >
         <div className='setting flex-column-mobile'>
           <div style={{ minWidth: 175 }}>Name</div>
-          <input 
+          <Input 
             type="text"
             value={postProcessor?.name || ''}
             onChange={e => setPostProcessor(prev => prev ? { ...prev, name: e.target.value } : null)}
@@ -448,44 +430,37 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
         <div className='setting flex-column-mobile'>
           <div style={{ minWidth: 175 }}>Apply template</div>
           <div style={{ display: 'flex', width: '100%' }}>
-            <select
+            <Select
               style={{ marginTop: 0 }}
               value={selectedTemplate}
               onChange={e => setSelectedTemplate(e.target.value)}
-            >
-              {[''].concat(Object.keys(templates)).map(template =>
-                <option key={template} value={template}>{template}</option>
-              )}
-            </select>
-            <button 
-              style={{
-                backgroundColor: 'cornflowerblue', 
-                marginLeft: 10, 
-                borderRadius: 5, 
-                width: 40
-              }}
+              options={[''].concat(Object.keys(templates)).map(template => ({ 
+                value: template, 
+                label: template || 'Select template...' 
+              }))}
+            />
+            <Button 
+              variant="primary"
+              style={{ marginLeft: 10, borderRadius: 5, width: 40 }}
               onClick={() => applyTemplate(selectedTemplate)}
             >
               <i style={{ fontSize: 'x-large' }} className="bi bi-check" />
-            </button>
+            </Button>
           </div>
         </div>
         <div className='setting flex-column-mobile'>
           <div style={{ minWidth: 175 }}>Type</div>
-          <select
+          <Select
             value={postProcessor?.type || 'webhook'}
             onChange={e => setPostProcessor(prev => prev ? { ...prev, type: e.target.value as 'webhook' | 'process' } : null)}
-          >
-            {postProcessorTypes.map(type =>
-              <option key={type} value={type}>{type}</option>
-            )}
-          </select>
+            options={postProcessorTypes.map(type => ({ value: type, label: type }))}
+          />
         </div>
         <div className='setting flex-column-mobile'>
           <div style={{ minWidth: 175 }}>
             {postProcessor?.type === 'webhook' ? 'URL' : 'File path'}
           </div>
-          <input 
+          <Input 
             type="text"
             value={postProcessor?.target || ''}
             onChange={e => setPostProcessor(prev => prev ? { ...prev, target: e.target.value } : null)}

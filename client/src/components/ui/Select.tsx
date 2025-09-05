@@ -1,27 +1,30 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 
-export interface InputProps {
+export interface SelectOption {
+  value: string | number;
+  label: string;
+}
+
+export interface SelectProps {
   label?: string;
   error?: string;
   helperText?: string;
-  type?: string;
   value?: string | number;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   placeholder?: string;
   disabled?: boolean;
   required?: boolean;
   className?: string;
   style?: React.CSSProperties;
   id?: string;
-  min?: number;
+  options: SelectOption[];
 }
 
-const Input: React.FC<InputProps> = ({
+const Select: React.FC<SelectProps> = ({
   label,
   error,
   helperText,
-  type = 'text',
   value,
   onChange,
   placeholder,
@@ -30,45 +33,47 @@ const Input: React.FC<InputProps> = ({
   className = '',
   style,
   id,
-  min,
+  options,
   ...props
 }) => {
-  const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
+  const selectId = id || `select-${Math.random().toString(36).substr(2, 9)}`;
 
   return (
     <Form.Group className="mb-3">
       {label && (
-        <Form.Label htmlFor={inputId}>
+        <Form.Label htmlFor={selectId}>
           {label}
           {required && <span className="text-danger"> *</span>}
         </Form.Label>
       )}
-      <Form.Control
-        id={inputId}
-        type={type}
+      <Form.Select
+        id={selectId}
         value={value}
         onChange={onChange}
-        placeholder={placeholder}
         disabled={disabled}
         required={required}
         isInvalid={!!error}
         className={className}
         style={style}
-        min={min}
         {...props}
-      />
-      {error && (
-        <Form.Control.Feedback type="invalid">
-          {error}
-        </Form.Control.Feedback>
-      )}
+      >
+        {placeholder && (
+          <option value="" disabled>
+            {placeholder}
+          </option>
+        )}
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </Form.Select>
+      {error && <Form.Control.Feedback type="invalid">{error}</Form.Control.Feedback>}
       {helperText && !error && (
-        <Form.Text className="text-muted">
-          {helperText}
-        </Form.Text>
+        <Form.Text className="text-muted">{helperText}</Form.Text>
       )}
     </Form.Group>
   );
 };
 
-export default Input;
+export default Select;

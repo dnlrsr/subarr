@@ -1,7 +1,7 @@
 import { addMinutes, formatDistance } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { DialogBase, Thumbnail } from '../components/ui';
+import { Button, Card, Checkbox, Container, DialogBase, Thumbnail } from '../components/ui';
 import { apiService } from '../services/api';
 import { Playlist } from '../types';
 
@@ -61,9 +61,9 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <div
-        style={{
+    <Container fluid style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <Card>
+        <Card.Header style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'end',
@@ -71,25 +71,26 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
           gap: 10,
           backgroundColor: '#262626',
           minHeight: 60,
-        }}
-      >
-        <button
-          className="hover-blue"
-          onClick={() => setOptionsDialogOpen(true)}
-          title="Options"
-        >
-          <i className="bi bi-grid-3x3"></i>
-          <div style={{ fontSize: 'small' }}>Options</div>
-        </button>
-        <button
-          className="hover-blue"
-          onClick={() => setFilterOptionsOpen(true)}
-          title="Filter"
-        >
-          <i className="bi bi-funnel-fill"></i>
-          <div style={{ fontSize: 'small' }}>Filter</div>
-        </button>
-      </div>
+        }}>
+          <Button
+            variant="outline-primary"
+            onClick={() => setOptionsDialogOpen(true)}
+            title="Options"
+          >
+            <i className="bi bi-grid-3x3"></i>
+            <span style={{ fontSize: 'small', marginLeft: 5 }}>Options</span>
+          </Button>
+          <Button
+            variant="outline-primary"
+            onClick={() => setFilterOptionsOpen(true)}
+            title="Filter"
+          >
+            <i className="bi bi-funnel-fill"></i>
+            <span style={{ fontSize: 'small', marginLeft: 5 }}>Filter</span>
+          </Button>
+        </Card.Header>
+      </Card>
+      
       <div
         style={{
           display: 'flex',
@@ -102,58 +103,45 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
         {filteredPlaylists
           .sort((a, b) => a.title.localeCompare(b.title))
           .map((playlist) => (
-            <Link
-              style={{ position: 'relative' }}
-              className="card"
+            <Card
               key={playlist.id}
-              to={`/playlist/${playlist.id}`}
+              style={{ position: 'relative', textDecoration: 'none' }}
             >
-              {playlist.source === 'ytsubs.app' && (
-                <img
-                  style={{ position: 'absolute', left: 3, width: 24, height: 24 }}
-                  src="https://static.ytsubs.app/logo.png"
-                  alt="YTSubs.app"
-                />
-              )}
-              <Thumbnail src={playlist.thumbnail} alt={playlist.title} />
-              <div style={{ padding: '10px' }}>
-                <h3
-                  style={{
-                    fontSize: '1em',
-                    margin: '0 0 5px 0',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                  }}
-                >
-                  {playlist.title}
-                </h3>
-                {showCheckInterval && (
-                  <p
-                    style={{
-                      fontSize: '0.75em',
-                      color: '#aaa',
-                      margin: 0,
-                    }}
-                  >
-                    Interval: every {playlist.check_interval_minutes} minutes
-                  </p>
+              <Link
+                to={`/playlist/${playlist.id}`}
+                style={{ textDecoration: 'none', color: 'inherit' }}
+              >
+                {playlist.source === 'ytsubs.app' && (
+                  <img
+                    style={{ position: 'absolute', left: 3, width: 24, height: 24 }}
+                    src="https://static.ytsubs.app/logo.png"
+                    alt="YTSubs.app"
+                  />
                 )}
-                <p
-                  style={{
-                    fontSize: '0.75em',
-                    color: '#aaa',
-                    margin: 0,
-                  }}
-                >
-                  Last checked:{' '}
-                  {playlist.last_checked
-                    ? formatDistance(new Date(playlist.last_checked), new Date(), {
-                        addSuffix: true,
-                      })
-                    : 'Unknown'}
-                </p>
-                {showNextCheck && (
+                <Thumbnail src={playlist.thumbnail} alt={playlist.title} />
+                <Card.Body style={{ padding: '10px' }}>
+                  <h3
+                    style={{
+                      fontSize: '1em',
+                      margin: '0 0 5px 0',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
+                  >
+                    {playlist.title}
+                  </h3>
+                  {showCheckInterval && (
+                    <p
+                      style={{
+                        fontSize: '0.75em',
+                        color: '#aaa',
+                        margin: 0,
+                      }}
+                    >
+                      Interval: every {playlist.check_interval_minutes} minutes
+                    </p>
+                  )}
                   <p
                     style={{
                       fontSize: '0.75em',
@@ -161,23 +149,40 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
                       margin: 0,
                     }}
                   >
-                    Next check:{' '}
+                    Last checked:{' '}
                     {playlist.last_checked
-                      ? formatDistance(
-                          addMinutes(
-                            new Date(playlist.last_checked),
-                            playlist.check_interval_minutes
-                          ),
-                          new Date(),
-                          { addSuffix: true }
-                        )
+                      ? formatDistance(new Date(playlist.last_checked), new Date(), {
+                          addSuffix: true,
+                        })
                       : 'Unknown'}
                   </p>
-                )}
-              </div>
-            </Link>
+                  {showNextCheck && (
+                    <p
+                      style={{
+                        fontSize: '0.75em',
+                        color: '#aaa',
+                        margin: 0,
+                      }}
+                    >
+                      Next check:{' '}
+                      {playlist.last_checked
+                        ? formatDistance(
+                            addMinutes(
+                              new Date(playlist.last_checked),
+                              playlist.check_interval_minutes
+                            ),
+                            new Date(),
+                            { addSuffix: true }
+                          )
+                        : 'Unknown'}
+                    </p>
+                  )}
+                </Card.Body>
+              </Link>
+            </Card>
           ))}
       </div>
+      
       <DialogBase
         isOpen={optionsDialogOpen}
         onClose={() => setOptionsDialogOpen(false)}
@@ -185,35 +190,24 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
       >
         <div className="setting flex-column-mobile">
           <div style={{ minWidth: 175 }}>Show check interval</div>
-          <label className="container">
-            <div style={{ fontSize: 'small', textAlign: 'center' }}>
-              Show check interval under playlist thumbnail
-            </div>
-            <input
-              type="checkbox"
-              checked={showCheckInterval}
-              onChange={(e) => setShowCheckInterval(e.target.checked)}
-            />
-            <span className="checkmark"></span>
-          </label>
+          <Checkbox
+            checked={showCheckInterval}
+            onChange={(e) => setShowCheckInterval(e.target.checked)}
+            label="Show check interval under playlist thumbnail"
+          />
         </div>
         <div className="setting flex-column-mobile">
           <div style={{ minWidth: 175 }}>Show next check</div>
-          <label className="container">
-            <div style={{ fontSize: 'small', textAlign: 'center' }}>
-              Show countdown to next check
-            </div>
-            <input
-              type="checkbox"
-              checked={showNextCheck}
-              onChange={(e) => setShowNextCheck(e.target.checked)}
-            />
-            <span className="checkmark"></span>
-          </label>
+          <Checkbox
+            checked={showNextCheck}
+            onChange={(e) => setShowNextCheck(e.target.checked)}
+            label="Show countdown to next check"
+          />
         </div>
       </DialogBase>
+      
       {filterOptionsOpen && (
-        <div
+        <Card
           style={{
             position: 'fixed',
             top: 120,
@@ -221,55 +215,66 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
             backgroundColor: '#333',
             display: 'flex',
             flexDirection: 'column',
+            zIndex: 1000,
           }}
         >
-          <button
-            style={{
-              fontSize: 'medium',
-              width: '100%',
-              padding: '10px 20px',
-              textAlign: 'start',
-            }}
-            onClick={() => applyFilter('All')}
-          >
-            All
-          </button>
-          <button
-            style={{
-              fontSize: 'medium',
-              width: '100%',
-              padding: '10px 20px',
-              textAlign: 'start',
-            }}
-            onClick={() => applyFilter('Active')}
-          >
-            Active
-          </button>
-          <button
-            style={{
-              fontSize: 'medium',
-              width: '100%',
-              padding: '10px 20px',
-              textAlign: 'start',
-            }}
-            onClick={() => applyFilter('Manually added')}
-          >
-            Manually added
-          </button>
-          <button
-            style={{
-              fontSize: 'medium',
-              width: '100%',
-              padding: '10px 20px',
-              textAlign: 'start',
-            }}
-            onClick={() => applyFilter('YTSubs')}
-          >
-            YTSubs
-          </button>
-        </div>
+          <Card.Body style={{ padding: 0 }}>
+            <Button
+              variant="outline-secondary"
+              style={{
+                fontSize: 'medium',
+                width: '100%',
+                padding: '10px 20px',
+                textAlign: 'start',
+                justifyContent: 'flex-start',
+              }}
+              onClick={() => applyFilter('All')}
+            >
+              All
+            </Button>
+            <Button
+              variant="outline-secondary"
+              style={{
+                fontSize: 'medium',
+                width: '100%',
+                padding: '10px 20px',
+                textAlign: 'start',
+                justifyContent: 'flex-start',
+              }}
+              onClick={() => applyFilter('Active')}
+            >
+              Active
+            </Button>
+            <Button
+              variant="outline-secondary"
+              style={{
+                fontSize: 'medium',
+                width: '100%',
+                padding: '10px 20px',
+                textAlign: 'start',
+                justifyContent: 'flex-start',
+              }}
+              onClick={() => applyFilter('Manually added')}
+            >
+              Manually added
+            </Button>
+            <Button
+              variant="outline-secondary"
+              style={{
+                fontSize: 'medium',
+                width: '100%',
+                padding: '10px 20px',
+                textAlign: 'start',
+                justifyContent: 'flex-start',
+              }}
+              onClick={() => applyFilter('YTSubs')}
+            >
+              YTSubs
+            </Button>
+          </Card.Body>
+        </Card>
       )}
-    </div>
+    </Container>
   );
 };
 

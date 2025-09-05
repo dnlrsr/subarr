@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LoadingIndicator, Thumbnail } from '../components/ui';
+import { Button, Container, Form, FormControl, InputGroup, InputGroupText, LoadingIndicator, Thumbnail } from '../components/ui';
 import { Playlist, PlaylistInfo } from '../types';
 import { getErrorResponse, showToast } from '../utils/utils';
 
@@ -92,53 +92,25 @@ const AddPlaylistPage: React.FC = () => {
   const isPlaylistWarning = /(PL|LL|FL)[\w-]{10,}/.test(playlistInput);
 
   return (
-    <div style={{ padding: '20px' }}>
-      <div style={{ display: 'flex', width: '100%', alignItems: 'center', height: 46 }}>
-        <i
-          className="bi bi-search"
-          style={{
-            fontSize: 'large',
-            padding: '10px 15px',
-            height: 'calc(100% - 22px)',
-            border: 'solid 1px white',
-            borderRight: 'none',
-            borderRadius: '4px 0px 0px 4px',
-          }}
-        />
-        <input
-          style={{
-            flexGrow: 1,
-            backgroundColor: '#333',
-            border: 'solid 1px white',
-            padding: '6px 16px',
-            height: 'calc(100% - 14px)',
-            color: 'inherit',
-            fontSize: 'medium',
-            outline: 'none',
-          }}
-          placeholder="Enter a youtube channel url (eg youtube.com/@MrBeast) or playlist id/url (eg UU..., PL..., etc)"
-          type="text"
-          value={playlistInput}
-          onChange={(e) => setPlaylistInput(e.target.value)}
-        />
-        <button
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            height: '100%',
-            padding: '10px 15px',
-            border: 'solid 1px white',
-            borderLeft: 'none',
-            borderRadius: '0px 4px 4px 0px',
-            backgroundColor: 'transparent',
-            color: 'inherit',
-            cursor: 'pointer',
-          }}
-          onClick={handleClearInput}
-        >
-          <i className="bi bi-x-lg" style={{ fontSize: 'large' }} />
-        </button>
-      </div>
+    <Container>
+      <h2 className="mb-4">Add New Playlist</h2>
+      
+      <Form>
+        <InputGroup className="mb-3">
+          <InputGroupText>
+            <i className="bi bi-search" />
+          </InputGroupText>
+          <FormControl
+            type="text"
+            placeholder="Enter a youtube channel url (eg youtube.com/@MrBeast) or playlist id/url (eg UU..., PL..., etc)"
+            value={playlistInput}
+            onChange={(e) => setPlaylistInput(e.target.value)}
+          />
+          <Button variant="outline-secondary" onClick={handleClearInput}>
+            <i className="bi bi-x-lg" />
+          </Button>
+        </InputGroup>
+      </Form>
 
       {playlistInfo && (
         <div
@@ -244,7 +216,7 @@ const AddPlaylistPage: React.FC = () => {
           filter.
         </p>
       )}
-    </div>
+    </Container>
   );
 };
 

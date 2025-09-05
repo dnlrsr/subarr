@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Thumbnail } from '../components/ui';
+import { Button, Card, Container, Input, Thumbnail } from '../components/ui';
 import { Playlist, VideoInfo } from '../types';
 import { showToast } from '../utils/utils';
 
@@ -130,26 +130,26 @@ const PlaylistDetailsPage: React.FC = () => {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <div
-        style={{
+    <Container fluid style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <Card>
+        <Card.Header style={{
           display: 'flex',
           alignItems: 'center',
           padding: '0px 20px',
           gap: 10,
           backgroundColor: '#262626',
           height: 60,
-        }}
-      >
-        <button className="hover-blue" onClick={handleSave} title="Save Settings">
-          <i className="bi bi-floppy-fill"></i>
-          <div style={{ fontSize: 'small' }}>Save</div>
-        </button>
-        <button className="hover-danger" onClick={handleDelete} title="Delete Playlist">
-          <i className="bi bi-trash-fill"></i>
-          <div style={{ fontSize: 'small' }}>Delete</div>
-        </button>
-      </div>
+        }}>
+          <Button variant="success" onClick={handleSave} title="Save Settings">
+            <i className="bi bi-floppy-fill"></i>
+            <span style={{ fontSize: 'small', marginLeft: 5 }}>Save</span>
+          </Button>
+          <Button variant="danger" onClick={handleDelete} title="Delete Playlist">
+            <i className="bi bi-trash-fill"></i>
+            <span style={{ fontSize: 'small', marginLeft: 5 }}>Delete</span>
+          </Button>
+        </Card.Header>
+      </Card>
 
       <div
         style={{
@@ -192,12 +192,12 @@ const PlaylistDetailsPage: React.FC = () => {
             )}
             <div className="setting flex-column-mobile">
               <div style={{ minWidth: 190 }}>Check Interval (minutes):</div>
-              <input
+              <Input
                 type="number"
                 value={interval}
                 min={5}
                 onChange={(e) => setInterval(Number(e.target.value))}
-                style={{ width: 60 }}
+                style={{ width: 80 }}
               />
             </div>
             <div className="setting flex-column-mobile">
@@ -210,27 +210,19 @@ const PlaylistDetailsPage: React.FC = () => {
                   marginTop: 5,
                 }}
               >
-                <input
+                <Input
                   type="text"
                   value={regex}
                   onChange={(e) => setRegex(e.target.value)}
                   style={{ width: 300, marginTop: 0 }}
                 />
-                <button
-                  style={{
-                    fontSize: 'medium',
-                    backgroundColor: 'cornflowerblue',
-                    borderRadius: 4,
-                    marginLeft: 5,
-                    height: 30,
-                    border: 'none',
-                    color: 'white',
-                    cursor: 'pointer',
-                  }}
+                <Button
+                  variant={testingRegex ? "danger" : "primary"}
+                  style={{ marginLeft: 5, height: 38 }}
                   onClick={() => setTestingRegex(!testingRegex)}
                 >
                   {testingRegex ? 'Stop Test' : 'Test'}
-                </button>
+                </Button>
               </div>
             </div>
           </div>
@@ -257,12 +249,11 @@ const PlaylistDetailsPage: React.FC = () => {
             }}
           >
             {videos.map((video) => (
-              <div
+              <Card
                 key={video.video_id}
                 style={{
                   display: 'flex',
                   height: '90px',
-                  backgroundColor: 'var(--card-bg)',
                   borderRadius: '6px',
                   overflow: 'hidden',
                   boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
@@ -307,30 +298,30 @@ const PlaylistDetailsPage: React.FC = () => {
                       : 'Unknown date'}
                   </div>
                   <div style={{ display: 'flex', gap: '8px' }}>
-                    <button
-                      className="hover-blue"
-                      style={{ fontSize: '0.75em', marginTop: '4px' }}
+                    <Button
+                      variant="outline-primary"
+                      size="sm"
                       onClick={() => handleCopyUrl(video.video_id)}
                     >
                       <i className="bi bi-link-45deg"></i> Copy URL
-                    </button>
-                    <button
-                      className="hover-green"
-                      style={{ fontSize: '0.75em', marginTop: '4px' }}
+                    </Button>
+                    <Button
+                      variant="outline-success"
+                      size="sm"
                       disabled={false} // Note: video.state is not available in VideoInfo type
                       title="Download video"
                       onClick={() => handleDownload(video.video_id)}
                     >
                       <i className="bi bi-download"></i> Download
-                    </button>
+                    </Button>
                   </div>
                 </div>
-              </div>
+              </Card>
             ))}
           </div>
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
 

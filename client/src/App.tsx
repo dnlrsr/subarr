@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
+import { Col, Container, Row } from 'react-bootstrap';
 import { Route, BrowserRouter as Router, Routes, useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './App.css';
 
 // Components
 import { SearchResults, UpdateDialog } from './components/features';
@@ -53,7 +53,7 @@ const AppLayout: React.FC = () => {
   };
 
   return (
-    <div className="app-layout">
+    <div className="d-flex flex-column min-vh-100">
       <Header
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
@@ -66,33 +66,37 @@ const AppLayout: React.FC = () => {
         highlightedSearchResult={highlightedIndex}
         onClose={resetSearch}
       />
-      <div className="app-container">
-        <Sidebar isOpen={sidebarOpen} onItemClick={() => setSidebarOpen(false)} />
-        <main className="main-content">
-          <Routes>
-            <Route path="/" element={<SubscriptionsPage />} />
-            <Route path="/add" element={<AddPlaylistPage />} />
-            <Route path="/activity" element={<ActivityPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="/playlist/:id" element={<PlaylistDetailsPage />} />
-          </Routes>
-        </main>
-        <UpdateDialog
-          isOpen={updateDialogOpen}
-          onClose={() => setUpdateDialogOpen(false)}
-          currentVersion={currentVersion}
-          newVersionInfo={newVersionInfo}
-        />
-        <ToastContainer
-          position="bottom-right"
-          theme="dark"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          pauseOnHover
-        />
-      </div>
+      <Container fluid className="flex-grow-1">
+        <Row className="h-100">
+          <Col md={3} lg={2} className={`p-0 ${sidebarOpen ? 'd-block' : 'd-none d-md-block'}`}>
+            <Sidebar isOpen={sidebarOpen} onItemClick={() => setSidebarOpen(false)} />
+          </Col>
+          <Col md={9} lg={10} className="p-3">
+            <Routes>
+              <Route path="/" element={<SubscriptionsPage />} />
+              <Route path="/add" element={<AddPlaylistPage />} />
+              <Route path="/activity" element={<ActivityPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/playlist/:id" element={<PlaylistDetailsPage />} />
+            </Routes>
+          </Col>
+        </Row>
+      </Container>
+      <UpdateDialog
+        isOpen={updateDialogOpen}
+        onClose={() => setUpdateDialogOpen(false)}
+        currentVersion={currentVersion}
+        newVersionInfo={newVersionInfo}
+      />
+      <ToastContainer
+        position="bottom-right"
+        theme="dark"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnHover
+      />
     </div>
   );
 };

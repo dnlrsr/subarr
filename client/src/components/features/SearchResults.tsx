@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { SearchResultsProps } from '../../types';
-import { Thumbnail } from '../ui';
+import { Card, Thumbnail } from '../ui';
 
 const SearchResults: React.FC<SearchResultsProps> = ({
   isOpen,
@@ -25,49 +25,53 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   }
 
   return (
-    <div className="search-results">
-      {searchResults.length > 0 ? (
-        searchResults.map((playlist, index) => (
-          <Link
-            key={playlist.id || playlist.playlist_id}
-            ref={(el) => {
-              itemRefs.current[index] = el;
-            }}
-            className={`search-result ${
-              highlightedSearchResult === index ? 'highlighted' : ''
-            }`}
-            style={{
-              color: 'inherit',
-              textDecoration: 'none',
-              padding: '3px 10px',
-            }}
-            to={`/playlist/${playlist.id}`}
-            onClick={onClose}
-          >
-            <div style={{ display: 'flex', gap: 10 }}>
-              <div style={{ flexShrink: 0 }}>
-                <Thumbnail src={playlist.thumbnail} alt={playlist.title} width={80} height={45} />
+    <Card style={{ position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 1000 }}>
+      <Card.Body style={{ padding: 0 }}>
+        {searchResults.length > 0 ? (
+          searchResults.map((playlist, index) => (
+            <Link
+              key={playlist.id || playlist.playlist_id}
+              ref={(el: HTMLAnchorElement | null) => {
+                itemRefs.current[index] = el;
+              }}
+              className={`search-result ${
+                highlightedSearchResult === index ? 'highlighted' : ''
+              }`}
+              style={{
+                color: 'inherit',
+                textDecoration: 'none',
+                padding: '10px',
+                display: 'block',
+                borderBottom: index < searchResults.length - 1 ? '1px solid #444' : 'none',
+              }}
+              to={`/playlist/${playlist.id}`}
+              onClick={onClose}
+            >
+              <div style={{ display: 'flex', gap: 10 }}>
+                <div style={{ flexShrink: 0 }}>
+                  <Thumbnail src={playlist.thumbnail} alt={playlist.title} width={80} height={45} />
+                </div>
+                <div
+                  style={{
+                    fontSize: 'small',
+                    // The below styles limit the title to three lines on small screens & truncate the title with an ellipsis (...)
+                    display: '-webkit-box',
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  {playlist.title}
+                </div>
               </div>
-              <div
-                style={{
-                  fontSize: 'small',
-                  // The below styles limit the title to three lines on small screens & truncate the title with an ellipsis (...)
-                  display: '-webkit-box',
-                  WebkitLineClamp: 3,
-                  WebkitBoxOrient: 'vertical',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                }}
-              >
-                {playlist.title}
-              </div>
-            </div>
-          </Link>
-        ))
-      ) : (
-        <div style={{ fontSize: 'small' }}>No Results</div>
-      )}
-    </div>
+            </Link>
+          ))
+        ) : (
+          <div style={{ fontSize: 'small', padding: '10px' }}>No Results</div>
+        )}
+      </Card.Body>
+    </Card>
   );
 };
 

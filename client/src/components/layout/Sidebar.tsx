@@ -1,4 +1,5 @@
 import React from 'react';
+import { Nav } from 'react-bootstrap';
 import { NavLink, useLocation } from 'react-router-dom';
 
 interface SidebarProps {
@@ -6,49 +7,60 @@ interface SidebarProps {
   onItemClick: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ isOpen, onItemClick }) => {
+const Sidebar: React.FC<SidebarProps> = ({ isOpen: _, onItemClick }) => {
   const location = useLocation();
 
   return (
-    <nav className={`sidebar ${isOpen ? 'open' : ''}`}>
-      <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-        <div className={`navgroup ${
-          location.pathname === '/' || 
-          location.pathname.startsWith('/playlist') || 
-          location.pathname === '/add' ? 'active' : ''
-        }`}>
-          <NavLink 
+    <div className="bg-light h-100 border-end">
+      <Nav className="flex-column p-3">
+        <div className="mb-3">
+          <Nav.Link 
+            as={NavLink}
             to="/" 
-            className={({ isActive }) => 
-              isActive || location.pathname.startsWith('/playlist') ? 'active' : ''
-            }
+            className={`d-flex align-items-center ${
+              location.pathname === '/' || location.pathname.startsWith('/playlist') 
+                ? 'active' : ''
+            }`}
             onClick={onItemClick}
           >
-            <i className="bi bi-play-fill" style={{ fontSize: 'large' }}></i>
+            <i className="bi bi-play-fill me-2"></i>
             Playlists
-          </NavLink>
-          <NavLink className="subnav" to="/add" onClick={onItemClick}>
-            Add New
-          </NavLink>
-        </div>
-        <div className={`navgroup ${location.pathname === '/activity' ? 'active' : ''}`}>
-          <NavLink to="/activity" onClick={onItemClick}>
-            <i className="bi bi-clock" style={{ fontSize: 'medium', marginRight: 5 }}></i>
-            Activity
-          </NavLink>
-        </div>
-        <div className={`navgroup ${location.pathname === '/settings' ? 'active' : ''}`}>
-          <NavLink 
-            to="/settings" 
-            className={({ isActive }) => isActive ? 'active-link' : ''} 
+          </Nav.Link>
+          <Nav.Link 
+            as={NavLink}
+            to="/add" 
+            className="ps-4 text-muted"
             onClick={onItemClick}
           >
-            <i className="bi bi-gear-fill" style={{ fontSize: 'medium', marginRight: 5 }}></i>
-            Settings
-          </NavLink>
+            Add New
+          </Nav.Link>
         </div>
-      </div>
-    </nav>
+        
+        <Nav.Link 
+          as={NavLink}
+          to="/activity"
+          className={`d-flex align-items-center ${
+            location.pathname === '/activity' ? 'active' : ''
+          }`}
+          onClick={onItemClick}
+        >
+          <i className="bi bi-clock me-2"></i>
+          Activity
+        </Nav.Link>
+        
+        <Nav.Link 
+          as={NavLink}
+          to="/settings"
+          className={`d-flex align-items-center ${
+            location.pathname === '/settings' ? 'active' : ''
+          }`}
+          onClick={onItemClick}
+        >
+          <i className="bi bi-gear-fill me-2"></i>
+          Settings
+        </Nav.Link>
+      </Nav>
+    </div>
   );
 };
 

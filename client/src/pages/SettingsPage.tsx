@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { PostProcessorDialog } from '../components/features';
+import { Button, Card, Checkbox, Container, Input } from '../components/ui';
 import { PostProcessor, Settings } from '../types';
 import { showToast } from '../utils/utils';
 
@@ -78,182 +79,173 @@ const SettingsPage: React.FC = () => {
   };
 
   return (
-    <div style={{ height: '100%' }}>
-      <div
-        style={{
+    <Container fluid style={{ height: '100%' }}>
+      <Card>
+        <Card.Header style={{
           display: 'flex',
           alignItems: 'center',
           padding: '0px 20px',
           gap: 10,
           backgroundColor: '#262626',
           height: 60,
-        }}
-      >
-        <button className="hover-blue" onClick={handleSave} title="Save Settings">
-          <i className="bi bi-floppy-fill" />
-          <div style={{ fontSize: 'small' }}>Save</div>
-        </button>
-      </div>
-      <div
-        style={{
+        }}>
+          <Button variant="success" onClick={handleSave} title="Save Settings">
+            <i className="bi bi-floppy-fill" />
+            <span style={{ fontSize: 'small', marginLeft: 5 }}>Save</span>
+          </Button>
+        </Card.Header>
+        <Card.Body style={{
           display: 'flex',
           flexDirection: 'column',
           height: 'calc(100% - 120px)',
           padding: 30,
-        }}
-      >
-        <div style={{ fontWeight: 'bold', fontSize: 'xx-large' }}>Settings</div>
-        
-        <div className="setting flex-column-mobile">
-          <div style={{ minWidth: 175 }}>YTSubs.app API key</div>
-          <input
-            type="text"
-            value={ytsubsApiKey}
-            onChange={(e) => setYtsubsApiKey(e.target.value)}
-          />
-        </div>
-        
-        <div className="setting flex-column-mobile">
-          <div style={{ minWidth: 175 }}>Exclude shorts</div>
-          <label className="container">
-            <div style={{ fontSize: 'small', textAlign: 'center' }}>
-              Whether to exclude shorts videos from playlists
-            </div>
-            <input
-              type="checkbox"
+        }}>
+          <div style={{ fontWeight: 'bold', fontSize: 'xx-large' }}>Settings</div>
+          
+          <div className="setting flex-column-mobile">
+            <div style={{ minWidth: 175 }}>YTSubs.app API key</div>
+            <Input
+              type="text"
+              value={ytsubsApiKey}
+              onChange={(e) => setYtsubsApiKey(e.target.value)}
+              placeholder="Enter your YTSubs.app API key"
+            />
+          </div>
+          
+          <div className="setting flex-column-mobile">
+            <div style={{ minWidth: 175 }}>Exclude shorts</div>
+            <Checkbox
               checked={excludeShorts}
               onChange={(e) => setExcludeShorts(e.target.checked)}
+              label="Whether to exclude shorts videos from playlists"
             />
-            <span className="checkmark"></span>
-          </label>
-        </div>
+          </div>
 
-        <div style={{ marginTop: 50, fontWeight: 'bold', fontSize: 'xx-large' }}>
-          Post Processors
-        </div>
-        
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: '20px',
-            marginTop: 10,
-          }}
-        >
-          {postProcessors.map((postProcessor) => (
-            <div key={postProcessor.id} className="card" style={{ padding: 10 }}>
-              <button
+          <div style={{ marginTop: 50, fontWeight: 'bold', fontSize: 'xx-large' }}>
+            Post Processors
+          </div>
+          
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '20px',
+              marginTop: 10,
+            }}
+          >
+            {postProcessors.map((postProcessor) => (
+              <Card 
+                key={postProcessor.id} 
+                style={{ padding: 10, cursor: 'pointer' }}
                 onClick={() => handlePostProcessorClick(postProcessor)}
-                style={{
+              >
+                <Card.Body style={{
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'start',
                   width: '100%',
                   height: '100%',
-                  background: 'none',
-                  border: 'none',
-                  color: 'inherit',
-                  cursor: 'pointer',
-                }}
-              >
-                <h3 style={{ fontSize: 'x-large', margin: '0 0 5px 0' }}>
-                  {postProcessor.name}
-                </h3>
-                <div
-                  style={{
-                    display: 'flex',
-                    backgroundColor: 'var(--accent-color)',
-                    padding: 5,
-                    margin: 10,
-                    gap: 5,
-                    borderRadius: 2,
-                  }}
-                >
-                  <i
-                    style={{ fontSize: 'medium' }}
-                    className={`bi bi-${
-                      postProcessor.type === 'webhook' ? 'broadcast' : 'cpu-fill'
-                    }`}
-                  />
-                  <div style={{ fontSize: 'small' }}>{postProcessor.type}</div>
-                </div>
-              </button>
-            </div>
-          ))}
-          <div
-            className="card"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: 10,
-            }}
-          >
-            <button
+                }}>
+                  <h3 style={{ fontSize: 'x-large', margin: '0 0 5px 0' }}>
+                    {postProcessor.name}
+                  </h3>
+                  <div
+                    style={{
+                      display: 'flex',
+                      backgroundColor: 'var(--accent-color)',
+                      padding: 5,
+                      margin: 10,
+                      gap: 5,
+                      borderRadius: 2,
+                    }}
+                  >
+                    <i
+                      style={{ fontSize: 'medium' }}
+                      className={`bi bi-${
+                        postProcessor.type === 'webhook' ? 'broadcast' : 'cpu-fill'
+                      }`}
+                    />
+                    <div style={{ fontSize: 'small' }}>{postProcessor.type}</div>
+                  </div>
+                </Card.Body>
+              </Card>
+            ))}
+            <Card
               style={{
-                width: '100%',
-                height: '100%',
-                background: 'none',
-                border: 'none',
-                color: 'inherit',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 10,
                 cursor: 'pointer',
               }}
               onClick={handleAddPostProcessor}
             >
-              <i style={{ fontSize: 'xx-large' }} className="bi bi-plus-square" />
-            </button>
+              <Card.Body style={{
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: 'none',
+                border: 'none',
+                color: 'inherit',
+                cursor: 'pointer',
+              }}>
+                <i style={{ fontSize: 'xx-large' }} className="bi bi-plus-square" />
+              </Card.Body>
+            </Card>
           </div>
-        </div>
 
-        <br />
-        
-        <PostProcessorDialog
-          editingItem={editingPostProcessor}
-          onClose={handleCloseDialog}
-          onRefreshPostProcessors={refreshPostProcessors}
-        />
-        
-        <div style={{ flexGrow: 1 }} />
-        
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <a
-            style={{ height: 36 }}
-            href="https://ko-fi.com/E1E5RZJY"
-            target="_blank"
-            rel="noreferrer"
+          <br />
+          
+          <PostProcessorDialog
+            editingItem={editingPostProcessor}
+            onClose={handleCloseDialog}
+            onRefreshPostProcessors={refreshPostProcessors}
+          />
+          
+          <div style={{ flexGrow: 1 }} />
+          
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
           >
-            <img
-              height="36"
-              style={{ border: 0, height: 36 }}
-              src="https://storage.ko-fi.com/cdn/kofi6.png?v=6"
-              alt="Buy Me a Coffee at ko-fi.com"
-            />
-          </a>
-          <a
-            href="https://github.com/derekantrican/subarr"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <i
-              style={{
-                height: 36,
-                width: 36,
-                fontSize: '36px',
-                color: 'white',
-                textAlign: 'center',
-              }}
-              className="bi bi-github"
-            />
-          </a>
-        </div>
-      </div>
-    </div>
+            <a
+              style={{ height: 36 }}
+              href="https://ko-fi.com/E1E5RZJY"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <img
+                height="36"
+                style={{ border: 0, height: 36 }}
+                src="https://storage.ko-fi.com/cdn/kofi6.png?v=6"
+                alt="Buy Me a Coffee at ko-fi.com"
+              />
+            </a>
+            <a
+              href="https://github.com/derekantrican/subarr"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <i
+                style={{
+                  height: 36,
+                  width: 36,
+                  fontSize: '36px',
+                  color: 'white',
+                  textAlign: 'center',
+                }}
+                className="bi bi-github"
+              />
+            </a>
+          </div>
+        </Card.Body>
+      </Card>
+    </Container>
   );
 };
 
