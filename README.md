@@ -33,7 +33,7 @@ docker run -p 3001:3001 -v /path/to/host/data/db:/data/db ghcr.io/dnlrsr/subarr/
 
 > ### 🔗 **Fork Notice**
 > 
-> This is a fork of [derekantrican/subarr](https://github.com/derekantrican/subarr). I will continue to implement features when they fit my needs.
+> This is/was a fork of [derekantrican/subarr](https://github.com/derekantrican/subarr). After refactoring this will be an indipendet app.
 
 ---
 
