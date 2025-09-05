@@ -2,11 +2,14 @@
 
 # 🎬 Subarr
 
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://github.com/dnlrsr/subarr/pkgs/container/subarr%2Fsubarr)
+[![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![License](https://img.shields.io/github/license/dnlrsr/subarr?style=for-the-badge)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/dnlrsr/subarr?style=for-the-badge)](https://github.com/dnlrsr/subarr/stargazers)
+
 **A lightweight YouTube channel/playlist subscription manager**
 
-[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://github.com/dnlrsr/subarr/pkgs/container/subarr%2Fsubarr) 🔄 Set Environment Variables
-
-Using the `-e` flag:
+## Quickstart
 ```bash
 docker run -p 3001:3001 -v /path/to/host/data/db:/data/db ghcr.io/dnlrsr/subarr/subarr:latest
 ```
@@ -23,11 +26,6 @@ docker run -p 3001:3001 -v /path/to/host/data/db:/data/db ghcr.io/dnlrsr/subarr/
 - 🧪 **Improved testability** with separated concerns
 - 📖 **Enhanced developer experience** with IntelliSense
 - 🚀 **Better performance** through optimized build process
-
----pkgs/container/subarr%2Fsubarr)
-[![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
-[![License](https://img.shields.io/github/license/dnlrsr/subarr?style=for-the-badge)](LICENSE)
-[![Stars](https://img.shields.io/github/stars/dnlrsr/subarr?style=for-the-badge)](https://github.com/dnlrsr/subarr/stargazers)
 
 </div>
 
