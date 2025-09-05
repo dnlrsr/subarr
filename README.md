@@ -9,6 +9,8 @@
 
 **A lightweight YouTube channel/playlist subscription manager**
 
+</div>
+
 ## Quickstart
 ```bash
 docker run -p 3001:3001 -v /path/to/host/data/db:/data/db ghcr.io/dnlrsr/subarr/subarr:latest
@@ -34,7 +36,7 @@ docker run -p 3001:3001 -v /path/to/host/data/db:/data/db ghcr.io/dnlrsr/subarr/
 > This is a fork of [derekantrican/subarr](https://github.com/derekantrican/subarr). I will continue to implement features when they fit my needs.
 
 ---
-</div>
+
 ## 📖 Overview
 
 *After [a lot of feedback](https://reddit.com/r/selfhosted/comments/1myldh3/i_built_youtubarr_the_sonarr_for_youtube/nacw3am/), the original project was renamed from "YouTubarr" to "Subarr". The name "Subarr" helps define the project clearer - it's based on RSS subscriptions (intended to be a "subscribe to playlists/channels & take action on new uploads") rather than a full PVR & media management system.*
