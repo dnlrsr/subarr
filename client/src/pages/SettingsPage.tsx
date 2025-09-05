@@ -94,69 +94,72 @@ const SettingsPage: React.FC = () => {
   };
 
   return (
-    <Container fluid>
+    <>
       <Toolbar actions={[ToolbarAction.SAVE]} onActionClick={onActionClick} />
-      <Row>
-        <Col md={8}>
-          <div>
-            <div>{t('settingsPage.title')}</div>
 
+      <Container fluid withToolbar>
+        <Row>
+          <Col md={8}>
             <div>
-              <div>{t('settingsPage.ytsubsApiKey')}</div>
-              <Input
-                type="text"
-                value={ytsubsApiKey}
-                onChange={e => setYtsubsApiKey(e.target.value)}
-                placeholder={t('settingsPage.ytsubsApiKeyPlaceholder')}
-              />
-            </div>
+              <div>{t('settingsPage.title')}</div>
 
-            <div>
-              <div>{t('settingsPage.excludeShorts')}</div>
-              <Checkbox
-                checked={excludeShorts}
-                onChange={e => setExcludeShorts(e.target.checked)}
-                label={t('settingsPage.excludeShortsLabel')}
-              />
-            </div>
+              <div>
+                <div>{t('settingsPage.ytsubsApiKey')}</div>
+                <Input
+                  type="text"
+                  value={ytsubsApiKey}
+                  onChange={e => setYtsubsApiKey(e.target.value)}
+                  placeholder={t('settingsPage.ytsubsApiKeyPlaceholder')}
+                />
+              </div>
 
-            <div>{t('settingsPage.postProcessors')}</div>
+              <div>
+                <div>{t('settingsPage.excludeShorts')}</div>
+                <Checkbox
+                  checked={excludeShorts}
+                  onChange={e => setExcludeShorts(e.target.checked)}
+                  label={t('settingsPage.excludeShortsLabel')}
+                />
+              </div>
 
-            <div>
-              {postProcessors.map(postProcessor => (
-                <Card
-                  key={postProcessor.id}
-                  onClick={() => handlePostProcessorClick(postProcessor)}
-                >
+              <div>{t('settingsPage.postProcessors')}</div>
+
+              <div>
+                {postProcessors.map(postProcessor => (
+                  <Card
+                    key={postProcessor.id}
+                    onClick={() => handlePostProcessorClick(postProcessor)}
+                  >
+                    <Card.Body>
+                      <h3>{postProcessor.name}</h3>
+                      <div>
+                        <i className="bi bi-broadcast" />
+                        <div>{postProcessor.type}</div>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                ))}
+                <Card onClick={handleAddPostProcessor}>
                   <Card.Body>
-                    <h3>{postProcessor.name}</h3>
                     <div>
-                      <i className="bi bi-broadcast" />
-                      <div>{postProcessor.type}</div>
+                      <i className="bi bi-plus-square" />
                     </div>
                   </Card.Body>
                 </Card>
-              ))}
-              <Card onClick={handleAddPostProcessor}>
-                <Card.Body>
-                  <div>
-                    <i className="bi bi-plus-square" />
-                  </div>
-                </Card.Body>
-              </Card>
+              </div>
+
+              <br />
+
+              <PostProcessorDialog
+                editingItem={editingPostProcessor}
+                onClose={handleCloseDialog}
+                onRefreshPostProcessors={refreshPostProcessors}
+              />
             </div>
-
-            <br />
-
-            <PostProcessorDialog
-              editingItem={editingPostProcessor}
-              onClose={handleCloseDialog}
-              onRefreshPostProcessors={refreshPostProcessors}
-            />
-          </div>
-        </Col>
-      </Row>
-    </Container>
+          </Col>
+        </Row>
+      </Container>
+    </>
   );
 };
 

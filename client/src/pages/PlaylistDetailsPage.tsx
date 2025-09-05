@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Toolbar } from '../components';
-import {
+import Toolbar, {
   ToolbarAction,
   ToolbarViewAction,
 } from '../components/layout/toolbar/Toolbar';
@@ -138,106 +137,108 @@ const PlaylistDetailsPage: React.FC = () => {
   };
 
   return (
-    <Container fluid>
+    <>
       <Toolbar
         actions={[ToolbarAction.SAVE, ToolbarAction.DELETE]}
         onActionClick={onActionClick}
       />
-
-      <div>
+      <Container fluid withToolbar>
         <div>
-          <Thumbnail
-            height={350}
-            width={350}
-            src={playlist.thumbnail}
-            alt={playlist.title}
-          />
           <div>
-            <div title={playlist.playlist_id}>{playlist.title}</div>
-            {!playlist.playlist_id.startsWith('UU') && playlist.author_name && (
-              <div>
-                {t('common.by')} {playlist.author_name}
-              </div>
-            )}
+            <Thumbnail
+              height={350}
+              width={350}
+              src={playlist.thumbnail}
+              alt={playlist.title}
+            />
             <div>
-              <div>{t('playlistDetailsPage.checkInterval')}</div>
-              <Input
-                type="number"
-                value={interval}
-                min={5}
-                onChange={e => setInterval(Number(e.target.value))}
-              />
-            </div>
-            <div>
-              <div>{t('playlistDetailsPage.regexFilter')}</div>
+              <div title={playlist.playlist_id}>{playlist.title}</div>
+              {!playlist.playlist_id.startsWith('UU') &&
+                playlist.author_name && (
+                  <div>
+                    {t('common.by')} {playlist.author_name}
+                  </div>
+                )}
               <div>
+                <div>{t('playlistDetailsPage.checkInterval')}</div>
                 <Input
-                  type="text"
-                  value={regex}
-                  onChange={e => setRegex(e.target.value)}
+                  type="number"
+                  value={interval}
+                  min={5}
+                  onChange={e => setInterval(Number(e.target.value))}
                 />
-                <Button
-                  variant={testingRegex ? 'danger' : 'primary'}
-                  onClick={() => setTestingRegex(!testingRegex)}
-                >
-                  {testingRegex
-                    ? t('playlistDetailsPage.stopTestButton')
-                    : t('playlistDetailsPage.testButton')}
-                </Button>
+              </div>
+              <div>
+                <div>{t('playlistDetailsPage.regexFilter')}</div>
+                <div>
+                  <Input
+                    type="text"
+                    value={regex}
+                    onChange={e => setRegex(e.target.value)}
+                  />
+                  <Button
+                    variant={testingRegex ? 'danger' : 'primary'}
+                    onClick={() => setTestingRegex(!testingRegex)}
+                  >
+                    {testingRegex
+                      ? t('playlistDetailsPage.stopTestButton')
+                      : t('playlistDetailsPage.testButton')}
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div>
         <div>
           <div>
-            {videos.map(video => (
-              <Card key={video.video_id}>
-                <a
-                  href={`https://www.youtube.com/watch?v=${video.video_id}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Thumbnail
-                    src={video.thumbnail}
-                    alt={video.title}
-                    width={160}
-                    height={90}
-                  />
-                </a>
-                <div>
-                  <div>{video.title}</div>
-                  <div />
+            <div>
+              {videos.map(video => (
+                <Card key={video.video_id}>
+                  <a
+                    href={`https://www.youtube.com/watch?v=${video.video_id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Thumbnail
+                      src={video.thumbnail}
+                      alt={video.title}
+                      width={160}
+                      height={90}
+                    />
+                  </a>
                   <div>
-                    {video.published_at
-                      ? new Date(video.published_at).toLocaleString()
-                      : 'Unknown date'}
+                    <div>{video.title}</div>
+                    <div />
+                    <div>
+                      {video.published_at
+                        ? new Date(video.published_at).toLocaleString()
+                        : 'Unknown date'}
+                    </div>
+                    <div>
+                      <Button
+                        variant="outline-primary"
+                        onClick={() => handleCopyUrl(video.video_id)}
+                      >
+                        <i></i> Copy URL
+                      </Button>
+                      <Button
+                        variant="outline-success"
+                        disabled={false} // Note: video.state is not available in VideoInfo type
+                        title={t('playlistDetailsPage.downloadVideo')}
+                        onClick={() => handleDownload(video.video_id)}
+                      >
+                        <i></i> Download
+                      </Button>
+                    </div>
                   </div>
-                  <div>
-                    <Button
-                      variant="outline-primary"
-                      onClick={() => handleCopyUrl(video.video_id)}
-                    >
-                      <i></i> Copy URL
-                    </Button>
-                    <Button
-                      variant="outline-success"
-                      disabled={false} // Note: video.state is not available in VideoInfo type
-                      title={t('playlistDetailsPage.downloadVideo')}
-                      onClick={() => handleDownload(video.video_id)}
-                    >
-                      <i></i> Download
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            ))}
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    </Container>
+      </Container>
+    </>
   );
 };
 

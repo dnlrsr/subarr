@@ -85,124 +85,127 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
   };
 
   return (
-    <Container fluid>
+    <>
       <Toolbar
         viewActions={[ToolbarViewAction.OPTIONS, ToolbarViewAction.FILTER]}
         onActionClick={onActionClick}
       />
-      <div>
-        {filteredPlaylists
-          .sort((a, b) => a.title.localeCompare(b.title))
-          .map(playlist => (
-            <Card key={playlist.id}>
-              <Link to={`/playlist/${playlist.id}`}>
-                {playlist.source === 'ytsubs.app' && (
-                  <img
-                    src="https://static.ytsubs.app/logo.png"
-                    alt="YTSubs.app"
-                  />
-                )}
-                <Thumbnail src={playlist.thumbnail} alt={playlist.title} />
-                <Card.Body>
-                  <div>
-                    <h3>{playlist.title}</h3>
-                    {showCheckInterval && (
+
+      <Container fluid withToolbar>
+        <div>
+          {filteredPlaylists
+            .sort((a, b) => a.title.localeCompare(b.title))
+            .map(playlist => (
+              <Card key={playlist.id}>
+                <Link to={`/playlist/${playlist.id}`}>
+                  {playlist.source === 'ytsubs.app' && (
+                    <img
+                      src="https://static.ytsubs.app/logo.png"
+                      alt="YTSubs.app"
+                    />
+                  )}
+                  <Thumbnail src={playlist.thumbnail} alt={playlist.title} />
+                  <Card.Body>
+                    <div>
+                      <h3>{playlist.title}</h3>
+                      {showCheckInterval && (
+                        <p>
+                          {t('subscriptionsPage.playlist.interval', {
+                            minutes: playlist.check_interval_minutes,
+                          })}
+                        </p>
+                      )}
                       <p>
-                        {t('subscriptionsPage.playlist.interval', {
-                          minutes: playlist.check_interval_minutes,
-                        })}
-                      </p>
-                    )}
-                    <p>
-                      {t('subscriptionsPage.playlist.lastChecked', {
-                        time: playlist.last_checked
-                          ? formatDistance(
-                              new Date(playlist.last_checked),
-                              new Date(),
-                              {
-                                addSuffix: true,
-                              }
-                            )
-                          : t('common.unknown'),
-                      })}
-                    </p>
-                    {showNextCheck && (
-                      <p>
-                        {t('subscriptionsPage.playlist.nextCheck', {
+                        {t('subscriptionsPage.playlist.lastChecked', {
                           time: playlist.last_checked
                             ? formatDistance(
-                                addMinutes(
-                                  new Date(playlist.last_checked),
-                                  playlist.check_interval_minutes
-                                ),
+                                new Date(playlist.last_checked),
                                 new Date(),
-                                { addSuffix: true }
+                                {
+                                  addSuffix: true,
+                                }
                               )
                             : t('common.unknown'),
                         })}
                       </p>
-                    )}
-                  </div>
-                </Card.Body>
-              </Link>
-            </Card>
-          ))}
-      </div>
-
-      <DialogBase
-        isOpen={optionsDialogOpen}
-        onClose={() => setOptionsDialogOpen(false)}
-        title="Options"
-      >
-        <div>
-          <div>{t('subscriptionsPage.options.showCheckInterval')}</div>
-          <Checkbox
-            checked={showCheckInterval}
-            onChange={e => setShowCheckInterval(e.target.checked)}
-            label={t('subscriptionsPage.options.showCheckIntervalLabel')}
-          />
+                      {showNextCheck && (
+                        <p>
+                          {t('subscriptionsPage.playlist.nextCheck', {
+                            time: playlist.last_checked
+                              ? formatDistance(
+                                  addMinutes(
+                                    new Date(playlist.last_checked),
+                                    playlist.check_interval_minutes
+                                  ),
+                                  new Date(),
+                                  { addSuffix: true }
+                                )
+                              : t('common.unknown'),
+                          })}
+                        </p>
+                      )}
+                    </div>
+                  </Card.Body>
+                </Link>
+              </Card>
+            ))}
         </div>
-        <div>
-          <div>{t('subscriptionsPage.options.showNextCheck')}</div>
-          <Checkbox
-            checked={showNextCheck}
-            onChange={e => setShowNextCheck(e.target.checked)}
-            label={t('subscriptionsPage.options.showNextCheckLabel')}
-          />
-        </div>
-      </DialogBase>
 
-      {filterOptionsOpen && (
-        <Card>
-          <Card.Body>
-            <Button
-              variant="outline-secondary"
-              onClick={() => applyFilter('All')}
-            >
-              {t('subscriptionsPage.filter.all')}
-            </Button>
-            <Button
-              variant="outline-secondary"
-              onClick={() => applyFilter('Active')}
-            >
-              {t('subscriptionsPage.filter.active')}
-            </Button>
-            <Button
-              variant="outline-secondary"
-              onClick={() => applyFilter('Manually added')}
-            >
-              {t('subscriptionsPage.filter.manuallyAdded')}
-            </Button>
-            <Button
-              variant="outline-secondary"
-              onClick={() => applyFilter('YTSubs')}
-            >
-              {t('subscriptionsPage.filter.ytSubs')}
-            </Button>
-          </Card.Body>
-        </Card>
-      )}
-    </Container>
+        <DialogBase
+          isOpen={optionsDialogOpen}
+          onClose={() => setOptionsDialogOpen(false)}
+          title="Options"
+        >
+          <div>
+            <div>{t('subscriptionsPage.options.showCheckInterval')}</div>
+            <Checkbox
+              checked={showCheckInterval}
+              onChange={e => setShowCheckInterval(e.target.checked)}
+              label={t('subscriptionsPage.options.showCheckIntervalLabel')}
+            />
+          </div>
+          <div>
+            <div>{t('subscriptionsPage.options.showNextCheck')}</div>
+            <Checkbox
+              checked={showNextCheck}
+              onChange={e => setShowNextCheck(e.target.checked)}
+              label={t('subscriptionsPage.options.showNextCheckLabel')}
+            />
+          </div>
+        </DialogBase>
+
+        {filterOptionsOpen && (
+          <Card>
+            <Card.Body>
+              <Button
+                variant="outline-secondary"
+                onClick={() => applyFilter('All')}
+              >
+                {t('subscriptionsPage.filter.all')}
+              </Button>
+              <Button
+                variant="outline-secondary"
+                onClick={() => applyFilter('Active')}
+              >
+                {t('subscriptionsPage.filter.active')}
+              </Button>
+              <Button
+                variant="outline-secondary"
+                onClick={() => applyFilter('Manually added')}
+              >
+                {t('subscriptionsPage.filter.manuallyAdded')}
+              </Button>
+              <Button
+                variant="outline-secondary"
+                onClick={() => applyFilter('YTSubs')}
+              >
+                {t('subscriptionsPage.filter.ytSubs')}
+              </Button>
+            </Card.Body>
+          </Card>
+        )}
+      </Container>
+    </>
   );
 };
 

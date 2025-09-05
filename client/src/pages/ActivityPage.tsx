@@ -52,103 +52,105 @@ const ActivityPage: React.FC = () => {
   };
 
   return (
-    <Container fluid>
+    <>
       <Toolbar
         actions={[ToolbarAction.REFRESH]}
         onActionClick={onActionClick}
       />
-      <Card>
-        <Card.Body>
-          <table>
-            <thead>
-              <tr>
-                <th></th>
-                <th>{t('activityPage.tableHeaders.playlist')}</th>
-                <th>{t('activityPage.tableHeaders.title')}</th>
-                <th>{t('activityPage.tableHeaders.message')}</th>
-                <th>{t('activityPage.tableHeaders.date')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {activities.map(activity => (
-                <tr key={activity.id}>
-                  <td>
-                    <i className={`bi bi-${activity.icon}`} />
-                  </td>
-                  <td className="fixed">
-                    {activity.playlist_db_id ? (
-                      <Link to={`/playlist/${activity.playlist_db_id}`}>
-                        {activity.playlist_title}
-                      </Link>
-                    ) : (
-                      <div>{t('common.playlistDeleted')}</div>
-                    )}
-                  </td>
-                  <td className="fixed">
-                    {activity.url ? (
-                      <a href={activity.url} target="_blank" rel="noreferrer">
-                        {activity.title}
-                      </a>
-                    ) : (
-                      activity.title
-                    )}
-                  </td>
-                  <td className="expand fixed">{activity.message}</td>
-                  <td className="fixed">
-                    {formatDistance(new Date(activity.datetime), new Date(), {
-                      addSuffix: true,
-                    })}
-                  </td>
+      <Container fluid withToolbar>
+        <Card>
+          <Card.Body>
+            <table>
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>{t('activityPage.tableHeaders.playlist')}</th>
+                  <th>{t('activityPage.tableHeaders.title')}</th>
+                  <th>{t('activityPage.tableHeaders.message')}</th>
+                  <th>{t('activityPage.tableHeaders.date')}</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          {isLoading && (
-            <div>
-              <LoadingIndicator />
-            </div>
-          )}
-        </Card.Body>
-      </Card>
+              </thead>
+              <tbody>
+                {activities.map(activity => (
+                  <tr key={activity.id}>
+                    <td>
+                      <i className={`bi bi-${activity.icon}`} />
+                    </td>
+                    <td className="fixed">
+                      {activity.playlist_db_id ? (
+                        <Link to={`/playlist/${activity.playlist_db_id}`}>
+                          {activity.playlist_title}
+                        </Link>
+                      ) : (
+                        <div>{t('common.playlistDeleted')}</div>
+                      )}
+                    </td>
+                    <td className="fixed">
+                      {activity.url ? (
+                        <a href={activity.url} target="_blank" rel="noreferrer">
+                          {activity.title}
+                        </a>
+                      ) : (
+                        activity.title
+                      )}
+                    </td>
+                    <td className="expand fixed">{activity.message}</td>
+                    <td className="fixed">
+                      {formatDistance(new Date(activity.datetime), new Date(), {
+                        addSuffix: true,
+                      })}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {isLoading && (
+              <div>
+                <LoadingIndicator />
+              </div>
+            )}
+          </Card.Body>
+        </Card>
 
-      <div>
-        <Button
-          variant="outline-secondary"
-          disabled={page === 1}
-          onClick={() => handlePageChange(1)}
-          title={t('activityPage.firstPage')}
-        >
-          <i></i>
-        </Button>
-        <Button
-          variant="outline-secondary"
-          disabled={page === 1}
-          onClick={() => handlePageChange(page - 1)}
-          title={t('activityPage.previousPage')}
-        >
-          <i></i>
-        </Button>
         <div>
-          {page} / {totalPages}
+          <Button
+            variant="outline-secondary"
+            disabled={page === 1}
+            onClick={() => handlePageChange(1)}
+            title={t('activityPage.firstPage')}
+          >
+            <i></i>
+          </Button>
+          <Button
+            variant="outline-secondary"
+            disabled={page === 1}
+            onClick={() => handlePageChange(page - 1)}
+            title={t('activityPage.previousPage')}
+          >
+            <i></i>
+          </Button>
+          <div>
+            {page} / {totalPages}
+          </div>
+          <Button
+            variant="outline-secondary"
+            disabled={page === totalPages}
+            onClick={() => handlePageChange(page + 1)}
+            title={t('activityPage.nextPage')}
+          >
+            <i></i>
+          </Button>
+          <Button
+            variant="outline-secondary"
+            disabled={page === totalPages}
+            onClick={() => handlePageChange(totalPages)}
+            title={t('activityPage.lastPage')}
+          >
+            <i></i>
+          </Button>
         </div>
-        <Button
-          variant="outline-secondary"
-          disabled={page === totalPages}
-          onClick={() => handlePageChange(page + 1)}
-          title={t('activityPage.nextPage')}
-        >
-          <i></i>
-        </Button>
-        <Button
-          variant="outline-secondary"
-          disabled={page === totalPages}
-          onClick={() => handlePageChange(totalPages)}
-          title={t('activityPage.lastPage')}
-        >
-          <i></i>
-        </Button>
-      </div>
-    </Container>
+      </Container>
+    </>
   );
 };
 

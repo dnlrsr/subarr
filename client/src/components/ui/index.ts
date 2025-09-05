@@ -9,7 +9,7 @@ export { default as Select } from './Select';
 export { default as Thumbnail } from './Thumbnail';
 
 // Layout components
-export { Col, Container, Row } from './Layout';
+export { Col, Container, Row } from './container/Container';
 
 // Form components
 export { Form, FormControl, FormGroup, FormLabel, InputGroup, InputGroupText } from './Form';
@@ -20,7 +20,7 @@ export type { CardBodyProps, CardHeaderProps, CardProps } from './Card';
 export type { CheckboxProps } from './Checkbox';
 export type { FormControlProps, FormGroupProps, FormLabelProps, FormProps, InputGroupProps, InputGroupTextProps } from './Form';
 export type { InputProps } from './Input';
-export type { ColProps, ContainerProps, RowProps } from './Layout';
+export type { ColProps, ContainerProps, RowProps } from './container/Container';
 export type { NavbarBrandProps, NavbarProps, NavLinkProps, NavProps } from './navbar/Navbar';
 export type { SelectOption, SelectProps } from './Select';
 
