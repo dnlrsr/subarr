@@ -4,7 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // Components
-import { SearchResults, UpdateDialog } from './components/features';
+import { UpdateDialog } from './components/features';
 import { Header, Sidebar } from './components/layout';
 
 // Pages
@@ -16,6 +16,8 @@ import SubscriptionsPage from './pages/SubscriptionsPage';
 
 // Hooks
 import { usePlaylists, useSearch, useVersionCheck } from './hooks';
+
+import styles from './App.module.scss';
 
 const AppLayout: React.FC = () => {
   const navigate = useNavigate();
@@ -29,10 +31,10 @@ const AppLayout: React.FC = () => {
   const { 
     searchTerm, 
     setSearchTerm, 
-    searchResults, 
-    highlightedIndex, 
+    // searchResults, 
+    // highlightedIndex, 
     handleKeyDown, 
-    resetSearch 
+    // resetSearch 
   } = useSearch(playlists);
 
   // Update dialog management
@@ -65,14 +67,14 @@ const AppLayout: React.FC = () => {
       </div>
       
       {/* Search Results Overlay */}
-      <div>
+      {/* <div>
         <SearchResults
           isOpen={searchTerm}
           searchResults={searchResults}
           highlightedSearchResult={highlightedIndex}
           onClose={resetSearch}
         />
-      </div>
+      </div> */}
       
       {/* Main Layout Container */}
       <div>
@@ -86,7 +88,7 @@ const AppLayout: React.FC = () => {
         
         {/* Fixed Sidebar */}
         <div 
-          className={`${sidebarOpen ? 'd-block' : 'd-none d-md-block'}`}
+          className={`${sidebarOpen ? 'd-block' : 'd-none d-md-block'} ${styles.sideBar}`}
         >
           <Sidebar isOpen={sidebarOpen} onItemClick={() => setSidebarOpen(false)} />
         </div>
