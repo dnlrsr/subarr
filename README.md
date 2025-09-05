@@ -11,7 +11,7 @@
 
 </div>
 
-## Quickstart
+## Quick Start
 ```bash
 docker run -p 3001:3001 -v /path/to/host/data/db:/data/db ghcr.io/dnlrsr/subarr/subarr:latest
 ```
