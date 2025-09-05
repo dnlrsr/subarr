@@ -182,33 +182,6 @@ const SettingsPage: React.FC = () => {
             onClose={handleCloseDialog}
             onRefreshPostProcessors={refreshPostProcessors}
           />
-          
-          <div style={{ flexGrow: 1 }} />
-          
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-            }}
-          >
-            <a
-              href="https://github.com/derekantrican/subarr"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <i
-                style={{
-                  height: 36,
-                  width: 36,
-                  fontSize: '36px',
-                  color: 'white',
-                  textAlign: 'center',
-                }}
-                className="bi bi-github"
-              />
-            </a>
-          </div>
         </div>
         </Card.Body>
       </Card>
