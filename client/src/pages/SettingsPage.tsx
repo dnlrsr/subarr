@@ -188,23 +188,10 @@ const SettingsPage: React.FC = () => {
           <div
             style={{
               display: 'flex',
-              justifyContent: 'space-between',
+              justifyContent: 'flex-end',
               alignItems: 'center',
             }}
           >
-            <a
-              style={{ height: 36 }}
-              href="https://ko-fi.com/E1E5RZJY"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <img
-                height="36"
-                style={{ border: 0, height: 36 }}
-                src="https://storage.ko-fi.com/cdn/kofi6.png?v=6"
-                alt="Buy Me a Coffee at ko-fi.com"
-              />
-            </a>
             <a
               href="https://github.com/derekantrican/subarr"
               target="_blank"
