@@ -4,16 +4,11 @@
 
 **A lightweight YouTube channel/playlist subscription manager**
 
-[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://github.com/dnl### 🔄 Set Environment Variables
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](ghcr.io/dnlrsr/subarr/subarr:latest) 🔄 Set Environment Variables
 
 Using the `-e` flag:
 ```bash
-docker run -p 3001:3001 -v /path/to/host/data:/data -e NODE_ENV=production subarr
-```
-
-Using a custom `.env` file:
-```bash
-docker run -p 3001:3001 -v /path/to/host/data:/data --env-file /path/to/.env subarr
+docker run -p 3001:3001 -v /path/to/host/data/db:/data/db ghcr.io/dnlrsr/subarr/subarr:latest
 ```
 
 ---
