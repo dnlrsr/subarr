@@ -13,7 +13,6 @@ import {
   Checkbox,
   Container,
   DialogBase,
-  Thumbnail,
 } from '../components/ui';
 import { apiService } from '../services/api';
 import { Playlist } from '../types';
@@ -92,11 +91,11 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
       />
 
       <Container fluid withToolbar>
-        <div>
+        <div className="d-flex flex-wrap gap-3">
           {filteredPlaylists
             .sort((a, b) => a.title.localeCompare(b.title))
             .map(playlist => (
-              <Card key={playlist.id}>
+              <Card key={playlist.id} size="grid">
                 <Link to={`/playlist/${playlist.id}`}>
                   {playlist.source === 'ytsubs.app' && (
                     <img
@@ -104,7 +103,11 @@ const SubscriptionsPage: React.FC<SubscriptionsPageProps> = () => {
                       alt="YTSubs.app"
                     />
                   )}
-                  <Thumbnail src={playlist.thumbnail} alt={playlist.title} />
+                  <Card.Img
+                    variant="top"
+                    src={playlist.thumbnail}
+                    alt={playlist.title}
+                  />
                   <Card.Body>
                     <div>
                       <h3>{playlist.title}</h3>
