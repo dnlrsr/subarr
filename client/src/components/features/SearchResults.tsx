@@ -25,7 +25,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   }
 
   return (
-    <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 1000 }}>
+    <div style={{ padding: '0 15px' }}>
       <Card>
         <Card.Body>
           <div style={{ padding: 0 }}>

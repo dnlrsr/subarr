@@ -16,7 +16,17 @@ const Header: React.FC<HeaderProps> = ({
   onToggleSidebar,
 }) => {
   return (
-    <Navbar bg="dark" variant="dark" expand="lg" className="px-3">
+    <Navbar 
+      variant="dark" 
+      expand="lg" 
+      className="px-3"
+      style={{ 
+        width: '100%',
+        minHeight: '56px', // Ensure consistent height
+        backgroundColor: '#2a2a2a',
+        borderBottom: '1px solid #333'
+      }}
+    >
       <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
         <img
           src="/logo192.png"
