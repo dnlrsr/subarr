@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { SearchResultsProps } from '../../types';
 import { Card, Thumbnail } from '../ui';
-import './SearchResults.css';
+import styles from './SearchResults.module.css';
 
 const SearchResults: React.FC<SearchResultsProps> = ({
   isOpen,
@@ -39,8 +39,8 @@ const SearchResults: React.FC<SearchResultsProps> = ({
               ref={(el: HTMLAnchorElement | null) => {
                 itemRefs.current[index] = el;
               }}
-              className={`search-result ${
-                highlightedSearchResult === index ? 'highlighted' : ''
+              className={`${styles.searchResult} ${
+                highlightedSearchResult === index ? styles.highlighted : ''
               }`}
               style={{
                 color: 'inherit',

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
-import './Input.css';
 
 export interface InputProps {
   label?: string;
@@ -35,8 +34,52 @@ const Input: React.FC<InputProps> = ({
   ...props
 }) => {
   const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
-  const semanticClass = semantic ? `input-app-${semantic}` : '';
-  const combinedClassName = `input-app ${semanticClass} ${className}`.trim();
+  
+  // Input styling based on semantic prop and state
+  const getInputStyles = () => {
+    const baseStyles = {
+      width: '100%',
+      backgroundColor: disabled ? '#222' : '#333',
+      borderRadius: '4px',
+      border: error ? '1px solid var(--danger-color, #f04b4b)' : '1px solid white',
+      color: disabled ? '#666' : 'white',
+      padding: '8px 12px',
+      fontSize: '1rem',
+      transition: 'all 0.2s ease',
+    };
+
+    switch (semantic) {
+      case 'small':
+        return {
+          ...baseStyles,
+          padding: '4px 8px',
+          fontSize: '0.875rem',
+        };
+      case 'search':
+        return {
+          ...baseStyles,
+          borderRadius: '20px',
+          paddingLeft: '16px',
+        };
+      case 'filter':
+        return {
+          ...baseStyles,
+          backgroundColor: '#2a2a2a',
+          borderColor: '#444',
+        };
+      default:
+        return baseStyles;
+    }
+  };
+
+  const inputStyles = getInputStyles();
+  const focusStyles = {
+    outline: 'none',
+    borderColor: error ? 'var(--danger-color, #f04b4b)' : 'var(--accent-color, #dc370f)',
+    boxShadow: error 
+      ? '0 0 0 2px rgba(240, 75, 75, 0.2)' 
+      : '0 0 0 2px rgba(220, 55, 15, 0.2)',
+  };
 
   return (
     <Form.Group className="mb-3">
@@ -55,8 +98,16 @@ const Input: React.FC<InputProps> = ({
         disabled={disabled}
         required={required}
         isInvalid={!!error}
-        className={combinedClassName}
+        className={className}
+        style={inputStyles}
         min={min}
+        onFocus={(e) => {
+          Object.assign(e.target.style, focusStyles);
+        }}
+        onBlur={(e) => {
+          e.target.style.borderColor = error ? 'var(--danger-color, #f04b4b)' : 'white';
+          e.target.style.boxShadow = 'none';
+        }}
         {...props}
       />
       {error && (

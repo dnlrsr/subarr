@@ -1,55 +1,56 @@
 /* PlaylistDetailsPage component styles */
-.playlistDetails-recentUploads {
+.playlistDetailsRecentUploads {
   overflow: auto;
 }
 
 /* Table styles for playlist details */
-th, td {
+.table th, 
+.table td {
   text-align: left;
   padding: 8px;
 }
 
-td.fixed {
+.tableFixed {
   white-space: nowrap;
 }
 
-td.expand {
+.tableExpand {
   width: 100%;
 }
 
-tbody td {
+.table tbody td {
   font-size: 14px;
   border-top: 1px solid gray;
 }
 
-tbody a {
+.table tbody a {
   text-decoration: none;
 }
 
 /* Utility classes for hover effects */
-.hover-blue:hover i {
+.hoverBlue:hover i {
   color: cornflowerblue;
 }
 
-.hover-danger:hover i {
+.hoverDanger:hover i {
   color: var(--danger-color);
 }
 
 /* Mobile responsive playlist details */
 @media (max-width: 768px) {
-  .playlistDetails-poster {
+  .playlistDetailsPoster {
     display: none;
   }
 
-  .playlistDetails-recentUploads {
+  .playlistDetailsRecentUploads {
     overflow: visible; /* This switches the scroll from just the "recent uploads" list to almost the whole page */
   }
 
-  .small-padding-mobile {
+  .smallPaddingMobile {
     padding: 5px !important; /* Using !important to allow inline style to define the padding, but might want to avoid */
   }
 
-  .flex-column-mobile {
+  .flexColumnMobile {
     flex-direction: column;
   }
 }

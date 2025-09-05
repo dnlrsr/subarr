@@ -1,6 +1,5 @@
 import React from 'react';
 import { LoadingIndicatorProps } from '../../types';
-import './LoadingIndicator.css';
 
 const LoadingIndicator: React.FC<LoadingIndicatorProps> = ({ 
   size = 'medium', 

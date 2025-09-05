@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
-import './Input.css'; // Reuse input styles
 
 export interface SelectOption {
   value: string | number;
