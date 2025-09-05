@@ -1,13 +1,16 @@
 import { PostProcessorContext, ProcessConfig, WebhookConfig } from '../models/types';
 import { HttpClient, ProcessRunner } from '../utils';
+import { DatabaseService } from './DatabaseService';
 
 export class PostProcessorService {
     private httpClient: HttpClient;
     private processRunner: ProcessRunner;
+    private databaseService: DatabaseService;
 
-    constructor() {
+    constructor(databaseService: DatabaseService) {
         this.httpClient = new HttpClient();
         this.processRunner = new ProcessRunner();
+        this.databaseService = databaseService;
     }
 
     public async runPostProcessor(
@@ -16,6 +19,14 @@ export class PostProcessorService {
         data: string,
         context?: PostProcessorContext
     ): Promise<string> {
+        // Check if video is already processed
+        if (context?.video.video_id) {
+            const videoState = this.databaseService.getVideoState(context.video.video_id);
+            if (videoState?.state === 'present') {
+                throw new Error('Video already processed');
+            }
+        }
+
         if (type === 'webhook') {
             return this.runWebhookProcessor(target, data, context);
         } else if (type === 'process') {
@@ -43,7 +54,16 @@ export class PostProcessorService {
 
         const text = await response.text();
         if (!response.ok) {
+            // Set error state if processing fails
+            if (context?.video.video_id) {
+                this.databaseService.setVideoState(context.video.video_id, 'error');
+            }
             throw new Error(text);
+        }
+
+        // Set downloading state on successful webhook call
+        if (context?.video.video_id) {
+            this.databaseService.setVideoState(context.video.video_id, 'downloading');
         }
 
         return text;

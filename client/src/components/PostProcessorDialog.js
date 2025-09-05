@@ -9,7 +9,6 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
   const [isVariablesDialogOpen, setIsVariablesDialogOpen] = useState(false);
   const postProcessorTypes = [
     'webhook',
-    'process',
   ];
 
   const [selectedTemplate, setSelectedTemplate] = useState('');
@@ -56,11 +55,18 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
 }`
       },
     },
-    'yt-dlp': {
-      type: 'process',
-      target: 'PATH_TO_YT-DLP',
+        'yt-dlp-api': {
+      type: 'webhook',
+      target: 'YT_DLP_API_WEBHOOK_URL',
       data: {
-        args: `https://www.youtube.com/watch?v=[[video.video_id]] -o "[[playlist.title]]/%(title)s.%(ext)s"`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer YOUR_API_KEY'
+        },
+        body: `{
+  "url": "https://www.youtube.com/watch?v=[[video.video_id]]",
+}`
       },
     },
     // More templates (eg Pushbullet, etc) can be added here as requested
@@ -95,6 +101,7 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
       ...postProcessor, //Expanding this allows us to keep the id & name (if we're editing an already-existing post processor)
       type: templateData.type,
       target: templateData.target,
+      name: templateName === 'yt-dlp-api' ? 'yt-dlp-api' : postProcessor.name
     });
 
     setPostProcessorData({
@@ -227,7 +234,10 @@ function PostProcessorDialog({editingItem, onClose, onRefreshPostProcessors}) {
           <input type="text"
             value={postProcessor?.name}
             onChange={e => setPostProcessor({...postProcessor, name: e.target.value})}
+            disabled={postProcessor?.name === 'yt-dlp-api'} //Prevent renaming the built-in yt-dlp-api processor
           />
+          {postProcessor?.name === 'yt-dlp-api' && <p>Immutable</p>}
+          <p></p>
         </div>
         <div className='setting flex-column-mobile'>
           <div style={{minWidth: 175}}>Apply template</div>
@@ -285,7 +295,6 @@ function PostProcessorDataUI({ postProcessorData, type, updateData, showVariable
     return null;
 
   return (
-    type === 'webhook' ?
     <>
       <div className='setting flex-column-mobile'>
         <div style={{minWidth: 175}}>Method</div>
@@ -328,24 +337,6 @@ function PostProcessorDataUI({ postProcessorData, type, updateData, showVariable
           <button style={{fontFamily: '"Caveat", cursive', fontSize: 'large'}} onClick={() => showVariablesDialog()}>
             <div>f(x)</div>
           </button>
-        </div>
-      </div>
-    </>
-    : 
-    <>
-      <div>
-        {/* Todo: we probably also want to allow "environment variables" like "headers" above */}
-        <div className='setting flex-column-mobile'>
-          <div style={{minWidth: 175}}>Arguments</div>
-          <div style={{display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'end'}}>
-            <textarea style={{resize: 'vertical', width: 'calc(100% - 18px)', minHeight: 125}}
-              value={postProcessorData.args}
-              onChange={e => updateData({...postProcessorData, args: e.target.value})}
-            />
-            <button style={{fontFamily: '"Caveat", cursive', fontSize: 'large'}} onClick={() => showVariablesDialog()}>
-              <div>f(x)</div>
-            </button>
-          </div>
         </div>
       </div>
     </>

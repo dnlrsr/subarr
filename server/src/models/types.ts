@@ -20,6 +20,7 @@ export interface Video {
     title: string;
     published_at?: string;
     thumbnail?: string;
+    state: 'missing' | 'pending' | 'downloading' | 'present' | 'error';
 }
 
 export interface Activity {

@@ -21,6 +21,20 @@ export class PlaylistController {
         this.channelInfoParser = new ChannelInfoParser();
     }
 
+    public downloadVideo = (req: Request, res: Response): void => {
+        try {
+            const videoId = req.params.videoId;
+
+            // Set video state to pending for download
+            this.databaseService.setVideoState(videoId, 'pending');
+
+            res.json({ success: true, message: 'Video queued for download' });
+        } catch (error) {
+            console.error('Error queuing video for download:', error);
+            res.status(500).json({ error: 'Failed to queue video for download' });
+        }
+    };
+
     public getPlaylists = (req: Request, res: Response): void => {
         try {
             const playlists = this.databaseService.getPlaylists();
@@ -119,11 +133,11 @@ export class PlaylistController {
     public updatePlaylistSettings = (req: Request, res: Response): void => {
         try {
             const { check_interval_minutes, regex_filter } = req.body;
-            const playlistId = parseInt(req.params.id);
+            const id = parseInt(req.params.id);
 
-            this.databaseService.updatePlaylist(playlistId.toString(), check_interval_minutes, regex_filter);
+            this.databaseService.updatePlaylist(id, check_interval_minutes, regex_filter);
 
-            const updatedPlaylist = this.databaseService.getPlaylist(playlistId);
+            const updatedPlaylist = this.databaseService.getPlaylist(id);
             if (updatedPlaylist) {
                 this.pollingService.schedulePolling(updatedPlaylist);
             }

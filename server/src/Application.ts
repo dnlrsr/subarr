@@ -50,7 +50,7 @@ export class Application {
     private initializeServices(): void {
         this.databaseService = new DatabaseService();
         this.rssParserService = new RssParserService(this.databaseService);
-        this.postProcessorService = new PostProcessorService();
+        this.postProcessorService = new PostProcessorService(this.databaseService);
         this.pollingService = new PollingService(
             this.databaseService,
             this.rssParserService,
@@ -86,6 +86,7 @@ export class Application {
         this.app.put('/api/playlists/:id/settings', this.playlistController.updatePlaylistSettings);
         this.app.delete('/api/playlists/:id', this.playlistController.deletePlaylist);
         this.app.get('/api/search', this.playlistController.searchPlaylist);
+        this.app.post('/api/videos/:videoId/download', this.playlistController.downloadVideo);
 
         // Activity routes
         this.app.get('/api/activity/:page', this.activityController.getActivities);
@@ -125,6 +126,9 @@ export class Application {
         for (const playlist of playlists) {
             this.pollingService.schedulePolling(playlist);
         }
+
+        // Schedule the watcher for video states
+        this.pollingService.scheduleWatcher();
     }
 
     private scheduleYtSubsUpdates(): void {

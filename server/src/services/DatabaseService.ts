@@ -12,7 +12,14 @@ export class DatabaseService {
     }
 
     private initializeDatabase(): Database.Database {
-        const dir = path.resolve("/data/db");
+        // Always use subarr.db from the server folder (and support youtubarr.db if it still exists from before the app rename)
+        let dir = path.resolve("/data/db");
+        if (!fs.existsSync(dir)) {
+            dir = path.resolve(__dirname, '../../../data/db');
+            if (!fs.existsSync(dir)) {
+                fs.mkdirSync(dir, { recursive: true });
+            }
+        }
 
         const dbPath = fs.existsSync(path.join(dir, 'youtubarr.db'))
             ? path.join(dir, 'youtubarr.db')
@@ -44,6 +51,7 @@ export class DatabaseService {
         title TEXT,
         published_at TEXT,
         thumbnail TEXT,
+        state TEXT NOT NULL DEFAULT 'missing',
         UNIQUE (playlist_id, video_id)
       );
 
@@ -126,13 +134,13 @@ export class DatabaseService {
     }
 
     public updatePlaylist(
-        playlistId: string,
+        id: number,
         checkIntervalMinutes?: number,
         regexFilter?: string,
         lastChecked?: string
     ): void {
         const sets: string[] = [];
-        const params: Record<string, any> = { playlist_id: playlistId };
+        const params: Record<string, any> = { id: id };
 
         if (checkIntervalMinutes !== undefined) {
             sets.push('check_interval_minutes = @check_interval_minutes');
@@ -149,7 +157,7 @@ export class DatabaseService {
 
         if (sets.length === 0) return;
 
-        const sql = `UPDATE playlists SET ${sets.join(', ')} WHERE playlist_id = @playlist_id`;
+        const sql = `UPDATE playlists SET ${sets.join(', ')} WHERE id = @id`;
         this.db.prepare(sql).run(params);
     }
 
@@ -164,14 +172,37 @@ export class DatabaseService {
 
     public insertVideo(video: Omit<Video, 'id'>): Database.RunResult {
         const stmt = this.db.prepare(`
-      INSERT OR IGNORE INTO videos (playlist_id, video_id, title, published_at, thumbnail)
-      VALUES (?, ?, ?, ?, ?)
+      INSERT OR IGNORE INTO videos (playlist_id, video_id, title, published_at, thumbnail, state)
+      VALUES (?, ?, ?, ?, ?, ?)
     `);
-        return stmt.run(video.playlist_id, video.video_id, video.title, video.published_at, video.thumbnail);
+        return stmt.run(
+            video.playlist_id,
+            video.video_id,
+            video.title,
+            video.published_at,
+            video.thumbnail,
+            video.state || 'missing'
+        );
     }
 
     public deleteVideosForPlaylist(playlistId: string): void {
         this.db.prepare('DELETE FROM videos WHERE playlist_id = ?').run(playlistId);
+    }
+
+    public getVideoStatePendings(): Video[] {
+        return this.db.prepare('SELECT * FROM videos WHERE state = ?').all('pending') as Video[];
+    }
+
+    public getVideoState(videoId: string): { state: string } | undefined {
+        return this.db.prepare('SELECT state FROM videos WHERE video_id = ? LIMIT 1').get(videoId) as { state: string } | undefined;
+    }
+
+    public setVideoState(videoId: string, state: Video['state']): void {
+        this.db.prepare('UPDATE videos SET state = ? WHERE video_id = ?').run(state, videoId);
+    }
+
+    public getVideoById(videoId: string): Video | undefined {
+        return this.db.prepare('SELECT * FROM videos WHERE video_id = ? LIMIT 1').get(videoId) as Video | undefined;
     }
 
     // Activity operations

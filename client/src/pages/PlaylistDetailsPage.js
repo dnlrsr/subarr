@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Thumbnail from '../components/Thumbnail';
 import { showToast } from '../utils/utils';
 
@@ -25,7 +25,23 @@ function PlaylistDetailsPage() {
       .catch(err => {
         console.error('Error loading playlist', err);
       });
-  }, [id]);  
+  }, [id]);
+  
+  const handleDownload = async (videoId) => {
+    try {
+      const res = await fetch(`/api/videos/${videoId}/download`, {
+        method: 'POST',
+      });
+
+      if (!res.ok)
+        throw new Error('Failed to start download');
+      
+      showToast('Download started', 'success');
+    } catch (err) {
+      console.error('Error starting download', err);
+      showToast('Error starting download', 'error');
+    }
+  }
 
   const handleSave = async () => {
     try {
@@ -176,6 +192,29 @@ function PlaylistDetailsPage() {
                   <div style={{flex: 1}}/>
                   <div style={{ fontSize: '0.75em', color: '#aaa', marginTop: '4px' }}>
                     {new Date(video.published_at).toLocaleString()}
+                  </div>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <button
+                      className='hover-blue'
+                      style={{ fontSize: '0.75em', marginTop: '4px' }}
+                      onClick={() => {
+                        navigator.clipboard.writeText(`https://www.youtube.com/watch?v=${video.video_id}`);
+                        showToast('Video URL copied to clipboard', 'success');
+                      }}
+                    >
+                      <i className="bi bi-link-45deg"></i> Copy URL
+                    </button>
+                    <button
+                      className='hover-green'
+                      style={{ fontSize: '0.75em', marginTop: '4px' }}
+                      disabled={video.state === 'present'}
+                      title={video.state === 'present' ? 'Already downloaded' : 'Download video'}
+                      onClick={() => {
+                        handleDownload(video.video_id);
+                      }}
+                    >
+                      <i className="bi bi-download"></i> Download
+                    </button>
                   </div>
                 </div>
               </div>
