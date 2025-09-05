@@ -1,5 +1,3 @@
-<div align="center">
-
 # 🎬 Subarr
 
 [![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://github.com/dnlrsr/subarr/pkgs/container/subarr%2Fsubarr)
@@ -26,8 +24,6 @@ docker run -p 3001:3001 -v /path/to/host/data/db:/data/db ghcr.io/dnlrsr/subarr/
 - 🧪 **Improved testability** with separated concerns
 - 📖 **Enhanced developer experience** with IntelliSense
 - 🚀 **Better performance** through optimized build process
-
-</div>
 
 ---
 
