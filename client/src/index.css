@@ -1,0 +1,608 @@
+/* Dark Theme Color Scheme */
+:root {
+  /* Core Colors */
+  --textColor: #ccc;
+  --defaultColor: #ccc;
+  --disabledColor: #999;
+  --dimColor: #555;
+  --black: #000;
+  --white: #fff;
+  --offWhite: #f5f7fa;
+  --blue: #06f;
+  --primaryColor: #5d9cec;
+  --selectedColor: #f9be03;
+  --successColor: #00853d;
+  --dangerColor: #f05050;
+  --warningColor: #ffa500;
+  --infoColor: #00A65B;
+  --purple: #7a43b6;
+  --pink: #ff69b4;
+  --lidarrGreen: #00A65B;
+  --helpTextColor: #909293;
+  --darkGray: #888;
+  --gray: #adadad;
+  --lightGray: #ddd;
+  --themeBlue: #00A65B;
+  --themeAlternateBlue: #00a65b;
+  --themeRed: #c4273c;
+  --themeDarkColor: #494949;
+  --themeLightColor: #595959;
+
+  /* Page Layout */
+  --pageBackground: #202020;
+  --pageFooterBackground: rgba(0, 0, 0, .25);
+  --pageHeaderBackgroundColor: #2a2a2a;
+
+  /* Navigation & Sidebar */
+  --sidebarColor: #e1e2e3;
+  --sidebarBackgroundColor: #2a2a2a;
+  --sidebarActiveBackgroundColor: #333333;
+  --toolbarColor: #e1e2e3;
+  --toolbarBackgroundColor: #262626;
+  --toolbarMenuItemBackgroundColor: #333;
+  --toolbarMenuItemHoverBackgroundColor: #414141;
+  --toolbarLabelColor: #e1e2e3;
+
+  /* Borders & Inputs */
+  --borderColor: #858585;
+  --inputBorderColor: #dde6e9;
+  --inputBoxShadowColor: rgba(0, 0, 0, 0.075);
+  --inputFocusBorderColor: #66afe9;
+  --inputFocusBoxShadowColor: rgba(102, 175, 233, 0.6);
+  --inputErrorBorderColor: #f05050;
+  --inputErrorBoxShadowColor: rgba(240, 80, 80, 0.6);
+  --inputWarningBorderColor: #ffa500;
+  --inputWarningBoxShadowColor: rgba(255, 165, 0, 0.6);
+  --inputBackgroundColor: #333;
+  --inputReadOnlyBackgroundColor: #222;
+  --inputHoverBackgroundColor: rgba(255, 255, 255, 0.20);
+  --inputSelectedBackgroundColor: rgba(255, 255, 255, 0.05);
+  --disabledInputColor: #808080;
+
+  /* Buttons */
+  --defaultButtonTextColor: #eee;
+  --defaultBackgroundColor: #333;
+  --defaultBorderColor: #393f45;
+  --defaultHoverBackgroundColor: #444;
+  --defaultHoverBorderColor: #5a6265;
+  --primaryBackgroundColor: #0b8750;
+  --primaryBorderColor: #1d563d;
+  --primaryHoverBackgroundColor: #097948;
+  --primaryHoverBorderColor: #1D563D;
+  --successBackgroundColor: #27c24c;
+  --successBorderColor: #26be4a;
+  --successHoverBackgroundColor: #24b145;
+  --successHoverBorderColor: #1f9c3d;
+  --warningBackgroundColor: #ff902b;
+  --warningBorderColor: #ff8d26;
+  --warningHoverBackgroundColor: #ff8517;
+  --warningHoverBorderColor: #fc7800;
+  --dangerBackgroundColor: #f05050;
+  --dangerBorderColor: #f04b4b;
+  --dangerHoverBackgroundColor: #ee3d3d;
+  --dangerHoverBorderColor: #ec2626;
+  --iconButtonDisabledColor: #7a7a7a;
+  --iconButtonHoverColor: #666;
+  --iconButtonHoverLightColor: #ccc;
+
+  /* Links */
+  --linkColor: #fff;
+  --linkHoverColor: #0b8750;
+  --defaultLinkHoverColor: #fff;
+
+  /* Cards & Modals */
+  --modalBackdropBackgroundColor: rgba(0, 0, 0, 0.6);
+  --modalBackgroundColor: #2a2a2a;
+  --modalCloseButtonHoverColor: #888;
+  --cardBackgroundColor: #333333;
+  --cardShadowColor: #111;
+  --cardAlternateBackgroundColor: #333333;
+  --cardCenterBackgroundColor: #2a2a2a;
+
+  /* Menus */
+  --menuItemColor: #e1e2e3;
+  --menuItemHoverColor: #00A65B;
+  --menuItemHoverBackgroundColor: #606060;
+  --toobarButtonHoverColor: #00A65B;
+  --toobarButtonSelectedColor: #00A65B;
+
+  /* Misc UI */
+  --scrollbarBackgroundColor: #707070;
+  --scrollbarHoverBackgroundColor: #606060;
+  --sliderAccentColor: #0b8750;
+  --progressBarFrontTextColor: #fff;
+  --progressBarBackTextColor: #fff;
+  --progressBarBackgroundColor: #727070;
+
+  /* Color Impaired */
+  --colorImpairedGradient: #707070;
+  --colorImpairedGradientDark: #424242;
+  --colorImpairedDangerGradient: #d84848;
+  --colorImpairedWarningGradient: #e59400;
+  --colorImpairedPrimaryGradient: #538cd4;
+  --colorImpairedGrayGradient: #9b9b9b;
+
+  /* Service Colors */
+  --torrentColor: #00853d;
+  --usenetColor: #17b1d9;
+
+  /* Labels */
+  --inverseLabelColor: #ddd;
+  --inverseLabelTextColor: #333;
+  --disabledLabelColor: #838383;
+  --infoTextColor: #fff;
+  --advancedFormLabelColor: #ff902b;
+  --disabledCheckInputColor: #ddd;
+
+  /* Alerts */
+  --alertDangerBorderColor: #a94442;
+  --alertDangerBackgroundColor: rgba(255, 0, 0, 0.1);
+  --alertDangerColor: #ccc;
+  --alertInfoBorderColor: #31708f;
+  --alertInfoBackgroundColor: rgba(0, 0, 255, 0.1);
+  --alertInfoColor: #ccc;
+  --alertSuccessBorderColor: #3c763d;
+  --alertSuccessBackgroundColor: rgba(0, 255, 0, 0.1);
+  --alertSuccessColor: #ccc;
+  --alertWarningBorderColor: #8a6d3b;
+  --alertWarningBackgroundColor: rgba(255, 255, 0, 0.1);
+  --alertWarningColor: #ccc;
+
+  /* Popovers */
+  --popoverTitleBackgroundColor: #424242;
+  --popoverTitleBorderColor: #2a2a2a;
+  --popoverBodyBackgroundColor: #2a2a2a;
+  --popoverShadowColor: rgba(0, 0, 0, 0.2);
+  --popoverArrowBorderColor: #2a2a2a;
+  --popoverTitleBackgroundInverseColor: #595959;
+  --popoverTitleBorderInverseColor: #707070;
+  --popoverShadowInverseColor: rgba(0, 0, 0, 0.2);
+  --popoverArrowBorderInverseColor: rgba(58, 63, 81, 0.75);
+
+  /* Calendar */
+  --calendarTodayBackgroundColor: #3e3e3e;
+  --calendarBackgroundColor: #2a2a2a;
+  --calendarBorderColor: #393f45;
+  --calendarTextDim: #eee;
+  --calendarTextDimAlternate: #fff;
+
+  /* Tables */
+  --tableRowHoverBackgroundColor: rgba(255, 255, 255, 0.08);
+
+  /* App Specific */
+  --addArtistBackgroundColor: #2a2a2a;
+  --artistBackgroundColor: #2a2a2a;
+  --searchIconContainerBackgroundColor: #2b2b2b;
+  --collapseButtonBackgroundColor: #2a2a2a;
+  --albumBackgroundColor: #424242;
+  --trackBackgroundColor: #2a2a2a;
+  --logEventsBackgroundColor: #2a2a2a;
+
+  /* Bootstrap CSS Variable Overrides for Dark Theme */
+  --bs-body-bg: var(--pageBackground);
+  --bs-body-color: var(--textColor);
+  --bs-emphasis-color: var(--white);
+  --bs-secondary-color: var(--dimColor);
+  --bs-tertiary-color: var(--darkGray);
+  
+  /* Bootstrap Primary Colors */
+  --bs-primary: var(--primaryColor);
+  --bs-primary-rgb: 93, 156, 236;
+  --bs-secondary: var(--gray);
+  --bs-secondary-rgb: 173, 173, 173;
+  --bs-success: var(--successColor);
+  --bs-success-rgb: 0, 133, 61;
+  --bs-info: var(--infoColor);
+  --bs-info-rgb: 0, 166, 91;
+  --bs-warning: var(--warningColor);
+  --bs-warning-rgb: 255, 165, 0;
+  --bs-danger: var(--dangerColor);
+  --bs-danger-rgb: 240, 80, 80;
+  --bs-light: var(--lightGray);
+  --bs-light-rgb: 221, 221, 221;
+  --bs-dark: var(--themeDarkColor);
+  --bs-dark-rgb: 73, 73, 73;
+
+  /* Bootstrap Border Colors */
+  --bs-border-color: var(--borderColor);
+  --bs-border-color-translucent: rgba(133, 133, 133, 0.175);
+
+  /* Bootstrap Form Controls */
+  --bs-form-control-bg: var(--inputBackgroundColor);
+  --bs-form-control-color: var(--textColor);
+  --bs-form-control-border-color: var(--inputBorderColor);
+  --bs-form-control-focus-border-color: var(--inputFocusBorderColor);
+  --bs-form-control-focus-box-shadow: var(--inputFocusBoxShadowColor);
+
+  /* Bootstrap Cards */
+  --bs-card-bg: var(--cardBackgroundColor);
+  --bs-card-border-color: var(--borderColor);
+  --bs-card-cap-bg: var(--cardCenterBackgroundColor);
+
+  /* Bootstrap Modal */
+  --bs-modal-bg: var(--modalBackgroundColor);
+  --bs-modal-backdrop-bg: var(--black);
+  --bs-modal-backdrop-opacity: 0.6;
+
+  /* Bootstrap Navbar */
+  --bs-navbar-color: var(--toolbarColor);
+  --bs-navbar-hover-color: var(--menuItemHoverColor);
+  --bs-navbar-active-color: var(--toobarButtonSelectedColor);
+  --bs-navbar-brand-color: var(--toolbarLabelColor);
+  --bs-navbar-brand-hover-color: var(--menuItemHoverColor);
+
+  /* Bootstrap Dropdown */
+  --bs-dropdown-bg: var(--toolbarMenuItemBackgroundColor);
+  --bs-dropdown-color: var(--menuItemColor);
+  --bs-dropdown-border-color: var(--borderColor);
+  --bs-dropdown-link-color: var(--menuItemColor);
+  --bs-dropdown-link-hover-color: var(--menuItemHoverColor);
+  --bs-dropdown-link-hover-bg: var(--menuItemHoverBackgroundColor);
+
+  /* Bootstrap Table */
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--textColor);
+  --bs-table-hover-bg: var(--tableRowHoverBackgroundColor);
+  --bs-table-hover-color: var(--textColor);
+
+  /* Bootstrap Button Variants */
+  --bs-btn-color: var(--defaultButtonTextColor);
+  --bs-btn-bg: var(--defaultBackgroundColor);
+  --bs-btn-border-color: var(--defaultBorderColor);
+  --bs-btn-hover-color: var(--defaultButtonTextColor);
+  --bs-btn-hover-bg: var(--defaultHoverBackgroundColor);
+  --bs-btn-hover-border-color: var(--defaultHoverBorderColor);
+  --bs-btn-focus-shadow-rgb: 102, 175, 233;
+  --bs-btn-active-color: var(--defaultButtonTextColor);
+  --bs-btn-active-bg: var(--defaultHoverBackgroundColor);
+  --bs-btn-active-border-color: var(--defaultHoverBorderColor);
+  --bs-btn-disabled-color: var(--disabledColor);
+  --bs-btn-disabled-bg: var(--disabledColor);
+  --bs-btn-disabled-border-color: var(--disabledColor);
+}
+
+/* Global Styles */
+body {
+  background-color: var(--pageBackground);
+  color: var(--textColor);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Links */
+a {
+  color: var(--linkColor);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--linkHoverColor);
+  text-decoration: underline;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--pageBackground);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbarBackgroundColor);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbarHoverBackgroundColor);
+}
+
+/* Bootstrap Component Customizations */
+.navbar {
+  background-color: var(--toolbarBackgroundColor) !important;
+  border-bottom: 1px solid var(--borderColor);
+}
+
+.navbar-brand,
+.navbar-nav .nav-link {
+  color: var(--toolbarColor) !important;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus {
+  color: var(--menuItemHoverColor) !important;
+}
+
+.dropdown-menu {
+  background-color: var(--toolbarMenuItemBackgroundColor);
+  border: 1px solid var(--borderColor);
+}
+
+.dropdown-item {
+  color: var(--menuItemColor);
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: var(--menuItemHoverBackgroundColor);
+  color: var(--menuItemHoverColor);
+}
+
+.card {
+  background-color: var(--cardBackgroundColor);
+  border: 1px solid var(--borderColor);
+  box-shadow: 0 0.125rem 0.25rem var(--cardShadowColor);
+}
+
+.card-header {
+  background-color: var(--cardCenterBackgroundColor);
+  border-bottom: 1px solid var(--borderColor);
+}
+
+.modal-content {
+  background-color: var(--modalBackgroundColor);
+  border: 1px solid var(--borderColor);
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--borderColor);
+}
+
+.modal-footer {
+  border-top: 1px solid var(--borderColor);
+}
+
+.btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+.form-control {
+  background-color: var(--inputBackgroundColor);
+  border: 1px solid var(--inputBorderColor);
+  color: var(--textColor);
+}
+
+.form-control:focus {
+  background-color: var(--inputBackgroundColor);
+  border-color: var(--inputFocusBorderColor);
+  box-shadow: 0 0 0 0.25rem var(--inputFocusBoxShadowColor);
+  color: var(--textColor);
+}
+
+.form-control:disabled,
+.form-control[readonly] {
+  background-color: var(--inputReadOnlyBackgroundColor);
+  color: var(--disabledInputColor);
+}
+
+.form-select {
+  background-color: var(--inputBackgroundColor);
+  border: 1px solid var(--inputBorderColor);
+  color: var(--textColor);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ccc' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 6 7 7 7-7'/%3e%3c/svg%3e");
+}
+
+.form-select:focus {
+  border-color: var(--inputFocusBorderColor);
+  box-shadow: 0 0 0 0.25rem var(--inputFocusBoxShadowColor);
+}
+
+.table {
+  color: var(--textColor);
+}
+
+.table-hover > tbody > tr:hover > td,
+.table-hover > tbody > tr:hover > th {
+  background-color: var(--tableRowHoverBackgroundColor);
+}
+
+.alert-primary {
+  background-color: var(--alertInfoBackgroundColor);
+  border-color: var(--alertInfoBorderColor);
+  color: var(--alertInfoColor);
+}
+
+.alert-success {
+  background-color: var(--alertSuccessBackgroundColor);
+  border-color: var(--alertSuccessBorderColor);
+  color: var(--alertSuccessColor);
+}
+
+.alert-warning {
+  background-color: var(--alertWarningBackgroundColor);
+  border-color: var(--alertWarningBorderColor);
+  color: var(--alertWarningColor);
+}
+
+.alert-danger {
+  background-color: var(--alertDangerBackgroundColor);
+  border-color: var(--alertDangerBorderColor);
+  color: var(--alertDangerColor);
+}
+
+/* Button Variants */
+.btn-primary {
+  background-color: var(--primaryBackgroundColor);
+  border-color: var(--primaryBorderColor);
+  color: var(--white);
+}
+
+.btn-primary:hover {
+  background-color: var(--primaryHoverBackgroundColor);
+  border-color: var(--primaryHoverBorderColor);
+}
+
+.btn-success {
+  background-color: var(--successBackgroundColor);
+  border-color: var(--successBorderColor);
+}
+
+.btn-success:hover {
+  background-color: var(--successHoverBackgroundColor);
+  border-color: var(--successHoverBorderColor);
+}
+
+.btn-warning {
+  background-color: var(--warningBackgroundColor);
+  border-color: var(--warningBorderColor);
+}
+
+.btn-warning:hover {
+  background-color: var(--warningHoverBackgroundColor);
+  border-color: var(--warningHoverBorderColor);
+}
+
+.btn-danger {
+  background-color: var(--dangerBackgroundColor);
+  border-color: var(--dangerBorderColor);
+}
+
+.btn-danger:hover {
+  background-color: var(--dangerHoverBackgroundColor);
+  border-color: var(--dangerHoverBorderColor);
+}
+
+/* Progress Bars */
+.progress {
+  background-color: var(--progressBarBackgroundColor);
+}
+
+.progress-bar {
+  background-color: var(--primaryBackgroundColor);
+  color: var(--progressBarFrontTextColor);
+}
+
+/* Sidebar/Offcanvas */
+.offcanvas {
+  background-color: var(--sidebarBackgroundColor);
+  color: var(--sidebarColor);
+}
+
+.offcanvas-header {
+  border-bottom: 1px solid var(--borderColor);
+}
+
+/* List Groups */
+.list-group-item {
+  background-color: var(--cardBackgroundColor);
+  border: 1px solid var(--borderColor);
+  color: var(--textColor);
+}
+
+.list-group-item:hover {
+  background-color: var(--tableRowHoverBackgroundColor);
+}
+
+.list-group-item.active {
+  background-color: var(--primaryBackgroundColor);
+  border-color: var(--primaryBorderColor);
+}
+
+/* Badges */
+.badge {
+  color: var(--white);
+}
+
+.badge.bg-primary {
+  background-color: var(--primaryBackgroundColor) !important;
+}
+
+.badge.bg-success {
+  background-color: var(--successBackgroundColor) !important;
+}
+
+.badge.bg-warning {
+  background-color: var(--warningBackgroundColor) !important;
+}
+
+.badge.bg-danger {
+  background-color: var(--dangerBackgroundColor) !important;
+}
+
+/* Tooltips */
+.tooltip .tooltip-inner {
+  background-color: var(--popoverBodyBackgroundColor);
+  color: var(--textColor);
+}
+
+/* Popovers */
+.popover {
+  background-color: var(--popoverBodyBackgroundColor);
+  border: 1px solid var(--popoverTitleBorderColor);
+}
+
+.popover-header {
+  background-color: var(--popoverTitleBackgroundColor);
+  border-bottom: 1px solid var(--popoverTitleBorderColor);
+  color: var(--textColor);
+}
+
+.popover-body {
+  color: var(--textColor);
+}
+
+/* Utility Classes */
+.text-primary {
+  color: var(--primaryColor) !important;
+}
+
+.text-success {
+  color: var(--successColor) !important;
+}
+
+.text-warning {
+  color: var(--warningColor) !important;
+}
+
+.text-danger {
+  color: var(--dangerColor) !important;
+}
+
+.text-info {
+  color: var(--infoColor) !important;
+}
+
+.text-muted {
+  color: var(--dimColor) !important;
+}
+
+.bg-primary {
+  background-color: var(--primaryBackgroundColor) !important;
+}
+
+.bg-success {
+  background-color: var(--successBackgroundColor) !important;
+}
+
+.bg-warning {
+  background-color: var(--warningBackgroundColor) !important;
+}
+
+.bg-danger {
+  background-color: var(--dangerBackgroundColor) !important;
+}
+
+.bg-dark {
+  background-color: var(--themeDarkColor) !important;
+}
+
+.border-primary {
+  border-color: var(--primaryBorderColor) !important;
+}
+
+.border-success {
+  border-color: var(--successBorderColor) !important;
+}
+
+.border-warning {
+  border-color: var(--warningBorderColor) !important;
+}
+
+.border-danger {
+  border-color: var(--dangerBorderColor) !important;
+}

@@ -57,7 +57,7 @@ const AppLayout: React.FC = () => {
   return (
     <div>
       {/* Fixed Header */}
-      <div>
+      <div className={styles.header}>
         <Header
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
@@ -95,7 +95,7 @@ const AppLayout: React.FC = () => {
         
         {/* Content Area */}
         <div 
-          className="d-none d-md-block"
+          className={`d-none d-md-block ${styles.mainContent}`}
         >
           <Routes>
             <Route path="/" element={<SubscriptionsPage />} />
