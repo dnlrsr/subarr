@@ -28,6 +28,12 @@ Thumbs.db
 /client/dist/
 /client/.next/
 /client/.turbo/
+/server/dist/
+
+# TypeScript build artifacts
+**/*.d.ts
+**/*.d.ts.map
+**/*.js.map
 
 # React testing
 /client/coverage/

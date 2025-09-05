@@ -5,9 +5,10 @@
     "server"
   ],
   "scripts": {
-    "build": "npm --workspace client run build",
-    "start-server": "npm --workspace client run build && NODE_ENV=production node server/index.js",
-    "start-server-win": "npm --workspace client run build && SET NODE_ENV=production && node server/index.js",
+    "build": "npm --workspace client run build && npm --workspace server run build",
+    "start-server": "npm run build && NODE_ENV=production npm --workspace server start",
+    "start-server-win": "npm run build && SET NODE_ENV=production && npm --workspace server start",
+    "dev-server": "npm --workspace server run dev",
     "update": "git pull && npm install && npm run start-server"
   }
 }

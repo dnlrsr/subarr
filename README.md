@@ -4,7 +4,32 @@
 
 **A lightweight YouTube channel/playlist subscription manager**
 
-[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://github.com/dnlrsr/subarr/pkgs/container/subarr%2Fsubarr)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://github.com/dnl### 🔄 Set Environment Variables
+
+Using the `-e` flag:
+```bash
+docker run -p 3001:3001 -v /path/to/host/data:/data -e NODE_ENV=production subarr
+```
+
+Using a custom `.env` file:
+```bash
+docker run -p 3001:3001 -v /path/to/host/data:/data --env-file /path/to/.env subarr
+```
+
+---
+
+## 🔄 Migration from JavaScript
+
+> **Note**: As of the latest version, Subarr has been fully refactored from JavaScript to TypeScript with an improved object-oriented architecture. The migration is seamless - your existing database and configuration will continue to work without any changes.
+
+**Key improvements in the TypeScript version:**
+- 🔒 **Type safety** prevents runtime errors
+- 🏗️ **Better architecture** with dependency injection
+- 🧪 **Improved testability** with separated concerns
+- 📖 **Enhanced developer experience** with IntelliSense
+- 🚀 **Better performance** through optimized build process
+
+---pkgs/container/subarr%2Fsubarr)
 [![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 [![License](https://img.shields.io/github/license/dnlrsr/subarr?style=for-the-badge)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/dnlrsr/subarr?style=for-the-badge)](https://github.com/dnlrsr/subarr/stargazers)
@@ -89,6 +114,38 @@ YouTube already provides RSS feeds for playlists (e.g., `https://www.youtube.com
 
 ---
 
+## 🏗️ Architecture
+
+Subarr is built with a modern TypeScript architecture featuring:
+
+### 📁 **Project Structure**
+```
+server/
+├── src/
+│   ├── models/          # TypeScript interfaces and types
+│   ├── services/        # Business logic (Database, RSS, Polling, etc.)
+│   ├── controllers/     # API route handlers
+│   ├── utils/           # Utility functions and helpers
+│   ├── Application.ts   # Main application orchestration
+│   └── index.ts        # Entry point
+├── dist/               # Compiled JavaScript (auto-generated)
+└── package.json
+```
+
+### 🔧 **Core Services**
+- **DatabaseService** - SQLite operations with Better-SQLite3
+- **RssParserService** - YouTube RSS feed parsing
+- **PollingService** - Subscription monitoring and YTSubs integration
+- **PostProcessorService** - Webhook and process execution
+
+### 🎮 **API Controllers**
+- **PlaylistController** - Playlist CRUD operations
+- **ActivityController** - Activity feed management
+- **SettingsController** - Application configuration
+- **PostProcessorController** - Post-processor management
+
+---
+
 ## 📋 Important Notes
 
 🔐 **Security Notice**: Subarr currently does not implement any sort of authentication. It is **highly recommended** that you do not expose your instance to the internet (or, at least, put it behind a form of authentication like nginx or Cloudflare).
@@ -108,6 +165,12 @@ YouTube already provides RSS feeds for playlists (e.g., `https://www.youtube.com
 - 🔗 **[ytsubs.app](https://github.com/derekantrican/ytsubs) integration** - Import user's YouTube subscriptions and keep them in sync
 - ⚡ **Post processors** - Actions to run when a new video is found:
   - 🪝 **Webhook**: Call a webhook (e.g., Discord, Raindrop.io, etc.)
+- 🏗️ **Modern Architecture** - Fully refactored TypeScript codebase with:
+  - 🎯 **Object-oriented design** with proper separation of concerns
+  - 🔧 **Dependency injection** for better testability
+  - 📊 **Type safety** throughout the application
+  - 🧩 **Modular services** (Database, RSS Parser, Polling, Post Processing)
+  - 🎮 **Clean controllers** for API endpoints
 
 ## 🚀 Future Features
 
@@ -123,15 +186,36 @@ YouTube already provides RSS feeds for playlists (e.g., `https://www.youtube.com
 
 ### Prerequisites
 - **Node.js** >= 18
+- **TypeScript** (for development)
 
 ### Quick Start
 
 ```bash
 git clone https://github.com/dnlrsr/subarr.git
 cd subarr
+
+# Install dependencies
 npm install
-# Optionally create server/.env with PORT=5000 or whatever
+
+# Build the TypeScript server
+cd server && npm run build && cd ..
+
+# Start the application
 npm run start-server # On Windows, use 'npm run start-server-win'
+```
+
+### 💻 Development
+
+For development with TypeScript:
+
+```bash
+cd server
+npm run dev  # Runs TypeScript compiler in watch mode
+```
+
+In another terminal:
+```bash
+npm run start-server
 ```
 
 ### 🔄 Run at Startup
@@ -149,6 +233,8 @@ To set it to run at startup, put the last command into:
 ```bash
 docker build -t subarr -f docker/Dockerfile .
 ```
+
+> **Note**: The Docker build process automatically compiles the TypeScript code to JavaScript.
 
 ### 🚀 Run the Container
 
