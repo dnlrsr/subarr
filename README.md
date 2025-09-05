@@ -4,7 +4,7 @@
 
 [![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://github.com/dnlrsr/subarr/pkgs/container/subarr%2Fsubarr)
 [![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
-[![License](https://img.shields.io/github/license/dnlrsr/subarr?style=for-the-badge)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/dnlrsr/subarr?style=for-the-badge)](https://github.com/dnlrsr/subarr/stargazers)
 
 **A lightweight YouTube channel/playlist subscription manager**
@@ -295,8 +295,6 @@ I am currently building this as a **hobby project** for myself and I already hav
 
 ---
 
-<div align="center">
-
 ## 💖 Support
 
 If you find Subarr useful, consider:
@@ -306,4 +304,8 @@ If you find Subarr useful, consider:
 💡 **Suggesting features**  
 🔧 **Contributing code**
 
-</div>
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
