@@ -38,8 +38,8 @@ a {
 
 /* CSS Variables for theming */
 :root {
-  --accent-color: #007bff;
-  --danger-color: #dc3545;
+  --accent-color: #dc370f;
+  --danger-color: #f04b4b;
   --card-bg: #2a2a2a;
   --background-primary: #1f1f1f;
   --background-secondary: #2a2a2a;

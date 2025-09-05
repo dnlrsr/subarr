@@ -17,6 +17,9 @@ import SubscriptionsPage from './pages/SubscriptionsPage';
 // Hooks
 import { usePlaylists, useSearch, useVersionCheck } from './hooks';
 
+// Styles
+import styles from './App.module.css';
+
 const AppLayout: React.FC = () => {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
@@ -52,7 +55,7 @@ const AppLayout: React.FC = () => {
   };
 
   return (
-    <div style={{ height: '100vh', overflow: 'hidden' }}>
+    <div className={styles.appLayout}>
       {/* Fixed Header */}
       <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1030 }}>
         <Header
@@ -74,11 +77,7 @@ const AppLayout: React.FC = () => {
       </div>
       
       {/* Main Layout Container */}
-      <div style={{ 
-        display: 'flex', 
-        paddingTop: '56px', // Height of the navbar
-        height: '100vh' 
-      }}>
+      <div className={styles.appContainer}>
         {/* Mobile Overlay */}
         {sidebarOpen && (
           <div 
@@ -115,14 +114,11 @@ const AppLayout: React.FC = () => {
         
         {/* Content Area */}
         <div 
+          className={`${styles.mainContent} d-none d-md-block`}
           style={{
             marginLeft: '250px', // Space for fixed sidebar on desktop
             padding: '20px',
-            width: '100%',
-            height: 'calc(100vh - 56px)',
-            overflow: 'auto'
           }}
-          className="d-none d-md-block"
         >
           <Routes>
             <Route path="/" element={<SubscriptionsPage />} />
@@ -135,13 +131,10 @@ const AppLayout: React.FC = () => {
         
         {/* Mobile Content Area (full width when sidebar is hidden) */}
         <div 
+          className={`${styles.mainContent} d-block d-md-none`}
           style={{
             padding: '20px',
-            width: '100%',
-            height: 'calc(100vh - 56px)',
-            overflow: 'auto'
           }}
-          className="d-block d-md-none"
         >
           <Routes>
             <Route path="/" element={<SubscriptionsPage />} />

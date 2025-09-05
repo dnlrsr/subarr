@@ -1,0 +1,67 @@
+/* Button component styles */
+.button {
+  background: none;
+  border: none;
+  color: #eee;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.button:disabled {
+  color: #999;
+  cursor: default;
+  background-color: transparent;
+}
+
+.primary {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.primary:hover:not(:disabled) {
+  background-color: #b8300d;
+}
+
+.secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.secondary:hover:not(:disabled) {
+  background-color: #5a6268;
+}
+
+.danger {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.danger:hover:not(:disabled) {
+  background-color: #c82333;
+}
+
+.success {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.success:hover:not(:disabled) {
+  background-color: #1e7e34;
+}
+
+.small {
+  font-size: 0.875rem;
+  padding: 4px 8px;
+}
+
+.large {
+  font-size: 1.25rem;
+  padding: 12px 24px;
+}
