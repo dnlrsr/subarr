@@ -33,7 +33,7 @@ export const Container: React.FC<ContainerProps> = ({
   return (
     <BootstrapContainer
       fluid={fluid}
-      className={withToolbar ? styles.containerWithToolbar : styles.container}
+      className={`${withToolbar ? styles.containerWithToolbar : styles.container} ${styles.shared}`}
     >
       {children}
     </BootstrapContainer>
