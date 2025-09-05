@@ -2,6 +2,11 @@ import { formatDistance } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { Toolbar } from '../components';
+import {
+  ToolbarAction,
+  ToolbarViewAction,
+} from '../components/layout/toolbar/Toolbar';
 import { Button, Card, Container, LoadingIndicator } from '../components/ui';
 import { Activity, PaginatedResponse } from '../types';
 
@@ -23,7 +28,7 @@ const ActivityPage: React.FC = () => {
     try {
       const response = await fetch(`/api/activity/${pageNum}`);
       const data: PaginatedResponse<Activity> = await response.json();
-      
+
       setActivities(data.data || []);
       setPage(data.page);
       setTotalPages(data.totalPages);
@@ -40,22 +45,21 @@ const ActivityPage: React.FC = () => {
     }
   };
 
+  const onActionClick = (action: ToolbarAction | ToolbarViewAction) => {
+    if (action === ToolbarAction.REFRESH) {
+      refreshActivity(page);
+    }
+  };
+
   return (
     <Container fluid>
+      <Toolbar
+        actions={[ToolbarAction.REFRESH]}
+        onActionClick={onActionClick}
+      />
       <Card>
-        <Card.Header >
-          <Button
-            
-            variant="outline-primary"
-            onClick={() => refreshActivity(page)}
-            title="Refresh Activity"
-          >
-            <i />
-            <span >{t('common.refresh')}</span>
-          </Button>
-        </Card.Header>
-        <Card.Body >
-          <table >
+        <Card.Body>
+          <table>
             <thead>
               <tr>
                 <th></th>
@@ -66,12 +70,10 @@ const ActivityPage: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {activities.map((activity) => (
+              {activities.map(activity => (
                 <tr key={activity.id}>
                   <td>
-                    <i 
-                      className={`bi bi-${activity.icon}`} 
-                    />
+                    <i className={`bi bi-${activity.icon}`} />
                   </td>
                   <td className="fixed">
                     {activity.playlist_db_id ? (
@@ -79,7 +81,7 @@ const ActivityPage: React.FC = () => {
                         {activity.playlist_title}
                       </Link>
                     ) : (
-                      <div >{t('common.playlistDeleted')}</div>
+                      <div>{t('common.playlistDeleted')}</div>
                     )}
                   </td>
                   <td className="fixed">
@@ -93,59 +95,57 @@ const ActivityPage: React.FC = () => {
                   </td>
                   <td className="expand fixed">{activity.message}</td>
                   <td className="fixed">
-                    {formatDistance(new Date(activity.datetime), new Date(), { addSuffix: true })}
+                    {formatDistance(new Date(activity.datetime), new Date(), {
+                      addSuffix: true,
+                    })}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
           {isLoading && (
-            <div >
+            <div>
               <LoadingIndicator />
             </div>
           )}
         </Card.Body>
       </Card>
-      
-      <div >
+
+      <div>
         <Button
-          
           variant="outline-secondary"
           disabled={page === 1}
           onClick={() => handlePageChange(1)}
           title={t('activityPage.firstPage')}
         >
-          <i ></i>
+          <i></i>
         </Button>
         <Button
-          
           variant="outline-secondary"
           disabled={page === 1}
           onClick={() => handlePageChange(page - 1)}
           title={t('activityPage.previousPage')}
         >
-          <i ></i>
+          <i></i>
         </Button>
-        <div >
+        <div>
           {page} / {totalPages}
         </div>
         <Button
-          
           variant="outline-secondary"
           disabled={page === totalPages}
           onClick={() => handlePageChange(page + 1)}
           title={t('activityPage.nextPage')}
         >
-          <i ></i>
+          <i></i>
         </Button>
         <Button
-          
           variant="outline-secondary"
           disabled={page === totalPages}
           onClick={() => handlePageChange(totalPages)}
           title={t('activityPage.lastPage')}
         >
-          <i ></i>
+          <i></i>
         </Button>
       </div>
     </Container>

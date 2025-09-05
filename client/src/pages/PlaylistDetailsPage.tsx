@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Toolbar } from '../components';
+import {
+  ToolbarAction,
+  ToolbarViewAction,
+} from '../components/layout/toolbar/Toolbar';
 import { Button, Card, Container, Input, Thumbnail } from '../components/ui';
 import { Playlist, VideoInfo } from '../types';
 import { showToast } from '../utils/utils';
-
 
 interface PlaylistDetailsData {
   playlist: Playlist;
@@ -29,7 +33,7 @@ const PlaylistDetailsPage: React.FC = () => {
       try {
         const res = await fetch(`/api/playlists/${id}`);
         const data: PlaylistDetailsData = await res.json();
-        
+
         setPlaylist(data.playlist);
         setInterval(data.playlist.check_interval_minutes || 60);
         setRegex(data.playlist.regex_filter || '');
@@ -86,7 +90,9 @@ const PlaylistDetailsPage: React.FC = () => {
   const handleDelete = async () => {
     if (!id) return;
 
-    const confirmDelete = window.confirm('Are you sure you want to remove this playlist?');
+    const confirmDelete = window.confirm(
+      'Are you sure you want to remove this playlist?'
+    );
     if (!confirmDelete) {
       return;
     }
@@ -123,20 +129,20 @@ const PlaylistDetailsPage: React.FC = () => {
     return <p>{t('common.loading')}</p>;
   }
 
+  const onActionClick = (action: ToolbarAction | ToolbarViewAction) => {
+    if (action === ToolbarAction.SAVE) {
+      handleSave();
+    } else if (action === ToolbarAction.DELETE) {
+      handleDelete();
+    }
+  };
+
   return (
     <Container fluid>
-      <Card>
-        <Card.Header>
-          <Button variant="success" onClick={handleSave} title={t('playlistDetailsPage.saveSettings')}>
-            <i ></i>
-            <span>{t('common.save')}</span>
-          </Button>
-          <Button variant="danger" onClick={handleDelete} title={t('playlistDetailsPage.deletePlaylist')}>
-            <i ></i>
-            <span>{t('common.delete')}</span>
-          </Button>
-        </Card.Header>
-      </Card>
+      <Toolbar
+        actions={[ToolbarAction.SAVE, ToolbarAction.DELETE]}
+        onActionClick={onActionClick}
+      />
 
       <div>
         <div>
@@ -147,42 +153,36 @@ const PlaylistDetailsPage: React.FC = () => {
             alt={playlist.title}
           />
           <div>
-            <div
-              title={playlist.playlist_id}
-            >
-              {playlist.title}
-            </div>
+            <div title={playlist.playlist_id}>{playlist.title}</div>
             {!playlist.playlist_id.startsWith('UU') && playlist.author_name && (
-              <div >
+              <div>
                 {t('common.by')} {playlist.author_name}
               </div>
             )}
-            <div >
-              <div >{t('playlistDetailsPage.checkInterval')}</div>
+            <div>
+              <div>{t('playlistDetailsPage.checkInterval')}</div>
               <Input
-                
                 type="number"
                 value={interval}
                 min={5}
-                onChange={(e) => setInterval(Number(e.target.value))}
+                onChange={e => setInterval(Number(e.target.value))}
               />
             </div>
-            <div >
-              <div >{t('playlistDetailsPage.regexFilter')}</div>
-              <div
-              >
+            <div>
+              <div>{t('playlistDetailsPage.regexFilter')}</div>
+              <div>
                 <Input
-                  
                   type="text"
                   value={regex}
-                  onChange={(e) => setRegex(e.target.value)}
+                  onChange={e => setRegex(e.target.value)}
                 />
                 <Button
-                  
-                  variant={testingRegex ? "danger" : "primary"}
+                  variant={testingRegex ? 'danger' : 'primary'}
                   onClick={() => setTestingRegex(!testingRegex)}
                 >
-                  {testingRegex ? t('playlistDetailsPage.stopTestButton') : t('playlistDetailsPage.testButton')}
+                  {testingRegex
+                    ? t('playlistDetailsPage.stopTestButton')
+                    : t('playlistDetailsPage.testButton')}
                 </Button>
               </div>
             </div>
@@ -190,22 +190,15 @@ const PlaylistDetailsPage: React.FC = () => {
         </div>
       </div>
 
-      <div
-        
-      >
-        <div >
-          <div
-          >
-            {videos.map((video) => (
-              <Card
-                key={video.video_id}
-                
-              >
+      <div>
+        <div>
+          <div>
+            {videos.map(video => (
+              <Card key={video.video_id}>
                 <a
                   href={`https://www.youtube.com/watch?v=${video.video_id}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  
                 >
                   <Thumbnail
                     src={video.thumbnail}
@@ -214,33 +207,28 @@ const PlaylistDetailsPage: React.FC = () => {
                     height={90}
                   />
                 </a>
-                <div >
-                  <div
-                  >
-                    {video.title}
-                  </div>
+                <div>
+                  <div>{video.title}</div>
                   <div />
-                  <div >
+                  <div>
                     {video.published_at
                       ? new Date(video.published_at).toLocaleString()
                       : 'Unknown date'}
                   </div>
-                  <div >
+                  <div>
                     <Button
-                      
                       variant="outline-primary"
                       onClick={() => handleCopyUrl(video.video_id)}
                     >
-                      <i ></i> Copy URL
+                      <i></i> Copy URL
                     </Button>
                     <Button
-                      
                       variant="outline-success"
                       disabled={false} // Note: video.state is not available in VideoInfo type
                       title={t('playlistDetailsPage.downloadVideo')}
                       onClick={() => handleDownload(video.video_id)}
                     >
-                      <i ></i> Download
+                      <i></i> Download
                     </Button>
                   </div>
                 </div>
