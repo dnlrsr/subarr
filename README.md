@@ -1,5 +1,7 @@
 # Subarr
 
+### This is a fork of [derekantrican/subarr](https://github.com/derekantrican/subarr) . I will continue implement features when they fit my needs. 
+
 *After [a lot of feedback](https://reddit.com/r/selfhosted/comments/1myldh3/i_built_youtubarr_the_sonarr_for_youtube/nacw3am/), I've decided to rename this project from "YouTubarr" to "Subarr". The name "Subarr" also helps define the project a little clearer in how it's based on RSS subscriptions (intended to be a "subscribe to playlists/channels & take action on new uploads") rather than a full PVR & media management system. If you're looking for a more true "Sonarr for YouTube", I recommend checking out one of the solutions below.*
 
 Subarr is a **lightweight** YouTube channel/playlist/subscription follower that will take action on new uploads (actions can be a webhook - like Discord - or a process - like downloading through yt-dlp). "Lightweight" means it needs few resources and can run on something like a raspberry pi.
