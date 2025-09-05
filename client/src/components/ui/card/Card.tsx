@@ -1,9 +1,10 @@
 import React from 'react';
 import { Card as BootstrapCard } from 'react-bootstrap';
+import styles from './Card.module.scss';
 
 export interface CardProps {
   children: React.ReactNode;
-  className?: string;
+  size?: 'grid' | 'list';
   onClick?: () => void;
 }
 
@@ -20,20 +21,21 @@ export interface CardBodyProps {
 const Card: React.FC<CardProps> & {
   Header: React.FC<CardHeaderProps>;
   Body: React.FC<CardBodyProps>;
-} = ({
-  children,
-  className = '',
-  onClick
-}) => {
+  Img: typeof BootstrapCard.Img;
+} = ({ children, onClick, size = 'list' }) => {
   return (
-    <BootstrapCard 
-      className={className} 
+    <BootstrapCard
+      className={styles.container}
+      style={{ width: size === 'grid' ? '18rem' : '100%' }}
       onClick={onClick}
     >
       {children}
     </BootstrapCard>
   );
 };
+
+
+
 
 Card.Header = ({ children, className = '' }) => {
   return (
@@ -43,11 +45,12 @@ Card.Header = ({ children, className = '' }) => {
   );
 };
 
+Card.Img = BootstrapCard.Img;
+
+
 Card.Body = ({ children, className = '' }) => {
   return (
-    <BootstrapCard.Body className={className}>
-      {children}
-    </BootstrapCard.Body>
+    <BootstrapCard.Body className={className}>{children}</BootstrapCard.Body>
   );
 };
 

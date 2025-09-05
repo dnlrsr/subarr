@@ -1,5 +1,5 @@
 export { default as Button } from './Button';
-export { default as Card } from './Card';
+export { default as Card } from './card/Card';
 export { default as Checkbox } from './Checkbox';
 export { default as DialogBase } from './DialogBase';
 export { default as Input } from './Input';
@@ -16,7 +16,7 @@ export { Form, FormControl, FormGroup, FormLabel, InputGroup, InputGroupText } f
 
 // Export types
 export type { ButtonProps } from './Button';
-export type { CardBodyProps, CardHeaderProps, CardProps } from './Card';
+export type { CardBodyProps, CardHeaderProps, CardProps } from './card/Card';
 export type { CheckboxProps } from './Checkbox';
 export type { FormControlProps, FormGroupProps, FormLabelProps, FormProps, InputGroupProps, InputGroupTextProps } from './Form';
 export type { InputProps } from './Input';

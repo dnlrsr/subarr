@@ -310,17 +310,6 @@ a:hover {
   color: var(--menuItemHoverColor);
 }
 
-.card {
-  background-color: var(--cardBackgroundColor);
-  border: 1px solid var(--borderColor);
-  box-shadow: 0 0.125rem 0.25rem var(--cardShadowColor);
-}
-
-.card-header {
-  background-color: var(--cardCenterBackgroundColor);
-  border-bottom: 1px solid var(--borderColor);
-}
-
 .modal-content {
   background-color: var(--modalBackgroundColor);
   border: 1px solid var(--borderColor);
