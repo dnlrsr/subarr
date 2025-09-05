@@ -1,8 +1,28 @@
 import React from 'react';
-import { Button as BootstrapButton, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import {
+  Button as BootstrapButton,
+  OverlayTrigger,
+  Tooltip,
+} from 'react-bootstrap';
 
 export interface ButtonProps {
-  variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'info' | 'light' | 'dark' | 'outline-primary' | 'outline-secondary' | 'outline-danger' | 'outline-success' | 'outline-warning' | 'outline-info' | 'outline-light' | 'outline-dark';
+  variant?:
+    | 'primary'
+    | 'secondary'
+    | 'danger'
+    | 'success'
+    | 'warning'
+    | 'info'
+    | 'light'
+    | 'dark'
+    | 'outline-primary'
+    | 'outline-secondary'
+    | 'outline-danger'
+    | 'outline-success'
+    | 'outline-warning'
+    | 'outline-info'
+    | 'outline-light'
+    | 'outline-dark';
   size?: 'sm' | 'lg';
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
@@ -16,7 +36,7 @@ export interface ButtonProps {
 
 const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
-  size,
+  size = 'sm',
   disabled = false,
   type = 'button',
   onClick,
@@ -58,7 +78,9 @@ const Button: React.FC<ButtonProps> = ({
     return (
       <OverlayTrigger
         placement="bottom"
-        overlay={<Tooltip id={`tooltip-${Math.random()}`}>{tooltipContent}</Tooltip>}
+        overlay={
+          <Tooltip id={`tooltip-${Math.random()}`}>{tooltipContent}</Tooltip>
+        }
       >
         {button}
       </OverlayTrigger>

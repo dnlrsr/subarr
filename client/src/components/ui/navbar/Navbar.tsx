@@ -1,5 +1,9 @@
 import React from 'react';
-import { Nav as BootstrapNav, Navbar as BootstrapNavbar } from 'react-bootstrap';
+import {
+  Nav as BootstrapNav,
+  Navbar as BootstrapNavbar,
+} from 'react-bootstrap';
+import styles from './Navbar.module.scss';
 
 export interface NavbarProps {
   variant?: 'light' | 'dark';
@@ -16,7 +20,6 @@ export interface NavbarBrandProps {
 }
 
 export interface NavProps {
-  className?: string;
   children: React.ReactNode;
 }
 
@@ -31,7 +34,6 @@ export interface NavLinkProps {
 const NavbarComponent: React.FC<NavbarProps> = ({
   variant,
   expand,
-  className,
   children,
   ...props
 }) => {
@@ -39,7 +41,7 @@ const NavbarComponent: React.FC<NavbarProps> = ({
     <BootstrapNavbar
       variant={variant}
       expand={expand}
-      className={className}
+      className={styles.container}
       {...props}
     >
       {children}
@@ -55,27 +57,15 @@ const NavbarBrandComponent: React.FC<NavbarBrandProps> = ({
   ...props
 }) => {
   return (
-    <BootstrapNavbar.Brand
-      as={as}
-      to={to}
-      className={className}
-      {...props}
-    >
+    <BootstrapNavbar.Brand as={as} to={to} className={className} {...props}>
       {children}
     </BootstrapNavbar.Brand>
   );
 };
 
-const NavComponent: React.FC<NavProps> = ({
-  className,
-  children,
-  ...props
-}) => {
+const NavComponent: React.FC<NavProps> = ({ children, ...props }) => {
   return (
-    <BootstrapNav
-      className={className}
-      {...props}
-    >
+    <BootstrapNav className={styles.container} {...props}>
       {children}
     </BootstrapNav>
   );
@@ -118,5 +108,10 @@ type NavbarWithBrand = typeof NavbarComponent & {
 const Navbar = NavbarComponent as NavbarWithBrand;
 Navbar.Brand = NavbarBrandComponent;
 
-export { Nav, Navbar, NavbarBrandComponent as NavbarBrand, NavLinkComponent as NavLink };
+export {
+  Nav,
+  Navbar,
+  NavbarBrandComponent as NavbarBrand,
+  NavLinkComponent as NavLink,
+};
 export default Navbar;

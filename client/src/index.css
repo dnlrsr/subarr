@@ -224,13 +224,6 @@
   --bs-modal-backdrop-bg: var(--black);
   --bs-modal-backdrop-opacity: 0.6;
 
-  /* Bootstrap Navbar */
-  --bs-navbar-color: var(--toolbarColor);
-  --bs-navbar-hover-color: var(--menuItemHoverColor);
-  --bs-navbar-active-color: var(--toobarButtonSelectedColor);
-  --bs-navbar-brand-color: var(--toolbarLabelColor);
-  --bs-navbar-brand-hover-color: var(--menuItemHoverColor);
-
   /* Bootstrap Dropdown */
   --bs-dropdown-bg: var(--toolbarMenuItemBackgroundColor);
   --bs-dropdown-color: var(--menuItemColor);
@@ -300,22 +293,6 @@ a:hover {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbarHoverBackgroundColor);
-}
-
-/* Bootstrap Component Customizations */
-.navbar {
-  background-color: var(--toolbarBackgroundColor) !important;
-  border-bottom: 1px solid var(--borderColor);
-}
-
-.navbar-brand,
-.navbar-nav .nav-link {
-  color: var(--toolbarColor) !important;
-}
-
-.navbar-nav .nav-link:hover,
-.navbar-nav .nav-link:focus {
-  color: var(--menuItemHoverColor) !important;
 }
 
 .dropdown-menu {
@@ -475,12 +452,6 @@ a:hover {
 .progress-bar {
   background-color: var(--primaryBackgroundColor);
   color: var(--progressBarFrontTextColor);
-}
-
-/* Sidebar/Offcanvas */
-.offcanvas {
-  background-color: var(--sidebarBackgroundColor);
-  color: var(--sidebarColor);
 }
 
 .offcanvas-header {
