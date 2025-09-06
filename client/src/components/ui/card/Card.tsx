@@ -22,6 +22,9 @@ const Card: React.FC<CardProps> & {
   Header: React.FC<CardHeaderProps>;
   Body: React.FC<CardBodyProps>;
   Img: typeof BootstrapCard.Img;
+  ImgOverlay: typeof BootstrapCard.ImgOverlay;
+  Title: typeof BootstrapCard.Title;
+  Text: typeof BootstrapCard.Text;
 } = ({ children, onClick, size = 'list' }) => {
   return (
     <BootstrapCard
@@ -33,9 +36,9 @@ const Card: React.FC<CardProps> & {
     </BootstrapCard>
   );
 };
-
-
-
+Card.ImgOverlay = BootstrapCard.ImgOverlay;
+Card.Title = BootstrapCard.Title;
+Card.Text = BootstrapCard.Text;
 
 Card.Header = ({ children, className = '' }) => {
   return (
@@ -46,7 +49,6 @@ Card.Header = ({ children, className = '' }) => {
 };
 
 Card.Img = BootstrapCard.Img;
-
 
 Card.Body = ({ children, className = '' }) => {
   return (

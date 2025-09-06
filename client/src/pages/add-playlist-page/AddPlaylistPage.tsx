@@ -1,9 +1,21 @@
+import { faYoutube } from '@fortawesome/free-brands-svg-icons';
+import { faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { Button, Container, Form, FormControl, InputGroup, InputGroupText, LoadingIndicator, Thumbnail } from '../components/ui';
-import { Playlist, PlaylistInfo } from '../types';
-import { getErrorResponse, showToast } from '../utils/utils';
+import {
+  Button,
+  Card,
+  Container,
+  Form,
+  FormControl,
+  InputGroup,
+  LoadingIndicator,
+} from '../../components/ui';
+import { Playlist, PlaylistInfo } from '../../types';
+import { getErrorResponse, showToast } from '../../utils/utils';
+import styles from './AddPlaylistPage.module.scss';
 
 const AddPlaylistPage: React.FC = () => {
   const { t } = useTranslation();
@@ -95,76 +107,59 @@ const AddPlaylistPage: React.FC = () => {
 
   return (
     <Container>
-      <h2 >{t('addPlaylistPage.title')}</h2>
-      
-      <Form>
-        <InputGroup >
-          <InputGroupText>
-            <i />
-          </InputGroupText>
-          <FormControl
-            type="text"
-            placeholder={t('addPlaylistPage.searchPlaceholder')}
-            value={playlistInput}
-            onChange={(e) => setPlaylistInput(e.target.value)}
-          />
-          <Button variant="outline-secondary" onClick={handleClearInput}>
-            <i />
-          </Button>
-        </InputGroup>
-      </Form>
+      <div className={styles.container}>
+        <Form>
+          <InputGroup>
+            <FormControl
+              type="text"
+              placeholder={t('addPlaylistPage.searchPlaceholder')}
+              value={playlistInput}
+              onChange={e => setPlaylistInput(e.target.value)}
+            />
+            <Button variant="outline-secondary" onClick={handleClearInput}>
+              <FontAwesomeIcon icon={faXmark} />
+            </Button>
+          </InputGroup>
+        </Form>
 
-      {playlistInfo && (
-        <div
-          
-        >
-          <Thumbnail height={180} width={320} src={playlistInfo.thumbnail} alt={playlistInfo.title} />
-          <div >
-            <div >
-              <div >{playlistInfo.title}</div>
-              <button
-                onClick={handleOpenPlaylist}
-              >
-                <i />
-              </button>
-            </div>
-            <button
-              onClick={handleSubmit}
-            >
-              {t('addPlaylistPage.addButton')}
-            </button>
+        {playlistInfo && (
+          <Card size="grid">
+            <Card.Img src={playlistInfo.thumbnail} alt={playlistInfo.title} />
+            <Card.Body>
+              <Card.Title>{playlistInfo.title}</Card.Title>
+              <Card.Text>
+                <Button onClick={handleOpenPlaylist} variant="outline-info">
+                  <FontAwesomeIcon icon={faYoutube} />
+                  {t('common.open')}
+                </Button>
+                <Button onClick={handleSubmit} variant="primary">
+                  <FontAwesomeIcon icon={faPlus} />
+                  {t('common.add')}
+                </Button>
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        )}
+
+        {isSearching && (
+          <div>
+            <LoadingIndicator />
           </div>
-        </div>
-      )}
+        )}
 
-      {isSearching && (
-        <div >
-          <LoadingIndicator />
-        </div>
-      )}
+        {error && (
+          <div>
+            <div>{error}</div>
+            <p>{t('addPlaylistPage.validValues')}</p>
+            <ol>
+              <li>{t('addPlaylistPage.channelUrls')}</li>
+              <li>{t('addPlaylistPage.playlistUrls')}</li>
+            </ol>
+          </div>
+        )}
 
-      {error && (
-        <div
-        >
-          <div >{error}</div>
-          <p >{t('addPlaylistPage.validValues')}</p>
-          <ol>
-            <li >
-              {t('addPlaylistPage.channelUrls')}
-            </li>
-            <li >
-              {t('addPlaylistPage.playlistUrls')}
-            </li>
-          </ol>
-        </div>
-      )}
-
-      {isPlaylistWarning && (
-        <p
-        >
-          {t('addPlaylistPage.playlistWarning')}
-        </p>
-      )}
+        {isPlaylistWarning && <p>{t('addPlaylistPage.playlistWarning')}</p>}
+      </div>
     </Container>
   );
 };

@@ -4,6 +4,7 @@
         "add": "Add",
         "save": "Save",
         "test": "Test",
+        "open": "Open",
         "stopTest": "Stop Test",
         "options": "Options",
         "filter": "Filter",
@@ -64,7 +65,6 @@
     "addPlaylistPage": {
         "title": "Add New Playlist",
         "searchPlaceholder": "Enter a youtube channel url (eg youtube.com/@MrBeast) or playlist id/url (eg UU..., PL..., etc)",
-        "addButton": "Add",
         "validValues": "Valid values are:",
         "channelUrls": "YouTube channel urls (eg youtube.com/@MrBeast or https://www.youtube.com/channel/UCY1kMZp36IQSyNx_9h4mpCg)",
         "playlistUrls": "YouTube playlist urls or ids (eg UUuAXFkgsw1L7xaCfnd5JJOw or https://www.youtube.com/playlist?list=PLopY4n17t8RCqmupsW66yOsR5eDPRUN_y)",
