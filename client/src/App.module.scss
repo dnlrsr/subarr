@@ -1,0 +1,36 @@
+.appContainer {
+  max-height: 100vh;
+  background-color: var(--pageBackgroundColor);
+  overflow: hidden;
+
+  .sideBar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 210px;
+    z-index: 999;
+
+    padding-top: 57px; // Adjust based on header height
+  }
+
+  .mainContent {
+    margin-left: 210px;
+    min-height: 100vh;
+    padding-top: 57px; // Account for fixed header
+
+    // On mobile, remove the margin when sidebar is hidden
+    @media (max-width: 767.98px) {
+      margin-left: 0;
+    }
+  }
+
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1001;
+    height: 60px;
+  }
+}

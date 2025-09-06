@@ -12,7 +12,6 @@ export class DatabaseService {
     }
 
     private initializeDatabase(): Database.Database {
-        // Always use subarr.db from the server folder (and support youtubarr.db if it still exists from before the app rename)
         let dir = path.resolve("/data/db");
         if (!fs.existsSync(dir)) {
             dir = path.resolve(__dirname, '../../../data/db');
