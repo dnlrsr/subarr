@@ -26,8 +26,6 @@ const PlaylistSearchModal: React.FC<PlaylistSearchModalProps> = ({
     onHide?.();
   };
 
-  console.log('rendering modal', searchResults);
-
   return (
     <Modal show={show} onHide={onHide} size="lg">
       <Modal.Header closeButton>
