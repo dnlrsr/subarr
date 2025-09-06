@@ -1,32 +1,23 @@
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Button, Form, InputGroup, Nav, Navbar } from '../../ui';
+import { PlaylistSearchModal } from '../../features';
+import { Form, InputGroup, Nav, Navbar } from '../../ui';
 import styles from './Header.module.scss';
 
 interface HeaderProps {
-  searchTerm: string;
-  onSearchChange: (value: string) => void;
-  onSearchKeyDown: (
-    event: React.KeyboardEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => void;
   onToggleSidebar: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({
-  searchTerm,
-  onSearchChange,
-  onSearchKeyDown,
-  onToggleSidebar,
-}) => {
+const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
   const { t } = useTranslation();
+  const [show, setShow] = useState(false);
 
   return (
     <Navbar className={styles.container}>
+      <PlaylistSearchModal show={show} onHide={() => setShow(false)} />
       <div className={styles.leftSection}>
         <button
           className={styles.hamburger + ' d-block d-md-none'}
@@ -46,23 +37,13 @@ const Header: React.FC<HeaderProps> = ({
         <Form>
           <InputGroup>
             <InputGroup.Text>
-              <i />
+              <FontAwesomeIcon icon={faSearch} />
             </InputGroup.Text>
             <Form.Control
               type="text"
               placeholder={t('header.searchPlaceholder')}
-              value={searchTerm}
-              onChange={e => onSearchChange(e.target.value)}
-              onKeyDown={onSearchKeyDown}
+              onClick={() => setShow(true)}
             />
-            {searchTerm && (
-              <Button
-                variant="outline-secondary"
-                onClick={() => onSearchChange('')}
-              >
-                <i />
-              </Button>
-            )}
           </InputGroup>
         </Form>
       </Nav>

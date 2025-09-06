@@ -1,5 +1,8 @@
 import React from 'react';
-import { Form as BootstrapForm, InputGroup as BootstrapInputGroup } from 'react-bootstrap';
+import {
+  Form as BootstrapForm,
+  InputGroup as BootstrapInputGroup,
+} from 'react-bootstrap';
 
 export interface FormProps {
   children: React.ReactNode;
@@ -21,8 +24,17 @@ export interface FormLabelProps {
 export interface FormControlProps {
   type?: string;
   value?: string | number;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
-  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+  onClick?: () => void;
+  onChange?: (
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => void;
+  onKeyDown?: (
+    event: React.KeyboardEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => void;
   placeholder?: string;
   disabled?: boolean;
   required?: boolean;
@@ -47,11 +59,7 @@ const Form: React.FC<FormProps> & {
   Label: React.FC<FormLabelProps>;
   Control: React.FC<FormControlProps>;
   Check: React.FC<any>;
-} = ({
-  children,
-  onSubmit,
-  className = ''
-}) => {
+} = ({ children, onSubmit, className = '' }) => {
   return (
     <BootstrapForm onSubmit={onSubmit} className={className}>
       {children}
@@ -60,9 +68,7 @@ const Form: React.FC<FormProps> & {
 };
 
 Form.Group = ({ children, className = '' }) => (
-  <BootstrapForm.Group className={className}>
-    {children}
-  </BootstrapForm.Group>
+  <BootstrapForm.Group className={className}>{children}</BootstrapForm.Group>
 );
 
 Form.Label = ({ children, htmlFor, className = '' }) => (
@@ -71,18 +77,32 @@ Form.Label = ({ children, htmlFor, className = '' }) => (
   </BootstrapForm.Label>
 );
 
-Form.Control = ({ type = 'text', value, onChange, onKeyDown, placeholder, disabled = false, required = false, className = '', as = 'input', rows, style }) => {
+Form.Control = ({
+  type = 'text',
+  value,
+  onChange,
+  onKeyDown,
+  onClick,
+  placeholder,
+  disabled = false,
+  required = false,
+  className = '',
+  as = 'input',
+  rows,
+  style,
+}) => {
   const props: any = {
     type,
     value,
     onChange,
     onKeyDown,
+    onClick,
     placeholder,
     disabled,
     required,
     className,
     as,
-    style
+    style,
   };
 
   if (as === 'textarea' && rows) {
@@ -101,18 +121,16 @@ export const FormControl: React.FC<FormControlProps> = Form.Control;
 
 const InputGroupComponent: React.FC<InputGroupProps> = ({
   children,
-  className = ''
+  className = '',
 }) => {
   return (
-    <BootstrapInputGroup className={className}>
-      {children}
-    </BootstrapInputGroup>
+    <BootstrapInputGroup className={className}>{children}</BootstrapInputGroup>
   );
 };
 
 export const InputGroupText: React.FC<InputGroupTextProps> = ({
   children,
-  className = ''
+  className = '',
 }) => {
   return (
     <BootstrapInputGroup.Text className={className}>

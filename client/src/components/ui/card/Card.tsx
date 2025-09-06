@@ -6,6 +6,7 @@ export interface CardProps {
   children: React.ReactNode;
   size?: 'grid' | 'list';
   onClick?: () => void;
+  style?: React.CSSProperties;
 }
 
 export interface CardHeaderProps {
@@ -25,11 +26,11 @@ const Card: React.FC<CardProps> & {
   ImgOverlay: typeof BootstrapCard.ImgOverlay;
   Title: typeof BootstrapCard.Title;
   Text: typeof BootstrapCard.Text;
-} = ({ children, onClick, size = 'list' }) => {
+} = ({ children, onClick, size = 'list', style }) => {
   return (
     <BootstrapCard
       className={styles.container}
-      style={{ width: size === 'grid' ? '18rem' : '100%' }}
+      style={{ ...style, width: size === 'grid' ? '18rem' : '100%' }}
       onClick={onClick}
     >
       {children}
