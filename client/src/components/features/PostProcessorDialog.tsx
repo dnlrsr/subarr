@@ -1,8 +1,20 @@
+import { faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PostProcessor } from '../../types';
 import { getErrorResponse, showToast } from '../../utils/utils';
-import { Button, DialogBase, Input, Select } from '../ui';
+import {
+  Button,
+  DialogBase,
+  Form,
+  FormControl,
+  FormGroup,
+  FormLabel,
+  Input,
+  InputGroup,
+  Select,
+} from '../ui';
 
 interface PostProcessorData {
   method?: string;
@@ -38,13 +50,13 @@ interface VariablesDialogProps {
 }
 
 const templates: Record<string, Template> = {
-  'Discord': {
+  Discord: {
     type: 'webhook',
     target: 'YOUR_DISCORD_WEBHOOK_URL',
     data: {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: `{
   "username": "Subarr",
@@ -60,7 +72,7 @@ const templates: Record<string, Template> = {
       "text": "From playlist: [[playlist.title]]"
     }
   }]
-}`
+}`,
     },
   },
   'Raindrop.io': {
@@ -69,15 +81,15 @@ const templates: Record<string, Template> = {
     data: {
       method: 'POST',
       headers: {
-        'Authorization': 'Bearer YOUR_INTEGRATION_TEST_TOKEN',
-        'Content-Type': 'application/json'
+        Authorization: 'Bearer YOUR_INTEGRATION_TEST_TOKEN',
+        'Content-Type': 'application/json',
       },
       body: `{
   "link": "https://www.youtube.com/watch?v=[[video.video_id]]",
   "title": "[[video.title]]",
   "cover": "[[video.thumbnail]]",
   "type": "video"
-}`
+}`,
     },
   },
   'yt-dlp-api': {
@@ -87,136 +99,157 @@ const templates: Record<string, Template> = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer YOUR_API_KEY'
+        Authorization: 'Bearer YOUR_API_KEY',
       },
       body: `{
   "url": "https://www.youtube.com/watch?v=[[video.video_id]]",
-}`
+}`,
     },
   },
 };
 
-const PostProcessorDataUI: React.FC<PostProcessorDataUIProps> = ({ 
-  postProcessorData, 
-  updateData, 
-  showVariablesDialog 
+const PostProcessorDataUI: React.FC<PostProcessorDataUIProps> = ({
+  postProcessorData,
+  updateData,
+  showVariablesDialog,
 }) => {
   const { t } = useTranslation();
-  
+
   if (!postProcessorData) {
     return null;
   }
 
   return (
-    <>
-      <div>
-        <div>{t('common.method')}</div>
+    <Form>
+      <FormGroup>
+        <FormLabel>{t('common.method')}</FormLabel>
         <Select
           value={postProcessorData.method || 'GET'}
-          onChange={e => updateData({ ...postProcessorData, method: e.target.value })}
-          options={['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].map(method => ({ value: method, label: method }))}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+            updateData({ ...postProcessorData, method: e.target.value })
+          }
+          options={['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].map(method => ({
+            value: method,
+            label: method,
+          }))}
         />
-      </div>
-      <div>
-        <div>{t('common.headers')}</div>
-        <div>
-          {postProcessorData.headers?.map((header, index) =>
-            <div key={index}>
-              <input 
-                type='text' 
-                value={header.name || ''}
-                onChange={e => updateData({
-                  ...postProcessorData, 
-                  headers: postProcessorData.headers?.map((h, i) => 
-                    i === index ? { name: e.target.value, value: h.value } : h
-                  ) || []
-                })}
-              />
-              <input 
-                type='text' 
-                value={header.value || ''}
-                onChange={e => updateData({
-                  ...postProcessorData, 
-                  headers: postProcessorData.headers?.map((h, i) => 
-                    i === index ? { name: h.name, value: e.target.value } : h
-                  ) || []
-                })}
-              />
-              <div>
-                <Button 
-                  variant="danger"
-                  size="sm"
-                  onClick={() => updateData({
-                    ...postProcessorData, 
-                    headers: postProcessorData.headers?.filter((_, i) => i !== index) || []
-                  })}
-                >
-                  <i />
-                </Button>
-              </div>
-            </div>
-          )}
-          <div>
-            <Button 
-              variant="primary"
+      </FormGroup>
+      <FormGroup>
+        <FormLabel>{t('common.headers')}</FormLabel>
+        {postProcessorData.headers?.map((header, index) => (
+          <InputGroup key={index}>
+            <FormControl
+              type="text"
+              value={header.name || ''}
+              placeholder={t('common.headerName')}
+              onChange={event =>
+                updateData({
+                  ...postProcessorData,
+                  headers:
+                    postProcessorData.headers?.map((h, i) =>
+                      i === index
+                        ? { name: event.target.value, value: h.value }
+                        : h
+                    ) || [],
+                })
+              }
+            />
+            <FormControl
+              type="text"
+              value={header.value || ''}
+              placeholder={t('common.headerValue')}
+              onChange={event =>
+                updateData({
+                  ...postProcessorData,
+                  headers:
+                    postProcessorData.headers?.map((h, i) =>
+                      i === index
+                        ? { name: h.name, value: event.target.value }
+                        : h
+                    ) || [],
+                })
+              }
+            />
+            <Button
+              variant="danger"
               size="sm"
-              onClick={() => updateData({
-                ...postProcessorData, 
-                headers: [...(postProcessorData.headers ?? []), { name: '', value: '' }]
-              })}
+              onClick={() =>
+                updateData({
+                  ...postProcessorData,
+                  headers:
+                    postProcessorData.headers?.filter((_, i) => i !== index) ||
+                    [],
+                })
+              }
             >
-              <i />
+              <FontAwesomeIcon icon={faTrashCan} />
             </Button>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>{t('common.body')}</div>
-        <div>
-          <textarea 
-            value={postProcessorData.body || ''}
-            onChange={e => updateData({ ...postProcessorData, body: e.target.value })}
-          />
-          <div>
-            <Button 
-              variant="secondary"
-              onClick={() => showVariablesDialog()}
-            >
-              f(x)
-            </Button>
-          </div>
-        </div>
-      </div>
-    </>
+          </InputGroup>
+        ))}
+        <Button
+          variant="primary"
+          size="sm"
+          onClick={() =>
+            updateData({
+              ...postProcessorData,
+              headers: [
+                ...(postProcessorData.headers ?? []),
+                { name: '', value: '' },
+              ],
+            })
+          }
+        >
+          <FontAwesomeIcon icon={faPlus} /> 
+        </Button>
+      </FormGroup>
+      <FormGroup>
+        <FormLabel>{t('common.body')}</FormLabel>
+        <FormControl
+          as="textarea"
+          value={postProcessorData.body || ''}
+          rows={6}
+          onChange={event =>
+            updateData({ ...postProcessorData, body: event.target.value })
+          }
+        />
+        <Button variant="secondary" onClick={() => showVariablesDialog()}>
+          f(x)
+        </Button>
+      </FormGroup>
+    </Form>
   );
 };
 
-const VariablesDialog: React.FC<VariablesDialogProps> = ({ isOpen, onClose }) => {
+const VariablesDialog: React.FC<VariablesDialogProps> = ({
+  isOpen,
+  onClose,
+}) => {
   const { t } = useTranslation();
   const possibleVariables: Array<[string, string]> = [
     ['[[video.title]]', t('postProcessorDialog.variables.videoTitle')],
     ['[[video.thumbnail]]', t('postProcessorDialog.variables.videoThumbnail')],
     ['[[video.video_id]]', t('postProcessorDialog.variables.videoId')],
-    ['[[video.published_at]]', t('postProcessorDialog.variables.videoPublishedAt')],
+    [
+      '[[video.published_at]]',
+      t('postProcessorDialog.variables.videoPublishedAt'),
+    ],
     ['[[playlist.title]]', t('postProcessorDialog.variables.playlistTitle')],
   ];
 
   return (
-    <DialogBase 
-      isOpen={isOpen} 
-      onClose={onClose} 
+    <DialogBase
+      isOpen={isOpen}
+      onClose={onClose}
       title={t('postProcessorDialog.variables.title')}
     >
-      <p>
-        {t('postProcessorDialog.variables.description')}
-      </p>
+      <p>{t('postProcessorDialog.variables.description')}</p>
       <div>
-        {possibleVariables.map((pair, i) =>
+        {possibleVariables.map((pair, i) => (
           <Fragment key={i}>
             <p>{pair[0]}</p>
             <p>{pair[1]}</p>
           </Fragment>
-        )}
+        ))}
       </div>
     </DialogBase>
   );
@@ -225,15 +258,18 @@ const VariablesDialog: React.FC<VariablesDialogProps> = ({ isOpen, onClose }) =>
 const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
   editingItem,
   onClose,
-  onRefreshPostProcessors
+  onRefreshPostProcessors,
 }) => {
   const { t } = useTranslation();
-  const [postProcessor, setPostProcessor] = useState<PostProcessor | null>(null);
-  const [postProcessorData, setPostProcessorData] = useState<PostProcessorData | null>(null);
+  const [postProcessor, setPostProcessor] = useState<PostProcessor | null>(
+    null
+  );
+  const [postProcessorData, setPostProcessorData] =
+    useState<PostProcessorData | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [isVariablesDialogOpen, setIsVariablesDialogOpen] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState('');
-  
+
   const postProcessorTypes: Array<'webhook'> = ['webhook'];
 
   useEffect(() => {
@@ -245,7 +281,9 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
       const parsedData = JSON.parse(copy.data || '{}');
       setPostProcessorData({
         ...parsedData,
-        headers: Object.entries(parsedData.headers || {}).map(([name, value]) => ({ name, value: String(value) })),
+        headers: Object.entries(parsedData.headers || {}).map(
+          ([name, value]) => ({ name, value: String(value) })
+        ),
       });
     } else {
       setPostProcessor(null);
@@ -261,17 +299,22 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
 
     const templateData = templates[templateName];
 
-    setPostProcessor((prev) => ({
+    setPostProcessor(prev => ({
       id: prev?.id,
-      name: templateName === 'yt-dlp-api' ? 'yt-dlp-api' : prev?.name || templateName,
+      name:
+        templateName === 'yt-dlp-api'
+          ? 'yt-dlp-api'
+          : prev?.name || templateName,
       type: templateData.type,
       target: templateData.target,
-      data: ''
+      data: '',
     }));
 
     setPostProcessorData({
       ...templateData.data,
-      headers: Object.entries(templateData.data.headers || {}).map(([name, value]) => ({ name, value })),
+      headers: Object.entries(templateData.data.headers || {}).map(
+        ([name, value]) => ({ name, value })
+      ),
     });
   };
 
@@ -279,13 +322,17 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
     const data = {
       ...postProcessorData,
       // The UI handles headers as [{name, value}] instead of an object like 'fetch' uses
-      headers: postProcessorData?.headers?.reduce((obj: Record<string, string>, { name, value }) => {
-        const key = name?.trim();
-        if (key) {
-          obj[key] = value?.trim?.() ?? value ?? '';
-        }
-        return obj;
-      }, {}) || {}
+      headers:
+        postProcessorData?.headers?.reduce(
+          (obj: Record<string, string>, { name, value }) => {
+            const key = name?.trim();
+            if (key) {
+              obj[key] = value?.trim?.() ?? value ?? '';
+            }
+            return obj;
+          },
+          {}
+        ) || {},
     };
 
     return {
@@ -306,13 +353,19 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
       if (!res.ok) {
         throw new Error(await getErrorResponse(res));
       }
-      
-      showToast(`Deleted post processor '${postProcessor?.name}'`, 'success');
+
+      showToast(
+        t('postProcessorDialog.deleted', { name: postProcessor?.name }),
+        'success'
+      );
       onRefreshPostProcessors();
       onClose();
     } catch (err) {
       console.error(err);
-      showToast(`Error deleting post processor: ${err}`, 'error'); 
+      showToast(
+        t('postProcessorDialog.errorDelete', { error: String(err) }),
+        'error'
+      );
     }
 
     onClose();
@@ -325,15 +378,18 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(constructFinalWebhook()),
       });
-  
+
       if (!res.ok) {
         throw new Error(await getErrorResponse(res));
       }
-      
-      showToast('Test successful', 'success');
+
+      showToast(t('postProcessorDialog.testSuccess'), 'success');
     } catch (err) {
       console.error(err);
-      showToast(`Test failed: ${err}`, 'error');
+      showToast(
+        t('postProcessorDialog.testFailed', { error: String(err) }),
+        'error'
+      );
     }
   };
 
@@ -343,12 +399,12 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
 
   const handleSave = async () => {
     if (!postProcessor?.name) {
-      setMessage('Please provide a name for your post processor');
+      setMessage(t('postProcessorDialog.nameRequired'));
       return;
     }
 
     if (!postProcessor?.target) {
-      setMessage('Post processor target (URL/process) cannot be empty');
+      setMessage(t('postProcessorDialog.targetRequired'));
       return;
     }
 
@@ -356,69 +412,72 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
       try {
         JSON.parse(postProcessorData.body); // Validate the body is valid json
       } catch (err) {
-        setMessage(`Invalid JSON Body: ${(err as Error).message}`);
+        setMessage(
+          t('postProcessorDialog.invalidJson', {
+            error: (err as Error).message,
+          })
+        );
         return;
       }
     }
 
     try {
       // If postProcessor.id exists, that means this isn't a new post processor - so we should update (PUT) rather than create (POST)
-      const res = await fetch(`/api/postprocessors${postProcessor.id ? `/${postProcessor.id}` : ''}`, {
-        method: postProcessor.id ? 'PUT' : 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(constructFinalWebhook()),
-      });
+      const res = await fetch(
+        `/api/postprocessors${postProcessor.id ? `/${postProcessor.id}` : ''}`,
+        {
+          method: postProcessor.id ? 'PUT' : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(constructFinalWebhook()),
+        }
+      );
 
       if (!res.ok) {
         throw new Error(await getErrorResponse(res));
       }
-      
-      showToast(`Saved post processor '${postProcessor.name}'`, 'success');
+
+      showToast(
+        t('postProcessorDialog.saved', { name: postProcessor.name }),
+        'success'
+      );
       onRefreshPostProcessors();
       onClose();
     } catch (err) {
       console.error(err);
-      showToast(`Error saving post processor: ${err}`, 'error');
+      showToast(
+        t('postProcessorDialog.errorSave', { error: String(err) }),
+        'error'
+      );
     }
   };
 
   return (
     <div>
-      <DialogBase 
-        isOpen={postProcessor !== null} 
-        onClose={() => handleCancel()} 
-        title={`Edit Post Processor: ${postProcessor?.name || 'New'}`}
+      <DialogBase
+        isOpen={postProcessor !== null}
+        onClose={() => handleCancel()}
+        title={t('postProcessorDialog.editTitle', {
+          name: postProcessor?.name || t('common.new'),
+        })}
         buttons={
           <>
-            <div >
-              <Button 
-                variant="danger"
-                onClick={() => handleDelete()} 
-              >
-                Delete
+            <div>
+              <Button variant="danger" onClick={() => handleDelete()}>
+                {t('common.delete')}
               </Button>
             </div>
-            <div >
-              <Button 
-                variant="secondary"
-                onClick={() => handleTest()} 
-              >
-                Test
+            <div>
+              <Button variant="secondary" onClick={() => handleTest()}>
+                {t('common.test')}
               </Button>
             </div>
-            <div >
-              <Button 
-                variant="secondary"
-                onClick={() => handleCancel()} 
-              >
-                Cancel
+            <div>
+              <Button variant="secondary" onClick={() => handleCancel()}>
+                {t('common.cancel')}
               </Button>
             </div>
-            <div >
-              <Button 
-                variant="success"
-                onClick={() => handleSave()} 
-              >
+            <div>
+              <Button variant="success" onClick={() => handleSave()}>
                 {t('common.save')}
               </Button>
             </div>
@@ -427,13 +486,19 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
       >
         <div>
           <div>{t('common.name')}</div>
-          <Input 
+          <Input
             type="text"
             value={postProcessor?.name || ''}
-            onChange={e => setPostProcessor(prev => prev ? { ...prev, name: e.target.value } : null)}
+            onChange={e =>
+              setPostProcessor(prev =>
+                prev ? { ...prev, name: e.target.value } : null
+              )
+            }
             disabled={postProcessor?.name === 'yt-dlp-api'} // Prevent renaming the built-in yt-dlp-api processor
           />
-          {postProcessor?.name === 'yt-dlp-api' && <p>{t('common.immutable')}</p>}
+          {postProcessor?.name === 'yt-dlp-api' && (
+            <p>{t('common.immutable')}</p>
+          )}
           <p></p>
         </div>
         <div>
@@ -443,18 +508,18 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
               <Select
                 value={selectedTemplate}
                 onChange={e => setSelectedTemplate(e.target.value)}
-                options={[''].concat(Object.keys(templates)).map(template => ({ 
-                  value: template, 
-                  label: template || 'Select template...' 
+                options={[''].concat(Object.keys(templates)).map(template => ({
+                  value: template,
+                  label: template,
                 }))}
               />
             </div>
             <div>
-              <Button 
+              <Button
                 variant="primary"
                 onClick={() => applyTemplate(selectedTemplate)}
               >
-                <i />
+                <FontAwesomeIcon icon={faPlus} />
               </Button>
             </div>
           </div>
@@ -463,32 +528,40 @@ const PostProcessorDialog: React.FC<PostProcessorDialogProps> = ({
           <div>{t('common.type')}</div>
           <Select
             value={postProcessor?.type || 'webhook'}
-            onChange={e => setPostProcessor(prev => prev ? { ...prev, type: e.target.value as 'webhook' } : null)}
-            options={postProcessorTypes.map(type => ({ value: type, label: type }))}
+            onChange={e =>
+              setPostProcessor(prev =>
+                prev ? { ...prev, type: e.target.value as 'webhook' } : null
+              )
+            }
+            options={postProcessorTypes.map(type => ({
+              value: type,
+              label: type,
+            }))}
           />
         </div>
         <div>
-          <div>
-            {t('postProcessorDialog.url')}
-          </div>
-          <Input 
+          <div>{t('postProcessorDialog.url')}</div>
+          <Input
             type="text"
             value={postProcessor?.target || ''}
-            onChange={e => setPostProcessor(prev => prev ? { ...prev, target: e.target.value } : null)}
+            onChange={e =>
+              setPostProcessor(prev =>
+                prev ? { ...prev, target: e.target.value } : null
+              )
+            }
           />
         </div>
-        <PostProcessorDataUI 
+        <PostProcessorDataUI
           postProcessorData={postProcessorData}
           updateData={val => setPostProcessorData(val)}
           showVariablesDialog={() => setIsVariablesDialogOpen(true)}
         />
-        {message && (
-          <p >
-            {message}
-          </p>
-        )}
+        {message && <p>{message}</p>}
       </DialogBase>
-      <VariablesDialog isOpen={isVariablesDialogOpen} onClose={() => setIsVariablesDialogOpen(false)} />
+      <VariablesDialog
+        isOpen={isVariablesDialogOpen}
+        onClose={() => setIsVariablesDialogOpen(false)}
+      />
     </div>
   );
 };

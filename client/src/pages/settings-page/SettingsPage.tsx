@@ -1,14 +1,24 @@
+import { faPlusSquare } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Toolbar } from '../components';
-import { PostProcessorDialog } from '../components/features';
+import { Toolbar } from '../../components';
+import { PostProcessorDialog } from '../../components/features';
 import {
   ToolbarAction,
   ToolbarViewAction,
-} from '../components/layout/toolbar/Toolbar';
-import { Card, Checkbox, Col, Container, Input, Row } from '../components/ui';
-import { PostProcessor, Settings } from '../types';
-import { showToast } from '../utils/utils';
+} from '../../components/layout/toolbar/Toolbar';
+import {
+  Card,
+  Checkbox,
+  Col,
+  Container,
+  Input,
+  Row,
+} from '../../components/ui';
+import { PostProcessor, Settings } from '../../types';
+import { showToast } from '../../utils/utils';
+import styles from './SettingsPage.module.scss';
 
 const SettingsPage: React.FC = () => {
   const { t } = useTranslation();
@@ -124,11 +134,13 @@ const SettingsPage: React.FC = () => {
 
               <div>{t('settingsPage.postProcessors')}</div>
 
-              <div>
+              <div className={styles.processorsContainer}>
                 {postProcessors.map(postProcessor => (
                   <Card
                     key={postProcessor.id}
                     onClick={() => handlePostProcessorClick(postProcessor)}
+                    size="grid"
+                    style={{ cursor: 'pointer' }}
                   >
                     <Card.Body>
                       <h3>{postProcessor.name}</h3>
@@ -139,10 +151,14 @@ const SettingsPage: React.FC = () => {
                     </Card.Body>
                   </Card>
                 ))}
-                <Card onClick={handleAddPostProcessor}>
+                <Card
+                  onClick={handleAddPostProcessor}
+                  size="grid"
+                  style={{ cursor: 'pointer' }}
+                >
                   <Card.Body>
-                    <div>
-                      <i className="bi bi-plus-square" />
+                    <div className={styles.addProcessorCard}>
+                      <FontAwesomeIcon icon={faPlusSquare} />
                     </div>
                   </Card.Body>
                 </Card>

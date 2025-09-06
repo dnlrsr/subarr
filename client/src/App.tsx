@@ -9,7 +9,7 @@ import { Header, Sidebar } from './components/layout';
 import ActivityPage from './pages/ActivityPage';
 import AddPlaylistPage from './pages/add-playlist-page/AddPlaylistPage';
 import PlaylistDetailsPage from './pages/PlaylistDetailsPage';
-import SettingsPage from './pages/SettingsPage';
+import SettingsPage from './pages/settings-page/SettingsPage';
 import SubscriptionsPage from './pages/SubscriptionsPage';
 
 import { useVersionCheck } from './hooks';

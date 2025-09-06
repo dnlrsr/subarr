@@ -124,11 +124,19 @@
         "url": "URL",
         "templates": {
             "discord": "Discord",
-            "slack": "Slack",
-            "pushover": "Pushover",
-            "gotify": "Gotify",
             "webhook": "Webhook"
-        }
+        },
+        "editTitle": "Edit Post Processor: {{name}}",
+        "deleted": "Deleted post processor '{{name}}'",
+        "errorDelete": "Error deleting post processor: {{error}}",
+        "testSuccess": "Test successful",
+        "testFailed": "Test failed: {{error}}",
+        "nameRequired": "Please provide a name for your post processor",
+        "targetRequired": "Post processor target (URL/process) cannot be empty",
+        "invalidJson": "Invalid JSON Body: {{error}}",
+        "saved": "Saved post processor '{{name}}'",
+        "errorSave": "Error saving post processor: {{error}}",
+        "selectTemplate": "Select template..."
     },
     "updateDialog": {
         "title": "Update available!",
